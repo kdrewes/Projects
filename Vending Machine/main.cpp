@@ -16,7 +16,7 @@
 using namespace std;
 //--------------------------------------------------------------
 //Functions:
-int Menu(LinkedList* VendingMachine) //Main menu function
+int Menu() //Main menu function
 {
    
     int menu; //Allows user to select option.
@@ -120,7 +120,7 @@ int main()
     
   while(menu!=4)
   {
-        menu = Menu(VendingMachine);
+        menu = Menu();
 
         Process(menu,VendingMachine);
   }
