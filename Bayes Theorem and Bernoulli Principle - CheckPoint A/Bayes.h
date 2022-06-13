@@ -1,4 +1,4 @@
-/**** **************************************************************************************************************************
+/*******************************************************************************************************************************
  Overview
  In this project, you will employ Bayes Theorem and Bernoulli principle for automatically classifying if an email message is a spam or not.
  Given a dictionary of words [w1, w2, ..., wn] , an email message can be represented using a "feature vector" comprising of several binary elements [f1, f2, ..., fn] . A binary element fi takes value 1 if the corresponding word wi in dictionary is present and is 0 if the word wi is not present. For example, let a dictionary constitute of the following words: "internet", "free", "business", "email", "people". Then an email can be represented using a binary feature vector of [1 0 0 1 1] which indicates this email contains the word "internet", "email" and "people". Each email will also have an associated binary label indicating if email is spam or not. For example, 1 will indicate email is spam and 0 will indicate email is ham (not spam).
