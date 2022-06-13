@@ -63,13 +63,20 @@ Node* LinkedList::Input()
     
     std::string name;
     
-    double price,wholesaleCost;
+    double price,
+           wholesaleCost;
     
-    char option, wholesaleOption, saveOption, insertOption, deleteOption;
+    char option, 
+         wholesaleOption, 
+         saveOption, 
+         insertOption,
+         deleteOption;
  
-    bool wholesaleBool = false, deleteBool = false;
+    bool wholesaleBool = false, 
+         deleteBool = false;
     
-    double gross, net;
+    double gross, 
+           net;
 
     if(this->GetSize()<=0) Node*head=NULL;
     else head = this->head;
