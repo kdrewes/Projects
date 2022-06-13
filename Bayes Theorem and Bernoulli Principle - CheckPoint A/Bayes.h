@@ -51,11 +51,10 @@ class Bayes
 {
     
 private:
-    int numerator,
-        denominator;
+      int numerator,
+          denominator;
      
-    double total;
-
+   double total;
     
 public:
     Bayes();
