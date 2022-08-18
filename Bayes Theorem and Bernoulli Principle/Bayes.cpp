@@ -53,9 +53,8 @@ Bayes Bayes :: operator * (Bayes& o)
     Bayes product;
     product.numerator = numerator * o.numerator;
     product.denominator = denominator * o.denominator;
-    product.total = (double(numerator * o.numerator) / double(denominator * o.denominator));
-    
-    return product;
+    product.total = (double(numerator * o.numerator) / 
+    double(denominator * o.denominator)); return product;
 }
 //-----------------------------------------------------------------------------
 std::ostream &operator << (std::ostream &output, Bayes&bayes)
