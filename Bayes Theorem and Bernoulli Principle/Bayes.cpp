@@ -11,8 +11,9 @@ Bayes :: Bayes()
 //-----------------------------------------------------------------------------
 Bayes :: Bayes(std::string fraction)
 {
-    this -> numerator = ConvertNumerator(fraction);
-    this -> denominator = ConvertDenominator(fraction); Simplify(numerator,denominator);
+    this -> numerator = ConvertNumerator(fraction); 
+    this -> denominator = ConvertDenominator(fraction); 
+    Simplify(numerator,denominator);
     this -> total = (double(GetNumerator()) / double(GetDenominator()));
 }
 //-----------------------------------------------------------------------------
