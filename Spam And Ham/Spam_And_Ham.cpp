@@ -1,4 +1,4 @@
-#include "Bayes.h"
+#include "SpamAndHam.h"
 #include<iostream>
 #include<sstream>
 //-----------------------------------------------------------------------------
@@ -11,9 +11,8 @@ Bayes :: Bayes()
 //-----------------------------------------------------------------------------
 Bayes :: Bayes(std::string fraction)
 {
-    this -> numerator = ConvertNumerator(fraction); 
-    this -> denominator = ConvertDenominator(fraction); 
-    Simplify(numerator,denominator);
+    this -> numerator = ConvertNumerator(fraction);
+    this -> denominator = ConvertDenominator(fraction); Simplify(numerator,denominator);
     this -> total = (double(GetNumerator()) / double(GetDenominator()));
 }
 //-----------------------------------------------------------------------------
@@ -54,8 +53,9 @@ Bayes Bayes :: operator * (Bayes& o)
     Bayes product;
     product.numerator = numerator * o.numerator;
     product.denominator = denominator * o.denominator;
-    product.total = (double(numerator * o.numerator) / 
-    double(denominator * o.denominator)); return product;
+    product.total = (double(numerator * o.numerator) / double(denominator * o.denominator));
+    
+    return product;
 }
 //-----------------------------------------------------------------------------
 std::ostream &operator << (std::ostream &output, Bayes&bayes)
