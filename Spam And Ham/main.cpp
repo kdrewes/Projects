@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <assert.h>
-#include "Bayes.h"
+#include "SpamAndHam.h"
 
 //-----------------------------------------------------------------------------
 namespace command
@@ -70,10 +70,10 @@ int main()
         b2Spam = B2(HamFraction,SpamFraction,BinaryVector,true);
         b2Ham = B2(HamFraction,SpamFraction,BinaryVector,false);
     
-        Bayes *SpamArray_b1 = new Bayes[SpamFraction.size()];
-        Bayes *SpamArray_b2 = new Bayes[SpamFraction.size()];
-        Bayes *HamArray_b1 = new Bayes[HamFraction.size()];
-        Bayes *HamArray_b2 = new Bayes[HamFraction.size()];
+        SpamAndHam *SpamArray_b1 = new SpamAndHam[SpamFraction.size()];
+        SpamAndHam *SpamArray_b2 = new SpamAndHam[SpamFraction.size()];
+        SpamAndHam *HamArray_b1 = new SpamAndHam[HamFraction.size()];
+        SpamAndHam *HamArray_b2 = new SpamAndHam[HamFraction.size()];
     
     for(int i = 0; i < SpamFraction.size(); i++)
         SpamArray_b1[i] = b1Spam[i];
@@ -87,15 +87,15 @@ int main()
     for(int i = 0; i < HamFraction.size(); i++)
         HamArray_b2[i] = b2Ham[i];
     
-    Bayes SpamTest1("1/1"),
-          HamTest1("1/1"),
-          SpamTest2("1/1"),
-          HamTest2("1/1");
+    SpamAndHam SpamTest1("1/1"),
+               HamTest1("1/1"),
+               SpamTest2("1/1"),
+               HamTest2("1/1");
     
-    Bayes PS = (std::to_string(Spam.size()) + '/'
+    SpamAndHam PS = (std::to_string(Spam.size()) + '/'
     + std::to_string(Spam.size() + Ham.size()));
     
-    Bayes PH = (std::to_string(Ham.size()) + '/'
+    SpamAndHam PH = (std::to_string(Ham.size()) + '/'
     + std::to_string(Spam.size() + Ham.size()));
     
     for(int i = 0; i < SpamFraction.size(); i++)
@@ -164,7 +164,6 @@ std::vector<std::vector<std::string>> Email(std::vector<char> Class, std::ifstre
             Ham.push_back(TempHam);
             TempHam.clear();
             output.clear();
-
         }
             
         else if(Class.at(count) == '1')
