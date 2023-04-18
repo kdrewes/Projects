@@ -2,21 +2,21 @@
 #include<iostream>
 #include<sstream>
 //-----------------------------------------------------------------------------
-Bayes :: Bayes()
+SpamAndHam :: SpamAndHam()
 {
     numerator = 0;
     denominator = 0;
     total = 0.0;
 }
 //-----------------------------------------------------------------------------
-Bayes :: Bayes(std::string fraction)
+SpamAndHam :: SpamAndHam(std::string fraction)
 {
     this -> numerator = ConvertNumerator(fraction);
     this -> denominator = ConvertDenominator(fraction); Simplify(numerator,denominator);
     this -> total = (double(GetNumerator()) / double(GetDenominator()));
 }
 //-----------------------------------------------------------------------------
-int Bayes :: ConvertNumerator(std::string fraction) const
+int SpamAndHam :: ConvertNumerator(std::string fraction) const
 {
     std::stringstream s;
     int numerator;
@@ -28,7 +28,7 @@ int Bayes :: ConvertNumerator(std::string fraction) const
     return numerator;
 }
 //-----------------------------------------------------------------------------
-int Bayes :: ConvertDenominator(std::string fraction) const
+int SpamAndHam :: ConvertDenominator(std::string fraction) const
 {
     std::stringstream s;
     int denominator;
@@ -40,7 +40,7 @@ int Bayes :: ConvertDenominator(std::string fraction) const
     return denominator;
 }
 //-----------------------------------------------------------------------------
-Bayes Bayes :: operator *= (Bayes& o)
+SpamAndHam SpamAndHam :: operator *= (SpamAndHam& o)
 {
     this -> numerator *= o.numerator;
     this -> denominator *= o.denominator;
@@ -48,9 +48,9 @@ Bayes Bayes :: operator *= (Bayes& o)
     return *this;
 }
 //-----------------------------------------------------------------------------
-Bayes Bayes :: operator * (Bayes& o)
+SpamAndHam SpamAndHam :: operator * (SpamAndHam& o)
 {
-    Bayes product;
+    SpamAndHam product;
     product.numerator = numerator * o.numerator;
     product.denominator = denominator * o.denominator;
     product.total = (double(numerator * o.numerator) / double(denominator * o.denominator));
@@ -58,13 +58,13 @@ Bayes Bayes :: operator * (Bayes& o)
     return product;
 }
 //-----------------------------------------------------------------------------
-std::ostream &operator << (std::ostream &output, Bayes&bayes)
+std::ostream &operator << (std::ostream &output, SpamAndHam &obj)
 {
-    output << bayes.total << std::endl;
+    output << obj.total << std::endl;
     return output;
 }
 //-----------------------------------------------------------------------------
-void Bayes :: Simplify(int numerator,int denominator)
+void SpamAndHam :: Simplify(int numerator,int denominator)
 {
     int commonFactor = 0;
     
@@ -75,32 +75,32 @@ void Bayes :: Simplify(int numerator,int denominator)
             SetDenominator(denominator/commonFactor);
 }
 //-----------------------------------------------------------------------------
-void Bayes :: SetNumerator(int numerator)
+void SpamAndHam :: SetNumerator(int numerator)
 {
     this -> numerator = numerator;
 }
 //-----------------------------------------------------------------------------
-void Bayes :: SetDenominator(int denominator)
+void SpamAndHam :: SetDenominator(int denominator)
 {
     this -> denominator = denominator;
 }
 //-----------------------------------------------------------------------------
-void Bayes:: SetTotal(double total)
+void SpamAndHam:: SetTotal(double total)
 {
     this -> total = total;
 }
 //-----------------------------------------------------------------------------
-int Bayes :: GetNumerator() const
+int SpamAndHam :: GetNumerator() const
 {
     return numerator;
 }
 //-----------------------------------------------------------------------------
-int Bayes :: GetDenominator() const
+int SpamAndHam :: GetDenominator() const
 {
     return denominator;
 }
 //-----------------------------------------------------------------------------
-double Bayes :: GetTotal() const
+double SpamAndHam :: GetTotal() const
 {
     return total;
 }
