@@ -2,25 +2,25 @@
 #define Bayes_h
 #include<iostream>
 
-class Bayes
+class SpamAndHam
 {
     
 private:
     int numerator,
         denominator;
      
-    double total;
+ double total;
 
     
 public:
-    Bayes();
-    Bayes(std::string);
+    SpamAndHam();
+    SpamAndHam(std::string);
     
-    Bayes operator *= (Bayes&);
-    Bayes operator * (Bayes&);
+    SpamAndHam operator *= (SpamAndHam&);
+    SpamAndHam operator * (SpamAndHam&);
     
     friend std::ostream &operator
-    << (std::ostream&, Bayes&);
+    << (std::ostream&, SpamAndHam&);
     
     void Simplify(int,int);
     void SetNumerator(int);
