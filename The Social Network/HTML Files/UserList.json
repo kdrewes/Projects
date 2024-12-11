@@ -1,0 +1,163 @@
+{
+"users": [
+	{
+		"id_str" : "1" ,
+		"name" : "Liel" ,
+		"location" : "Hawaii" ,
+		"pic_url" : "https://upload.wikimedia.org/wikipedia/en/c/c2/Peter_Griffin.png" ,
+		"follows" : ["3","4","8"]
+	},
+	{
+        "id_str" : "3" ,
+        "name" : "Roey" ,
+        "location" : "Minnesota" ,
+        "pic_url" : "https://stratcomm.sonoma.edu/sites/stratcomm/files/images/giphy-1_0.gif" ,
+        "follows" : ["2","4","20"]
+	},
+	{
+        "id_str" : "2" ,
+        "name" : "Ruel" ,
+        "location" : "Oregon" ,
+        "pic_url" : "https://upload.wikimedia.org/wikipedia/en/0/06/Jorts_the_Cat.jpg" ,
+        "follows" : ["4","20","12"]
+	},
+	{
+		"id_str" : "4" ,
+		"name" : "Jahniya" ,
+		"location" : "Montana" ,
+		"pic_url" : "https://stratcomm.sonoma.edu/sites/stratcomm/files/images/giphy-1_0.gif" ,
+		"follows" : ["1","2"]
+	},
+    
+    {
+        "id_str" : "20" ,
+        "name" : "Bob" ,
+        "location" : "California" ,
+        "pic_url" : "https://en.wikipedia.org/wiki/Oakland_Athletics#/media/File:Oakland_A's_logo.svg" ,
+        "follows" : ["7","3","4","19"]
+    },
+    
+    {
+        "id_str" : "7" ,
+        "name" : "Mary" ,
+        "location" : "New York" ,
+        "pic_url" : "https://s.yimg.com/cv/apiv2/default/mlb/20190319/500x500/yankees_wbgs.png" ,
+        "follows" : ["7","5","4","1","20"]
+    },
+    
+    
+    {
+        "id_str" : "12" ,
+        "name" : "Bill,
+        "location" : "Indiana" ,
+        "pic_url" : "https://logos-download.com/wp-content/uploads/2016/04/Indiana_Pacers_logo_logotype.png" ,
+        "follows" : ["4","19","10"]
+    },
+    
+    {
+        "id_str" : "6" ,
+        "name" : "Ricky,
+        "location" : "Oakland"
+        "pic_url" : "https://www.si.com/.image/c_limit%2Ccs_srgb%2Cq_auto:good%2Cw_298/MTY4MjYxMDk5MDc5NTQyMDM3/rickey-henderson-getty3jpg.webp" ,
+        "follows" : ["18","11"]
+    },
+    
+    
+    {
+        "id_str" : "10" ,
+        "name" : "Anna",
+        "location" : "Florida" ,
+        "pic_url" : "https://brandeps.com/logo-download/M/Miami-Heat-logo-vector-01.svg" ,
+        "follows" : ["2","5","11","4"]
+    },
+    
+    {
+        "id_str" : "18" ,
+        "name" : "Kyle",
+        "location" : "California" ,
+        "pic_url" : "https://media-exp1.licdn.com/dms/image/D5603AQG9J47mHHWILQ/profile-displayphoto-shrink_800_800/0/1663649806421?e=1670457600&v=beta&t=35pebA1xxQwt_N1Y29qT_ZN4Btiw0GMnmyKq0f6akXE" ,
+        "follows" : ["6","11","16"]
+    },
+    
+    {
+        "id_str" : "5" ,
+        "name" : "Angela",
+        "location" : "Nevada" ,
+        "pic_url" : "https://i.pinimg.com/564x/3c/0f/a0/3c0fa025dc5e22ae0cb24147aa51f3da.jpg" ,
+        "follows" : ["6","1","19","20","18"]
+    },
+    
+    {
+        "id_str" : "8" ,
+        "name" : "Dave",
+        "location" : "Washington" ,
+        "pic_url" : "https://logos-download.com/wp-content/uploads/2016/04/Seattle_Mariners_logo_logotype.png" ,
+        "follows" : ["6","1","14"]
+    },
+    
+    {
+        "id_str" : "11" ,
+        "name" : "Olivia,
+        "location" : "California" ,
+        "pic_url" : "https://upload.wikimedia.org/wikipedia/commons/e/e5/SF-Giants-Logo.jpg" ,
+        "follows" : ["18","6","16"]
+    },
+    
+    {
+        "id_str" : "16" ,
+        "name" : "Fred,
+        "location" : "Illinois" ,
+        "pic_url" : "https://logos-download.com/wp-content/uploads/2016/04/Chicago_White_Sox_logo_logotype_emblem.png" ,
+        "follows" : ["18","11","6"]
+    },
+    
+    {
+        "id_str" : "13" ,
+        "name" : "Jessica,
+        "location" : "Illinois" ,
+        "pic_url" : "https://teamcolorcodes.com/wp-content/uploads/2017/05/cubs_logo.jpg?ezimgfmt=ng%3Awebp%2Fngcb9%2Frs%3Adevice%2Frscb9-1" ,
+        "follows" : ["1","4","9","6"]
+    },
+    
+    {
+        "id_str" : "17" ,
+        "name" : "Charlie,
+        "location" : "New York" ,
+        "pic_url" : "https://teamcolorcodes.com/wp-content/uploads/2014/05/mets_logo-300x300.jpg?ezimgfmt=ng:webp/ngcb9" ,
+        "follows" : ["18","7","8","14"]
+    },
+    
+    {
+        "id_str" : "15" ,
+        "name" : "Brittany,
+        "location" : "Massachusetts" ,
+        "pic_url" : "https://s.yimg.com/cv/apiv2/default/mlb/20211123/500x500/Boston-Red-Sox_wbg.png" ,
+        "follows" : ["2","3","7","5"]
+    },
+    
+    {
+        "id_str" : "9" ,
+        "name" : "Aaron,
+        "location" : "Texas" ,
+        "pic_url" : "https://purepng.com/public/uploads/large/houston-astros-logo-ddj.png" ,
+        "follows" : ["20","2"]
+    },
+    
+    {
+        "id_str" : "14" ,
+        "name" : "Patrick,
+        "location" : "Pennsylvania" ,
+        "pic_url" : "https://s.yimg.com/cv/apiv2/default/mlb/20190403/500x500/phillies_wbgs.png" ,
+        "follows" : ["12","16","3","2"]
+    },
+    
+    {
+        "id_str" : "19" ,
+        "name" : "Ryan,
+        "location" : "Louisiana" ,
+        "pic_url" : "https://teamcolorcodes.com/wp-content/uploads/2014/05/New_Orleans_Saints_logo-246x300.jpg?ezimgfmt=ng:webp/ngcb9" ,
+        "follows" : ["2","9","7","13"]
+    },
+    
+]
+}
