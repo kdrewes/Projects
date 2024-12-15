@@ -153,19 +153,13 @@ void Tokenize :: checkIsValue(char character, std::ifstream &read)
         else if (character != '=' &&
                  character != '+' &&
                  character != '-' )
-        {
-            std::cerr << "Error - Invalid character\n";
-            std::cout << "\n\nsyntax = " <<character << std::endl;
-            exit(1);
-        }
+            std::invalid_argument("\n\nError - Invalid character " + std::string(1,character) + " detected\n\n");
+        
         
         else if((syntax[0] == '+' || syntax[0] == '-') &&
                 (character != '=' && syntax.size() > 0) &&
                 !isnumber(character))
-        {
-            std::cerr << "Error - Invalid character\n";
-            exit(1);
-        }
+            std::invalid_argument("\n\nError - Invalid character " + std::string(1,character) + " detected\n\n");
         
         else if(isnumber(read.peek()))
             isValue("integer");
@@ -189,10 +183,8 @@ void Tokenize :: checkIsValue(char character, std::ifstream &read)
                 else
                 {
                     if(!isnumber(read.peek()))
-                    {
-                        std::cerr << "\n Error - invalid character detected\n";
-                        std::exit(1);
-                    }
+                        std::invalid_argument("\n\nError - Invalid character " + std::string(1,character) + " detected\n\n");
+                  
                 }
             }
         }
@@ -225,10 +217,7 @@ void Tokenize :: checkPrintF(char character, std::ifstream &read)
         if(character == '"')
             isPrintF("beginning quotation");
         else
-        {
-            std::cerr << "\n Error - Invalid character detected, character must contain quotation mark\n";
-            std::exit(1);
-        }
+            throw std::invalid_argument("\n Error - Invalid character detected, character must contain quotation mark\n");
     }
     
     else if(isPrintF(strdup("beginning quotation")))
@@ -379,10 +368,8 @@ bool Tokenize :: isIdentifier(std::ifstream &read)
         if(read.peek() == ' ')
             return true;
         else
-        {
-            std::cerr << "Error - invalid syntax detected.\n";
-            std::exit(1);
-        }
+            std::invalid_argument("Error - invalid syntax detected.\n");
+
         
     }
     else if(isInteger(strdup("datatype")))
@@ -441,10 +428,7 @@ bool Tokenize :: tokenIdentifier(std::ifstream &read)
         if(read.peek() == ' ')
             return true;
         else
-        {
-            std::cerr << "Error - invalid syntax detected.\n";
-            std::exit(1);
-        }
+            std::invalid_argument("\n\nError - Invalid syntax " + this -> syntax + " detected\n\n");
         
     }
     else if(isInteger(strdup("datatype")))
@@ -658,7 +642,7 @@ TOKEN_TYPE Tokenize :: isTokenHelper(std::ifstream &read)
                 return TOKEN_TYPE :: SEMICOLON;
             
             else
-                std::cerr << "Error - Invalid character detected.";
+                std::invalid_argument("\n\nError - Invalid syntax " + this -> syntax + " detected\n\n");
         }
         else if(isInteger(strdup("=")))
         {
