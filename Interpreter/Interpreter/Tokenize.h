@@ -123,7 +123,7 @@ private:
         // Determine if there is a true boolean member within INTEGER_HANDLER
         bool operator()()
         {
-            return isTrue();
+            return ContainsTrueFlag();
         }
         // ----------------------------------------------------------
         // Used to determine the correct enum object to utilize
@@ -257,7 +257,7 @@ private:
         // ----------------------------------------------------------
 
         // Determines if VALUE_HANDLER contains any true boolean variables
-        bool isTrue()
+        bool ContainsTrueFlag()
         {
             // Declare array which holds all flags
             printf_bool integerArray [] = {
@@ -324,7 +324,7 @@ private:
         // Determine if there is a true boolean member contained in VALUE_HANDLER
         bool operator()()
         {
-            return isTrue();
+            return ContainsTrueFlag();
         }
         
         // ----------------------------------------------------------
@@ -463,7 +463,7 @@ private:
         // ----------------------------------------------------------
         
         // Determines if VALUE_HANDLER contains any true boolean variables
-        bool isTrue()
+        bool ContainsTrueFlag()
         {
             // Declare array which holds all flags
             printf_bool valueArray [] = {
@@ -549,7 +549,7 @@ private:
         // Determine if there is a true boolean member contained in PRINTF_HANDLER
         bool operator()()
         {
-            return isTrue();
+            return ContainsTrueFlag();
         }
         
         // ----------------------------------------------------------
@@ -810,7 +810,7 @@ private:
         }
         // ----------------------------------------------------------
         // Determines if PRINTF_HANDLER contains any true boolean variables
-        bool isTrue()
+        bool ContainsTrueFlag()
         {
             // Declare array which holds all flags
             printf_bool printf_array [] = {
