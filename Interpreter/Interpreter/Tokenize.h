@@ -149,9 +149,9 @@ private:
         }
         // ----------------------------------------------------------
         // Used for the purpose of configuring the values of each flag.
-        void Configure_Flags(INTEGER_ENUM enum_property)
+        void Configure_Flags(INTEGER_ENUM enumObject)
         {
-            switch(enum_property)
+            switch(enumObject)
             {
                 case DATA_TYPE:
                 
@@ -171,6 +171,7 @@ private:
                     if(!this -> is_value)
                     {
                         Reset();
+                        
                         is_value = true;
                     }
                     else
@@ -224,12 +225,6 @@ private:
                 
                     if(is_assignment_operator)
                         return true; return false;
-                
-                    
-                case RESET:
-                    
-                    Reset();
-                    break;
                     
                 case ERROR:
                     throw std::invalid_argument("\nError - boolean command " + std::string(command) + " not detected\n");
@@ -352,15 +347,16 @@ private:
         
         // ----------------------------------------------------------
         // Used for the purpose of configuring the values of each flag.
-        void Configure_Flags(VALUE_ENUM enum_property)
+        void Configure_Flags(VALUE_ENUM enumObject)
         {
-            switch(enum_property)
+            switch(enumObject)
             {
                 case ASSIGNMENT_OPERATOR:
                 
                     if(!this -> is_equal)
                     {
                         Reset();
+                        
                         is_equal = true;
                     }
                     else
@@ -374,6 +370,7 @@ private:
                     if(!this -> is_integer)
                     {
                         Reset();
+                        
                         is_integer = true;
                     }
                     else
@@ -402,15 +399,16 @@ private:
                     
                     
                 case ERROR:
+                    
                     throw std::invalid_argument("\nError - configuration not found\n");
             }
         }
         // ----------------------------------------------------------
         
         // Used to verify the status of each flag.
-        bool Verify_Flag(VALUE_ENUM enum_propery, char * command)
+        bool Verify_Flag(VALUE_ENUM enumObject, char * command)
         {
-            switch(enum_propery)
+            switch(enumObject)
             {
                     
                 case ASSIGNMENT_OPERATOR:
@@ -434,9 +432,11 @@ private:
                 case RESET:
                     
                     Reset();
+                    
                     break;
                     
                 case ERROR:
+                    
                     throw std::invalid_argument("\nError - boolean command " + std::string(command) + " not detected\n");
             }
             
@@ -728,7 +728,7 @@ private:
             }
         }
         // ----------------------------------------------------------
-        // Used to verify the boolean status of each flag.
+        // Used to verify the boolean status of each flag
         bool Verify_Flag(PRINTF_ENUM enumObject, char * command)
         {
             switch(enumObject)
@@ -910,10 +910,10 @@ private:
             // Used to prevent command from being case sensetive
             LowerCase(command);
             
-            if(command == "is procedure" || command == "procedure")
+            if(command == "is procedure" || command == "procedure" || command == "function")
                 return PROCEDURE_ENUM :: PROCEDURE;
             
-            else if(command == "procedure name" || command == "name")
+            else if(command == "procedure name" || command == "name" || command == "is void function" || command == "is regular function" || command == "void function" || command == "regular function ")
                 return PROCEDURE_ENUM :: PROCEDURE_NAME;
             
             else if(command == "is main" || command == "main")
@@ -949,14 +949,21 @@ private:
             return PROCEDURE_ENUM :: ERROR;
         }
         
+        // ----------------------------------------------------------
+         // Determine if boolean property is exists in PROCEDURE_HANDLER
+          bool operator()(char * command)
+          {
+              return Verify_Flag(Enum_Handler(command), command);
+          }
+        
         /*
         // ----------------------------------------------------------
-        // Determine if boolean property is exists in PROCEDURE_HANDLER
-        bool operator()(char * command)
-        {
-            return Verify_Flag(Enum_Handler(command), command);
-        }
-        
+         // Determine if boolean property is exists in PROCEDURE_HANDLER
+          bool operator()(char * command)
+          {
+              return Verify_Flag(Enum_Handler(command), command);
+          }
+         
         // ----------------------------------------------------------
         // Determine if there is a true boolean member contained in PRINTF_HANDLER
         bool operator()()
@@ -1192,6 +1199,46 @@ private:
         }
         
         // ----------------------------------------------------------
+        // Used to verify the boolean status of each flag.
+        bool Verify_Flag(PROCEDURE_ENUM enumObject, std::string command)
+        {
+            /*
+             // Declare boolean varialble when procedure is found
+             procedure_bool is_procedure;
+             
+             // Declare boolean variables used for regular procedure and main procedure
+             procedure_bool is_procedure_name,
+                            is_left_parenthesis,
+                            is_data_type,
+                            is_variable,
+                            is_comma,
+                            is_right_parenthesis;
+             
+             // Declare boolean variables used for main procedure
+             procedure_bool is_main,
+                            is_void,
+                            is_left_parenthesis_main,
+                            is_right_parenthesis_main;
+             */
+            
+            switch(enumObject)
+            {
+                case PROCEDURE:
+                    
+                    if(is_procedure)
+                        return true; return false;
+                    
+                case PROCEDURE_NAME:
+                    
+                    if(is_procedure_name)
+                        return true; return false;
+                    
+                    
+            }
+            return false;
+        }
+        
+        // ----------------------------------------------------------
         // Used to prevent command from being case sensetive
         void LowerCase(std::string &command)
         {
@@ -1219,7 +1266,25 @@ private:
             this -> is_left_parenthesis_main = false;
             this -> is_right_parenthesis_main = false;
             this -> is_void = false;
-
+            
+            /*
+             // Declare boolean varialble when procedure is found
+             procedure_bool is_procedure;
+             
+             // Declare boolean variables used for regular procedure and main procedure
+             procedure_bool is_procedure_name,
+                            is_left_parenthesis,
+                            is_data_type,
+                            is_variable,
+                            is_comma,
+                            is_right_parenthesis;
+             
+             // Declare boolean variables used for main procedure
+             procedure_bool is_main,
+                            is_void,
+                            is_left_parenthesis_main,
+                            is_right_parenthesis_main;
+             */
         }
         
         // Deconstructor
