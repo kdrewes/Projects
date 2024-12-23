@@ -309,28 +309,7 @@ void Tokenize :: checkPrintF(char character, std::ifstream &read)
 
 void Tokenize :: checkProcedure(char character, std::ifstream &read)
 {
-    
-    if(procedure_handler.found_procedure_name)
-    {
-        if(this -> syntax.size() == 0 && !isalpha(character))
-            throw(std::invalid_argument("\n\nError - invalid character detected for procedure name\n"));
-        
-        else if(this -> syntax.size() > 0 && ((isalpha(character)) || isnumber(character)))
-        {
-            if(read.peek() == ' ' || read.peek() == '(')
-            {
-                if(this -> syntax == "main")
-                {
-                    // Conduct operation
-                    //isProcedure(false,true,false,false,false);
-                }
-                else
-                {
-                    
-                }
-            }
-        }
-    }
+
 }
 
 // ------------------------------------------------------------------
