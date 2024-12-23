@@ -111,7 +111,7 @@ char Tokenize :: Verify_Character_Helper(char character, std::ifstream &read)
     checkInteger(character,read);
     
     // Input validation for isValue handler
-    checkIsValue(character,read);
+    checkValue(character,read);
     
     // Input validation for isString handler
     checkPrintF(character, read);
@@ -139,7 +139,7 @@ void Tokenize :: checkInteger(char character, std::ifstream &read)
 }
 // ------------------------------------------------------------------
 // Checks if isValue boolean variable is currently set as 'true'
-void Tokenize :: checkIsValue(char character, std::ifstream &read)
+void Tokenize :: checkValue(char character, std::ifstream &read)
 {
     
     if(isValue(strdup("=")))
