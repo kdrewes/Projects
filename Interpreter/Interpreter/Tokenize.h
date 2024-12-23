@@ -976,43 +976,58 @@ private:
                     case LEFT_PARENTHESIS:
                         
                         if(is_left_parenthesis)
+                        {
+                            Reset();
                             is_left_parenthesis = true;
+                            is_procedure_name = true;
+                        }
                         
                         else
                             throw std::invalid_argument("\nError - is_left_parenthesis is already true\n");
                         
                         break;
                         
-                    // -------------------------------------------------
+                        // -------------------------------------------------
                         
                     case DATA_TYPE:
                         
                         if(is_data_type)
+                        {
+                            Reset();
                             is_data_type = true;
-                        
+                            is_procedure_name = true;
+                        }
                         else
                             throw std::invalid_argument("\nError - is_data_type is already true\n");
                         
                         break;
                         
-                    // -------------------------------------------------
+                        // -------------------------------------------------
                         
                     case VARIABLE:
                         
                         if(is_variable)
+                        {
+                            Reset();
                             is_variable = true;
+                            is_procedure_name = true;
+                        }
                         
                         else
                             throw std::invalid_argument("\nError - is_variable is already true\n");
                         
                         break;
                         
-                    // -------------------------------------------------
+                        // -------------------------------------------------
                         
                     case COMMA:
                         
                         if(is_comma)
+                        {
+                            Reset();
                             is_comma = true;
+                            is_procedure_name = true;
+                        }
                         
                         else
                             throw std::invalid_argument("\nError - is_comma is already true\n");
@@ -1024,7 +1039,11 @@ private:
                     case RIGHT_PARENTHESIS:
                         
                         if(is_right_parenthesis)
+                        {
+                            Reset();
                             is_right_parenthesis = true;
+                            is_procedure_name = true;
+                        }
                         
                         else
                             throw std::invalid_argument("\nError - is_right_parenthesis is already true\n");
@@ -1034,9 +1053,7 @@ private:
                     // -------------------------------------------------
                         
                     case RESET:
-                        
-                        is_procedure_name = false;
-                        
+
                         Reset();
                         
                         break;
@@ -1058,20 +1075,26 @@ private:
                     case LEFT_PARENTHESIS_MAIN:
                         
                         if(!is_left_parenthesis_main)
+                        {
+                            Reset();
                             is_left_parenthesis_main = true;
-                        
+                            is_main = true;
+                        }
                         else
                             throw std::invalid_argument("\nError - is_left_parenthesis_main is already true\n");
                         
                         break;
                         
-                    // -------------------------------------------------
+                        // -------------------------------------------------
                         
                     case VOID:
                         
                         if(!is_void)
+                        {
+                            Reset();
                             is_void = true;
-                        
+                            is_main = true;
+                        }
                         else
                             throw std::invalid_argument("\nError - is_void is already true\n");
                         
@@ -1082,7 +1105,11 @@ private:
                     case RIGHT_PARENTHESIS_MAIN:
                         
                         if(!is_right_parenthesis_main)
+                        {
+                            Reset();
                             is_right_parenthesis_main = true;
+                            is_main = true;
+                        }
                         
                         else
                             throw std::invalid_argument("\nError - is_right_parenthesis_main is already true\n");
@@ -1092,9 +1119,7 @@ private:
                     // -------------------------------------------------
                             
                     case RESET:
-                        
-                        is_main = false;
-                        
+   
                         Reset();
                         
                         break;
@@ -1127,7 +1152,11 @@ private:
                     case MAIN:
                         
                         if(!is_main)
+                        {
+                            Reset();
+                            
                             is_main = true;
+                        }
                         
                         else
                             throw std::invalid_argument("\nError - is_main is already true\n");
@@ -1139,8 +1168,11 @@ private:
                     case PROCEDURE_NAME:
                         
                         if(!is_procedure_name)
+                        {
+                            Reset();
+                            
                             is_procedure_name = true;
-                        
+                        }
                         else
                             throw std::invalid_argument("\nError - is_procedure_name is already true\n");
                         
@@ -1175,6 +1207,7 @@ private:
             this -> is_procedure = false;
             
             // boolean members related to regular procedure
+            this -> is_procedure_name = false;
             this -> is_left_parenthesis = false;
             this -> is_right_parenthesis = false;
             this -> is_data_type = false;
@@ -1182,6 +1215,7 @@ private:
             this -> is_comma = false;
             
             // boolean members related to main procedure
+            this -> is_main = false;
             this -> is_left_parenthesis_main = false;
             this -> is_right_parenthesis_main = false;
             this -> is_void = false;
