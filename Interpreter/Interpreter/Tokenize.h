@@ -84,11 +84,6 @@ private:
     // ----------------------------------------------------------------------
     
     // Indicates an integer variable was detected
-    
-    // first = integer datatype was detected
-    // second = variable was detected
-    // third = assignment operator was detected
-    
     struct INTEGER_HANDLER
     {
         // Enums used to represent each property of a particular VALUE_HANDLER component
@@ -296,41 +291,40 @@ private:
         };
         
         // ----------------------------------------------------------
-
         // Declare boolean variable for VALUE_HANDLER
         value_bool is_equal,
                    is_integer,
                    is_semicolon;
         
         // ----------------------------------------------------------
-
-        VALUE_HANDLER() : is_equal(false),
+        // Declare paramatarized constructor
+        VALUE_HANDLER() :
+        is_equal(false),
         is_integer(false),
         is_semicolon(false) {}
         
         // ----------------------------------------------------------
-        
         // Modifies boolean values which belong to VALUE_HANDLER
         void operator()(std::string command)
         {
             Configure_Flags(Enum_Handler(command));
         }
-        // ----------------------------------------------------------
         
+        // ----------------------------------------------------------
         // Determine if boolean property is exists in VALUE_HANDLER
         bool operator()(char * command)
         {
             return Verify_Flag(Enum_Handler(command), command);
         }
-        // ----------------------------------------------------------
         
+        // ----------------------------------------------------------
         // Determine if there is a true boolean member contained in VALUE_HANDLER
         bool operator()()
         {
             return isTrue();
         }
-        // ----------------------------------------------------------
         
+        // ----------------------------------------------------------
         // Used to determine the correct enum object to utilize
         VALUE_ENUM Enum_Handler(std::string command)
         {
@@ -352,8 +346,8 @@ private:
             return VALUE_ENUM :: ERROR;
             
         }
-        // ----------------------------------------------------------
         
+        // ----------------------------------------------------------
         // Used for the purpose of configuring the values of each flag.
         void Configure_Flags(VALUE_ENUM enum_property)
         {
@@ -1131,26 +1125,6 @@ private:
             this -> is_right_parenthesis_main = false;
             this -> is_void = false;
 
-            
-            /*
-             
-             // Declare boolean variables used for regular procedure and main procedure
-             procedure_bool found_left_parenthesis,
-                            found_procedure_name,
-                            found_right_parenthesis;
-             
-             // Declare boolean variables used for regular procedure
-             procedure_bool found_data_type,
-                            found_variable,
-                            found_comma;
-             
-             // Declare boolean variables used for main procedure
-             procedure_bool found_main,
-                            found_void,
-                            found_left_parenthesis_main,
-                            found_right_parenthesis_main;
-             */
-            
         }
         
         // Deconstructor
@@ -1180,9 +1154,10 @@ public:
     // Determines if a BNF token was read
     bool isToken(TOKEN_TYPE token);
     
-    // Used to find if a string or int variable is present within an operation/equation
+    // Used to find if a integer or string variable is present within an operation/equation
     bool findVariable(TOKEN_TYPE token);
     
+    // Used to find a function name that is present within an operation/equation
     bool findFunction(TOKEN_TYPE token);
     
     // Checks if isInteger boolean variable is currently set as 'true'
@@ -1201,10 +1176,10 @@ public:
     void checkProcedure(char character, std::ifstream &read);
     
     // Verifies that each character is legally allowed to use
-    char Verify_Character(char character, std::ifstream &read);
+    char Verify_Token(char character, std::ifstream &read);
     
     // Handles input validation with Read_Character function
-    char Verify_Character_Helper(char character, std::ifstream &read);
+    char Verify_Token_Helper(char character, std::ifstream &read);
     
     // Reads characters to determine if a token is detected
     std::vector<std::pair<tokenType,token>> ReadFile(std::ifstream &read);

@@ -72,7 +72,7 @@ std::vector<std::pair<tokenType,token>> Tokenize :: ReadFile(std::ifstream &read
 
             if(character != ' ' && character != '\n')
             {
-                this->syntax += Verify_Character(character,read);
+                this->syntax += Verify_Token(character,read);
                 
                 if(isToken(isTokenHelper(read)))
                 {
@@ -101,13 +101,13 @@ std::vector<std::pair<tokenType,token>> Tokenize :: ReadFile(std::ifstream &read
 }
 // ------------------------------------------------------------------
 // Verifies that each character is legally allowed to use
-char Tokenize :: Verify_Character(char character, std::ifstream &read)
+char Tokenize :: Verify_Token(char character, std::ifstream &read)
 {
-    return (Verify_Character_Helper(character, read));
+    return (Verify_Token_Helper(character, read));
 }
 // ------------------------------------------------------------------
 // Handles input validation with Read_Character function
-char Tokenize :: Verify_Character_Helper(char character, std::ifstream &read)
+char Tokenize :: Verify_Token_Helper(char character, std::ifstream &read)
 {
     // Input validation for integer handler
     checkInteger(character,read);
@@ -375,8 +375,6 @@ bool Tokenize :: isIdentifier(std::ifstream &read)
 // Determines if file text is an identifier, used specifically for bool isToken
 bool Tokenize :: tokenIdentifier(std::ifstream &read)
 {
-    
-    
     if(this->syntax == "void")
         return true;
     else if(this->syntax == "printf")
@@ -515,10 +513,7 @@ TOKEN_TYPE Tokenize :: Read_Token(std::ifstream &read)
         else if(findVariable(TOKEN_TYPE :: INTEGER))
         {
             if(!isPrintF())
-            {
-                std::cout << "\n\nNAME OF PROPERTY: " << this -> syntax << std::endl;
                 isValue("=");
-            }
             
             return TOKEN_TYPE :: IDENTIFIER;
             
