@@ -47,6 +47,7 @@ void Tokenize :: Clear()
     this -> TestFiles.clear();
     this -> integerCollector.clear();
     this -> stringCollector.clear();
+    this -> procedureCollector.clear();
     this -> TokenVector.clear();
 }
 
@@ -87,10 +88,11 @@ std::vector<std::pair<tokenType,token>> Tokenize :: ReadFile(std::ifstream &read
         }
     }
     
-    for(std::vector<std::pair<tokenType,token>> :: size_type i = 0; i < Tokens.size(); i++)
+    // Display results
+    for(const auto & [tokenType, token] : Tokens)
     {
-        std::cout << "Token Type: " << Tokens[i].first << std::endl;
-        std::cout << "Token: " << Tokens[i].second << std::endl << std::endl;
+        std::cout << "Token Type: " << tokenType << std::endl;
+        std::cout << "Token: " << token << std::endl << std::endl;
     }
     
     read.close();
@@ -527,7 +529,7 @@ TOKEN_TYPE Tokenize :: Read_Token(std::ifstream &read)
         
         else if(this -> syntax == "procedure")
         {
-            procedure_handler(true);
+            procedure_handler("procedure");
             
             return TOKEN_TYPE :: IDENTIFIER;
         }

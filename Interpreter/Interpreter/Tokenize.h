@@ -65,7 +65,8 @@ private:
     
     
     std::vector<dataType> stringCollector,    // Collects string data type
-    integerCollector;   // Collects int data type
+                          integerCollector,   // Collects int data type
+                          procedureCollector; // Collects procedures/functions
     
     
     // Vector used to collect tokens from each file
@@ -197,7 +198,6 @@ private:
                     Reset();
                     
                     break;
-                    
                     
                 case ERROR:
                     throw std::invalid_argument("\nError - configuration not found\n");
@@ -547,14 +547,16 @@ private:
         {
             return Verify_Flag(Enum_Handler(command), command);
         }
+        
         // ----------------------------------------------------------
         // Determine if there is a true boolean member contained in PRINTF_HANDLER
         bool operator()()
         {
             return isTrue();
         }
+        
         // ----------------------------------------------------------
-        // Used to determine the correct enum object to utilize
+        // Determines correct enum object to utilize
         PRINTF_ENUM Enum_Handler(std::string command)
         {
             // Used to prevent command from being case sensetive
@@ -841,20 +843,18 @@ private:
     struct PROCEDURE_HANDLER
     {
         // Enums used to represent each property of a particular procedure
-        enum PROCEDURE_PROPERTIES
+        enum PROCEDURE_ENUM
         {
             PROCEDURE,
-            
             PROCEDURE_NAME,
-            
             MAIN,
             VOID,
-            
             LEFT_PARENTHESIS,
             DATA_TYPE,
             VARIABLE,
             COMMA,
-            RIGHT_PARENTHESIS
+            RIGHT_PARENTHESIS,
+            ERROR
         };
         
         // Declare boolean varialble when procedure is found
@@ -904,54 +904,69 @@ private:
           
             return procedureCommand;
         }
-        
-        // Return enum value of paramater type
-        PROCEDURE_PROPERTIES Procedure_Type(std::string parmaterType)
-        {
-            if(parmaterType == "main" || parmaterType == "Main")
-                return PROCEDURE_PROPERTIES :: MAIN;
-            
-            return PROCEDURE_PROPERTIES :: PROCEDURE_NAME;
-        }
-        
-        // Return enum value of what procedure property to activate
-        // PROCEDURE_PROPERTIES Paramater_Property(std::string property)
-        // {
-        
-        // }
-        
-        // Assign value to procedure properties
-        
-        //Initiates found_procedure variable
-        void operator()(bool found_procedure)
-        {
-            this -> found_procedure = found_procedure;
-        }
-        
-        // Used to dictate which type of procedure is being utilized (paramaterized or main)
+
+        // ----------------------------------------------------------
+        // Modifies boolean values which belong to PROCEDURE_HANDLER
         void operator()(std::string command)
         {
-            // command must begin with paramaterized or main followed by the bool variable it wishes to activated
             
         }
         
+        // ----------------------------------------------------------
+        // Determines correct enum object to use
+        PROCEDURE_ENUM Enum_Handler(std::string command)
+        {
+            if(command == "is procedure" || command == "procedure")
+                return PROCEDURE_ENUM :: PROCEDURE;
+            
+            else if(command == "procedure name" || command == "name")
+                return PROCEDURE_ENUM :: PROCEDURE_NAME;
+            
+            else if(command == "is main" || command == "main")
+                return PROCEDURE_ENUM :: MAIN;
+            
+            else if(command == "is void" || command == "void")
+                return PROCEDURE_ENUM :: VOID;
+            
+            else if(command == "(" || command == "left parenthesis")
+                return PROCEDURE_ENUM :: LEFT_PARENTHESIS;
+            
+            else if(command == "datatype" || command == "data type")
+                return PROCEDURE_ENUM :: DATA_TYPE;
+            
+            else if(command == "is variable" || command == "variable")
+                return PROCEDURE_ENUM :: VARIABLE;
+            
+            else if(command == "," || command == "comma")
+                return PROCEDURE_ENUM :: COMMA;
+            
+            else if(command == ")" || command == "right parenthesis")
+                return PROCEDURE_ENUM :: RIGHT_PARENTHESIS;
+            
+            return PROCEDURE_ENUM :: ERROR;
+        }
         
-        
-        
-        // Determines if PROCEDURE_HANDLER contains any true boolean variables
         /*
-         bool isTrue()
-         {
-         std::vector<bool>procedure_vector
-         = {first,second,third,forth,fifth};
-         
-         for(int i = 0; i < 5; i++)
-         if(procedure_vector[i])
-         return true;
-         
-         return false;
-         }
-         */
+        // ----------------------------------------------------------
+        // Determine if boolean property is exists in PROCEDURE_HANDLER
+        bool operator()(char * command)
+        {
+            return Verify_Flag(Enum_Handler(command), command);
+        }
+        
+        // ----------------------------------------------------------
+        // Determine if there is a true boolean member contained in PRINTF_HANDLER
+        bool operator()()
+        {
+            return isTrue();
+        }
+        */
+        
+        // Used to modify boolean flags
+        void Configure(std::string command)
+        {
+            
+        }
         
         // Deconstructor
         ~ PROCEDURE_HANDLER() = default;
@@ -982,6 +997,8 @@ public:
     
     // Used to find if a string or int variable is present within an operation/equation
     bool findVariable(TOKEN_TYPE token);
+    
+    bool findFunction(TOKEN_TYPE token);
     
     // Checks if isInteger boolean variable is currently set as 'true'
     void checkInteger(char character, std::ifstream &read);
