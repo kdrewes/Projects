@@ -843,6 +843,8 @@ private:
         // Enums used to represent each property of a particular procedure
         enum PROCEDURE_PROPERTIES
         {
+            PROCEDURE,
+            
             PROCEDURE_NAME,
             
             MAIN,
@@ -892,36 +894,14 @@ private:
         
         // --------------------------------------------------------------------
         // Splits command into two separate parts
-        std::pair<std::string,std::string> Execute_Command(std::string command)
+        std::pair<std::string,std::string> SplitCommand(std::string command)
         {
             // Used to collect each half of string
             std::string collectString = "";
             
-            // Determines if more than one split is identified
-            bool isSplit = false;
-            
             // Pair which contains procedure type and type of property to execute
             std::pair<std::string,std::string> procedureCommand;
-            
-            for(int i = 0; i < command.size(); i++)
-            {
-                if(command[i] != ' ')
-                    collectString += command[i];
-                else if (command[i] == ' ')
-                {
-                    if(!isSplit)
-                    {
-                        isSplit = true;
-                        procedureCommand.first = collectString;
-                        collectString = "";
-                    }
-                    else
-                        throw std::invalid_argument("\nError - invalid command\n\n");
-                }
-                else if(command.size() - i == 1)
-                    procedureCommand.second = collectString;
-                
-            }
+          
             return procedureCommand;
         }
         
@@ -1010,7 +990,7 @@ public:
     void checkIsEqual(char character, std::ifstream &read);
     
     // Checks if isValue boolean variable is currently set as 'true'
-    void checkIsValue(char character, std::ifstream &read);
+    void checkValue(char character, std::ifstream &read);
     
     // Check if isPrintf boolean variable is currently set as 'true'
     void checkPrintF(char character, std::ifstream &read);
