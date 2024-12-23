@@ -34,7 +34,6 @@ void Tokenize :: Execute()
             // Display error message
             std::cout << e.what() << std::endl;
         }
-        
     }
     
     Clear();

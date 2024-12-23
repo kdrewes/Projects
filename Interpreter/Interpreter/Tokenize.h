@@ -63,11 +63,14 @@ private:
     // Test file vector
     std::vector<fileName> TestFiles;
     
+    // Collects string datatype
+    std::vector<dataType> stringCollector,
     
-    std::vector<dataType> stringCollector,    // Collects string data type
-                          integerCollector,   // Collects int data type
-                          procedureCollector; // Collects procedures/functions
+    // Collects int datatype
+    integerCollector,
     
+    // Collects procedures/functions
+    procedureCollector;
     
     // Vector used to collect tokens from each file
     std::vector<std::vector<std::pair<tokenType,token>>>TokenVector;
@@ -719,6 +722,7 @@ private:
                     break;
                     
                 case ERROR:
+                    
                     throw std::invalid_argument("\nError - configuration not found\n");
                     
             }
@@ -810,6 +814,7 @@ private:
         {
             // Declare array which holds all flags
             printf_bool printf_array [] = {
+                
                 is_print_f,
                 is_left_paranthesis,
                 is_beginning_quotation,
@@ -819,6 +824,7 @@ private:
                 is_right_paranthesis,
                 is_comma,
                 is_semicolon,
+                
             };
             
             for(int i = 0; i < sizeof(printf_array)/sizeof(printf_array[0]); i++)
@@ -851,6 +857,7 @@ private:
             DATA_TYPE,
             VARIABLE,
             COMMA,
+            RESET,
             ERROR
         };
         
@@ -893,7 +900,7 @@ private:
         // Modifies boolean values which belong to PROCEDURE_HANDLER
         void operator()(std::string command)
         {
-            
+            return Configure(Enum_Handler(command), command);
         }
         
         // ----------------------------------------------------------
@@ -935,6 +942,9 @@ private:
             
             else if(command == "," || command == "comma")
                 return PROCEDURE_ENUM :: COMMA;
+            
+            else if(command == "reset")
+                return PROCEDURE_ENUM :: RESET;
 
             return PROCEDURE_ENUM :: ERROR;
         }
@@ -964,42 +974,72 @@ private:
                 switch(enumObject)
                 {
                     case LEFT_PARENTHESIS:
+                        
                         if(is_left_parenthesis)
                             is_left_parenthesis = true;
+                        
                         else
                             throw std::invalid_argument("\nError - is_left_parenthesis is already true\n");
+                        
+                        break;
                         
                     // -------------------------------------------------
                         
                     case DATA_TYPE:
+                        
                         if(is_data_type)
                             is_data_type = true;
+                        
                         else
                             throw std::invalid_argument("\nError - is_data_type is already true\n");
+                        
+                        break;
                         
                     // -------------------------------------------------
                         
                     case VARIABLE:
+                        
                         if(is_variable)
                             is_variable = true;
+                        
                         else
                             throw std::invalid_argument("\nError - is_variable is already true\n");
+                        
+                        break;
                         
                     // -------------------------------------------------
                         
                     case COMMA:
+                        
                         if(is_comma)
                             is_comma = true;
+                        
                         else
                             throw std::invalid_argument("\nError - is_comma is already true\n");
+                        
+                        break;
                         
                     // -------------------------------------------------
                         
                     case RIGHT_PARENTHESIS:
+                        
                         if(is_right_parenthesis)
                             is_right_parenthesis = true;
+                        
                         else
                             throw std::invalid_argument("\nError - is_right_parenthesis is already true\n");
+                        
+                        break;
+                        
+                    // -------------------------------------------------
+                        
+                    case RESET:
+                        
+                        is_procedure_name = false;
+                        
+                        Reset();
+                        
+                        break;
                         
                     // -------------------------------------------------
                         
@@ -1007,9 +1047,10 @@ private:
                         
                         throw std::invalid_argument("\nError - " + command + " is not a valid command\n");
                         
-                        break;
+                    // -------------------------------------------------
                 }
             }
+            
             else if(is_main)
             {
                 switch(enumObject)
@@ -1018,8 +1059,10 @@ private:
                         
                         if(!is_left_parenthesis_main)
                             is_left_parenthesis_main = true;
+                        
                         else
                             throw std::invalid_argument("\nError - is_left_parenthesis_main is already true\n");
+                        
                         break;
                         
                     // -------------------------------------------------
@@ -1028,8 +1071,10 @@ private:
                         
                         if(!is_void)
                             is_void = true;
+                        
                         else
                             throw std::invalid_argument("\nError - is_void is already true\n");
+                        
                         break;
                         
                      // -------------------------------------------------
@@ -1038,19 +1083,29 @@ private:
                         
                         if(!is_right_parenthesis_main)
                             is_right_parenthesis_main = true;
+                        
                         else
                             throw std::invalid_argument("\nError - is_right_parenthesis_main is already true\n");
+                        
                         break;
-
                             
                     // -------------------------------------------------
+                            
+                    case RESET:
+                        
+                        is_main = false;
+                        
+                        Reset();
+                        
+                        break;
                     
+                    // -------------------------------------------------
+                        
                     case ERROR:
                         
                         throw std::invalid_argument("\nError - " + command + " is not a valid command\n");
                         
-                        break;
-                        
+                    // -------------------------------------------------
                 }
             }
             else
@@ -1061,8 +1116,10 @@ private:
                         
                         if(!is_procedure)
                             is_procedure = true;
+                        
                         else
                             throw std::invalid_argument("\nError - is_procedure is already true\n");
+                        
                         break;
                         
                         // -------------------------------------------------
@@ -1071,8 +1128,10 @@ private:
                         
                         if(!is_main)
                             is_main = true;
+                        
                         else
                             throw std::invalid_argument("\nError - is_main is already true\n");
+                        
                         break;
                         
                         // -------------------------------------------------
@@ -1081,8 +1140,10 @@ private:
                         
                         if(!is_procedure_name)
                             is_procedure_name = true;
+                        
                         else
                             throw std::invalid_argument("\nError - is_procedure_name is already true\n");
+                        
                         break;
                         
                         // -------------------------------------------------
