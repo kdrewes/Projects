@@ -871,7 +871,7 @@ private:
         procedure_bool is_procedure;
         
         // Declare boolean variables used for regular procedure and main procedure
-        procedure_bool is_procedure_name,
+        procedure_bool is_void_function,
                        is_left_parenthesis,
                        is_data_type,
                        is_variable,
@@ -892,7 +892,7 @@ private:
         is_main(false),
         
         // Declare boolean variables used for customized procedure and main procedure
-        is_procedure_name(false),
+        is_void_function(false),
         is_left_parenthesis(false),
         is_right_parenthesis(false),
         is_left_parenthesis_main(false),
@@ -973,7 +973,7 @@ private:
         // Used to modify boolean flags
         void Configure(PROCEDURE_ENUM enumObject, std::string command)
         {
-            if(is_procedure_name)
+            if(is_void_function)
             {
                 switch(enumObject)
                 {
@@ -983,7 +983,7 @@ private:
                         {
                             Reset();
                             is_left_parenthesis = true;
-                            is_procedure_name = true;
+                            is_void_function = true;
                         }
                         
                         else
@@ -999,7 +999,7 @@ private:
                         {
                             Reset();
                             is_data_type = true;
-                            is_procedure_name = true;
+                            is_void_function = true;
                         }
                         else
                             throw std::invalid_argument("\nError - is_data_type is already true\n");
@@ -1014,7 +1014,7 @@ private:
                         {
                             Reset();
                             is_variable = true;
-                            is_procedure_name = true;
+                            is_void_function = true;
                         }
                         
                         else
@@ -1030,7 +1030,7 @@ private:
                         {
                             Reset();
                             is_comma = true;
-                            is_procedure_name = true;
+                            is_void_function = true;
                         }
                         
                         else
@@ -1046,7 +1046,7 @@ private:
                         {
                             Reset();
                             is_right_parenthesis = true;
-                            is_procedure_name = true;
+                            is_void_function = true;
                         }
                         
                         else
@@ -1171,11 +1171,11 @@ private:
                         
                     case PROCEDURE_NAME:
                         
-                        if(!is_procedure_name)
+                        if(!is_void_function)
                         {
                             Reset();
                             
-                            is_procedure_name = true;
+                            is_void_function = true;
                         }
                         else
                             throw std::invalid_argument("\nError - is_procedure_name is already true\n");
@@ -1200,13 +1200,13 @@ private:
         procedure_bool Verify_Flag(PROCEDURE_ENUM enumObject, std::string command)
         {
 
-            if(is_procedure_name)
+            if(is_void_function)
             {
                 switch(enumObject)
                 {
                     case PROCEDURE_NAME:
                         
-                        if(is_procedure_name)
+                        if(is_void_function)
                             return true; return false;
                         
                     // -------------------------------------------------
@@ -1332,7 +1332,7 @@ private:
             this -> is_procedure = false;
             
             // boolean members related to regular procedure
-            this -> is_procedure_name = false;
+            this -> is_void_function = false;
             this -> is_left_parenthesis = false;
             this -> is_right_parenthesis = false;
             this -> is_data_type = false;
@@ -1355,7 +1355,7 @@ private:
             procedure_bool procedure_array [] = {
                 
                 is_procedure,
-                is_procedure_name,
+                is_void_function,
                 is_left_parenthesis,
                 is_data_type,
                 is_variable,
