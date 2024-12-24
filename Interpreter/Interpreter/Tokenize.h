@@ -973,6 +973,78 @@ private:
         // Used to modify boolean flags
         void Configure(PROCEDURE_ENUM enumObject, std::string command)
         {
+            
+            ConfigureProcedure (enumObject, command);
+            
+            ConfigureVoidFunction (enumObject, command);
+            
+            ConfigureMain(enumObject, command);
+            
+        }
+        
+        
+        // ----------------------------------------------------------
+        // Stores boolean members specifically related to is_procedure property
+        void ConfigureProcedure(PROCEDURE_ENUM enumObject, std::string command)
+        {
+            switch(enumObject)
+            {
+                case PROCEDURE:
+                    
+                    if(!is_procedure)
+                        is_procedure = true;
+                    
+                    else
+                        throw std::invalid_argument("\nError - is_procedure is already true\n");
+                    
+                    break;
+                    
+                    // -------------------------------------------------
+                    
+                case MAIN:
+                    
+                    if(!is_main)
+                    {
+                        Reset();
+                        
+                        is_main = true;
+                    }
+                    
+                    else
+                        throw std::invalid_argument("\nError - is_main is already true\n");
+                    
+                    break;
+                    
+                    // -------------------------------------------------
+                    
+                case PROCEDURE_NAME:
+                    
+                    if(!is_void_function)
+                    {
+                        Reset();
+                        
+                        is_void_function = true;
+                    }
+                    else
+                        throw std::invalid_argument("\nError - is_procedure_name is already true\n");
+                    
+                    break;
+                    
+                    // -------------------------------------------------
+                    
+                case ERROR:
+                    
+                    throw std::invalid_argument("\nError - " + command + " is not a valid command\n");
+                    
+                    break;
+                
+            }
+        }
+        
+        // ----------------------------------------------------------
+        // Stores boolean members specifically related to is_void_function property
+        void ConfigureVoidFunction(PROCEDURE_ENUM enumObject, std::string command)
+        {
             if(is_void_function)
             {
                 switch(enumObject)
@@ -1071,8 +1143,13 @@ private:
                     // -------------------------------------------------
                 }
             }
-            
-            else if(is_main)
+        }
+        
+        // ----------------------------------------------------------
+        // Stores boolean members specifically related to is_main property
+        void ConfigureMain(PROCEDURE_ENUM enumObject, std::string command)
+        {
+            if(is_main)
             {
                 switch(enumObject)
                 {
@@ -1137,64 +1214,8 @@ private:
                     // -------------------------------------------------
                 }
             }
-            else
-            {
-                switch(enumObject)
-                {
-                    case PROCEDURE:
-                        
-                        if(!is_procedure)
-                            is_procedure = true;
-                        
-                        else
-                            throw std::invalid_argument("\nError - is_procedure is already true\n");
-                        
-                        break;
-                        
-                        // -------------------------------------------------
-                        
-                    case MAIN:
-                        
-                        if(!is_main)
-                        {
-                            Reset();
-                            
-                            is_main = true;
-                        }
-                        
-                        else
-                            throw std::invalid_argument("\nError - is_main is already true\n");
-                        
-                        break;
-                        
-                        // -------------------------------------------------
-                        
-                    case PROCEDURE_NAME:
-                        
-                        if(!is_void_function)
-                        {
-                            Reset();
-                            
-                            is_void_function = true;
-                        }
-                        else
-                            throw std::invalid_argument("\nError - is_procedure_name is already true\n");
-                        
-                        break;
-                        
-                        // -------------------------------------------------
-                        
-                    case ERROR:
-                        
-                        throw std::invalid_argument("\nError - " + command + " is not a valid command\n");
-                        
-                        break;
-                    
-                }
-            }
-            
         }
-        
+
         // ----------------------------------------------------------
         // Used to verify the boolean status of each flag.
         procedure_bool Verify_Flag(PROCEDURE_ENUM enumObject, std::string command)
