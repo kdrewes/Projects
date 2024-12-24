@@ -21,9 +21,10 @@ void Tokenize :: Execute()
 {
     for(std::vector<std::string>::size_type i = 0; i < 1; i++){
         
+        // Input validation
         try
         {
-            // Read file
+            // Read each file
             std::ifstream read(TestFiles[0],std::ios::in);
             
             // Collect tokens from current file being read
@@ -505,7 +506,7 @@ TOKEN_TYPE Tokenize :: Read_Token(std::ifstream &read)
         
         else if(this -> syntax == "procedure")
         {
-            procedure_handler("procedure");
+            isProcedure("procedure");
             
             return TOKEN_TYPE :: IDENTIFIER;
         }

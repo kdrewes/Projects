@@ -115,13 +115,13 @@ private:
         }
         // ----------------------------------------------------------
         // Determine if boolean property exists in INTEGER_HANDLER
-        bool operator()(char * command)
+        integer_bool operator()(char * command)
         {
             return Verify_Flag(Enum_Handler(command), command);
         }
         // ----------------------------------------------------------
         // Determine if there is a true boolean member within INTEGER_HANDLER
-        bool operator()()
+        integer_bool operator()()
         {
             return ContainsTrueFlag();
         }
@@ -204,7 +204,7 @@ private:
         }
         // ----------------------------------------------------------
         // Used to verify the status of each flag.
-        bool Verify_Flag(INTEGER_ENUM enum_propery, char * command)
+        integer_bool Verify_Flag(INTEGER_ENUM enum_propery, char * command)
         {
             switch(enum_propery)
             {
@@ -252,13 +252,16 @@ private:
         // ----------------------------------------------------------
 
         // Determines if VALUE_HANDLER contains any true boolean variables
-        bool ContainsTrueFlag()
+        integer_bool ContainsTrueFlag()
         {
             // Declare array which holds all flags
-            printf_bool integerArray [] = {
+            integer_bool integerArray [] =
+            {
+                
                 this -> is_data_type,
                 this -> is_value,
                 this -> is_assignment_operator
+                
             };
             
             for(int i = 0; i < sizeof(integerArray)/sizeof(integerArray[0]); i++)
@@ -310,14 +313,14 @@ private:
         
         // ----------------------------------------------------------
         // Determine if boolean property is exists in VALUE_HANDLER
-        bool operator()(char * command)
+        value_bool operator()(char * command)
         {
             return Verify_Flag(Enum_Handler(command), command);
         }
         
         // ----------------------------------------------------------
         // Determine if there is a true boolean member contained in VALUE_HANDLER
-        bool operator()()
+        value_bool operator()()
         {
             return ContainsTrueFlag();
         }
@@ -406,7 +409,7 @@ private:
         // ----------------------------------------------------------
         
         // Used to verify the status of each flag.
-        bool Verify_Flag(VALUE_ENUM enumObject, char * command)
+        value_bool Verify_Flag(VALUE_ENUM enumObject, char * command)
         {
             switch(enumObject)
             {
@@ -463,13 +466,15 @@ private:
         // ----------------------------------------------------------
         
         // Determines if VALUE_HANDLER contains any true boolean variables
-        bool ContainsTrueFlag()
+        value_bool ContainsTrueFlag()
         {
             // Declare array which holds all flags
-            printf_bool valueArray [] = {
+            value_bool valueArray [] = {
+                
                 this -> is_equal,
                 this -> is_integer,
                 this -> is_semicolon
+                
             };
             
             for(int i = 0; i < sizeof(valueArray)/sizeof(valueArray[0]); i++)
@@ -480,6 +485,7 @@ private:
         }
         
     }isValue;
+    
     // ----------------------------------------------------------------------
     // Facilitates the boolean mechanics anytime a procedure is detected
     // Indicates aa printf command was detected.
@@ -540,14 +546,14 @@ private:
         
         // ----------------------------------------------------------
         // Determine if boolean property is exists in PRINTF_HANDLER
-        bool operator()(char * command)
+        printf_bool operator()(char * command)
         {
             return Verify_Flag(Enum_Handler(command), command);
         }
         
         // ----------------------------------------------------------
         // Determine if there is a true boolean member contained in PRINTF_HANDLER
-        bool operator()()
+        printf_bool operator()()
         {
             return ContainsTrueFlag();
         }
@@ -729,7 +735,7 @@ private:
         }
         // ----------------------------------------------------------
         // Used to verify the boolean status of each flag
-        bool Verify_Flag(PRINTF_ENUM enumObject, char * command)
+        printf_bool Verify_Flag(PRINTF_ENUM enumObject, char * command)
         {
             switch(enumObject)
             {
@@ -810,7 +816,7 @@ private:
         }
         // ----------------------------------------------------------
         // Determines if PRINTF_HANDLER contains any true boolean variables
-        bool ContainsTrueFlag()
+        printf_bool ContainsTrueFlag()
         {
             // Declare array which holds all flags
             printf_bool printf_array [] = {
@@ -951,27 +957,18 @@ private:
         
         // ----------------------------------------------------------
          // Determine if boolean property is exists in PROCEDURE_HANDLER
-          bool operator()(char * command)
+          procedure_bool operator()(char * command)
           {
               return Verify_Flag(Enum_Handler(command), command);
           }
         
-        /*
-        // ----------------------------------------------------------
-         // Determine if boolean property is exists in PROCEDURE_HANDLER
-          bool operator()(char * command)
-          {
-              return Verify_Flag(Enum_Handler(command), command);
-          }
-         
-        // ----------------------------------------------------------
+         // ----------------------------------------------------------
         // Determine if there is a true boolean member contained in PRINTF_HANDLER
-        bool operator()()
+        procedure_bool operator()()
         {
-            return isTrue();
+            return ContainsTrueFlag();
         }
-        */
-        
+      
         // ----------------------------------------------------------
         // Used to modify boolean flags
         void Configure(PROCEDURE_ENUM enumObject, std::string command)
@@ -982,7 +979,7 @@ private:
                 {
                     case LEFT_PARENTHESIS:
                         
-                        if(is_left_parenthesis)
+                        if(!is_left_parenthesis)
                         {
                             Reset();
                             is_left_parenthesis = true;
@@ -998,7 +995,7 @@ private:
                         
                     case DATA_TYPE:
                         
-                        if(is_data_type)
+                        if(!is_data_type)
                         {
                             Reset();
                             is_data_type = true;
@@ -1013,7 +1010,7 @@ private:
                         
                     case VARIABLE:
                         
-                        if(is_variable)
+                        if(!is_variable)
                         {
                             Reset();
                             is_variable = true;
@@ -1029,7 +1026,7 @@ private:
                         
                     case COMMA:
                         
-                        if(is_comma)
+                        if(!is_comma)
                         {
                             Reset();
                             is_comma = true;
@@ -1045,7 +1042,7 @@ private:
                         
                     case RIGHT_PARENTHESIS:
                         
-                        if(is_right_parenthesis)
+                        if(!is_right_parenthesis)
                         {
                             Reset();
                             is_right_parenthesis = true;
@@ -1200,41 +1197,122 @@ private:
         
         // ----------------------------------------------------------
         // Used to verify the boolean status of each flag.
-        bool Verify_Flag(PROCEDURE_ENUM enumObject, std::string command)
+        procedure_bool Verify_Flag(PROCEDURE_ENUM enumObject, std::string command)
         {
-            /*
-             // Declare boolean varialble when procedure is found
-             procedure_bool is_procedure;
-             
-             // Declare boolean variables used for regular procedure and main procedure
-             procedure_bool is_procedure_name,
-                            is_left_parenthesis,
-                            is_data_type,
-                            is_variable,
-                            is_comma,
-                            is_right_parenthesis;
-             
-             // Declare boolean variables used for main procedure
-             procedure_bool is_main,
-                            is_void,
-                            is_left_parenthesis_main,
-                            is_right_parenthesis_main;
-             */
-            
-            switch(enumObject)
+
+            if(is_procedure_name)
             {
-                case PROCEDURE:
-                    
-                    if(is_procedure)
-                        return true; return false;
-                    
-                case PROCEDURE_NAME:
-                    
-                    if(is_procedure_name)
-                        return true; return false;
-                    
+                switch(enumObject)
+                {
+                    case PROCEDURE_NAME:
+                        
+                        if(is_procedure_name)
+                            return true; return false;
+                        
+                    // -------------------------------------------------
+                    case LEFT_PARENTHESIS:
+                        
+                        if(is_left_parenthesis)
+                            return true; return false;
+                        
+                        // -------------------------------------------------
+                        
+                    case DATA_TYPE:
+                        
+                        if(is_data_type)
+                            return true; return false;
+                        
+                        // -------------------------------------------------
+                        
+                    case VARIABLE:
+                        
+                        if(is_variable)
+                            return true; return false;
+                        
+                        // -------------------------------------------------
+                        
+                    case COMMA:
+                        
+                        if(is_comma)
+                            return true; return false;
+     
+                    // -------------------------------------------------
+                        
+                    case RIGHT_PARENTHESIS:
+                        
+                        if(is_right_parenthesis)
+                            return true; return false;
+                        
+                    // -------------------------------------------------
+                        
+                    case ERROR:
+                        
+                        throw std::invalid_argument("\nError - " + command + " is not a valid boolean command\n");
+                        
+                    // -------------------------------------------------
+                }
+
+                return true;
                     
             }
+            
+            else if(is_main)
+            {
+                switch(enumObject)
+                {
+                    case MAIN:
+                        
+                        if(is_main)
+                            return true; return false;
+                        
+                    // -------------------------------------------------
+                        
+                    case LEFT_PARENTHESIS_MAIN:
+                        
+                        if(is_left_parenthesis_main)
+                            return true; return false;
+                        
+                    // -------------------------------------------------
+                        
+                    case VOID:
+                        
+                        if(is_void)
+                            return true; return false;
+                        
+                     // -------------------------------------------------
+                        
+                    case RIGHT_PARENTHESIS_MAIN:
+                        
+                        if(is_right_parenthesis_main)
+                            return true; return false;
+                        
+                    // -------------------------------------------------
+                            
+                        case ERROR:
+                            
+                            throw std::invalid_argument("\nError - " + command + " is not a valid boolean command\n");
+                        
+                    // -------------------------------------------------
+                            
+
+                }
+            }
+            else
+            {
+                switch(enumObject)
+                {
+                    case PROCEDURE:
+                            
+                        if(is_procedure)
+                            return true; return false;
+                        
+                        
+                    case ERROR:
+                        
+                        throw std::invalid_argument("\nError - " + command + " is not a valid boolean command\n");
+                }
+            }
+
             return false;
         }
         
@@ -1267,30 +1345,42 @@ private:
             this -> is_right_parenthesis_main = false;
             this -> is_void = false;
             
-            /*
-             // Declare boolean varialble when procedure is found
-             procedure_bool is_procedure;
-             
-             // Declare boolean variables used for regular procedure and main procedure
-             procedure_bool is_procedure_name,
-                            is_left_parenthesis,
-                            is_data_type,
-                            is_variable,
-                            is_comma,
-                            is_right_parenthesis;
-             
-             // Declare boolean variables used for main procedure
-             procedure_bool is_main,
-                            is_void,
-                            is_left_parenthesis_main,
-                            is_right_parenthesis_main;
-             */
         }
+        
+        // ----------------------------------------------------------
+        // Determines if PROCEDURE_HANDLER contains any true boolean variables
+        procedure_bool ContainsTrueFlag()
+        {
+            // Declare array which holds all flags
+            procedure_bool procedure_array [] = {
+                
+                is_procedure,
+                is_procedure_name,
+                is_left_parenthesis,
+                is_data_type,
+                is_variable,
+                is_comma,
+                is_right_parenthesis,
+                is_main,
+                is_left_parenthesis_main,
+                is_void,
+                is_right_parenthesis_main
+                
+            };
+            
+            for(int i = 0; i < sizeof(procedure_array)/sizeof(procedure_array[0]); i++)
+                if(procedure_array[i] == true)
+                    return true;
+            
+            return false;
+        }
+        
+        // ----------------------------------------------------------
         
         // Deconstructor
         ~ PROCEDURE_HANDLER() = default;
         
-    }procedure_handler;
+    }isProcedure;
     
     // ----------------------------------------------------------------------
     
