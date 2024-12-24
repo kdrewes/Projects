@@ -84,7 +84,7 @@ private:
     // Variable used to collect character for each individual token
     token syntax;
     
-    // ----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     
     // Indicates an integer variable was detected
     struct INTEGER_HANDLER
@@ -113,19 +113,19 @@ private:
         {
             Configure_Flags(Enum_Handler(command));
         }
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Determine if boolean property exists in INTEGER_HANDLER
         integer_bool operator()(char * command)
         {
             return Verify_Flag(Enum_Handler(command), command);
         }
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Determine if there is a true boolean member within INTEGER_HANDLER
         integer_bool operator()()
         {
             return ContainsTrueFlag();
         }
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Used to determine the correct enum object to utilize
         INTEGER_ENUM Enum_Handler(std::string command)
         {
@@ -147,7 +147,8 @@ private:
             return INTEGER_ENUM :: ERROR;
             
         }
-        // ----------------------------------------------------------
+        
+        // -----------------------------------------------------------------------
         // Used for the purpose of configuring the values of each flag.
         void Configure_Flags(INTEGER_ENUM enumObject)
         {
@@ -202,7 +203,8 @@ private:
                     throw std::invalid_argument("\nError - configuration not found\n");
             }
         }
-        // ----------------------------------------------------------
+        
+        // -----------------------------------------------------------------------
         // Used to verify the status of each flag.
         integer_bool Verify_Flag(INTEGER_ENUM enum_propery, char * command)
         {
@@ -232,7 +234,7 @@ private:
             
             return false;
         }
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Used to prevent command from being case sensetive
         void LowerCase(std::string &command)
         {
@@ -240,7 +242,7 @@ private:
                 command[i] = tolower(command[i]);
         }
         
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Used to reset values of all flags
         void Reset()
         {
@@ -249,8 +251,7 @@ private:
             this -> is_assignment_operator = false;
         }
         
-        // ----------------------------------------------------------
-
+        // -----------------------------------------------------------------------
         // Determines if VALUE_HANDLER contains any true boolean variables
         integer_bool ContainsTrueFlag()
         {
@@ -276,7 +277,7 @@ private:
         
     }isInteger;
     
-    // ----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     // Indicates a variable was detected and converts value into token
     struct VALUE_HANDLER
     {
@@ -291,41 +292,41 @@ private:
             ERROR
         };
         
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Declare boolean variable for VALUE_HANDLER
         value_bool is_equal,
                    is_integer,
                    is_semicolon;
         
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Declare paramatarized constructor
         VALUE_HANDLER() :
         is_equal(false),
         is_integer(false),
         is_semicolon(false) {}
         
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Modifies boolean values which belong to VALUE_HANDLER
         void operator()(std::string command)
         {
             Configure_Flags(Enum_Handler(command));
         }
         
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Determine if boolean property is exists in VALUE_HANDLER
         value_bool operator()(char * command)
         {
             return Verify_Flag(Enum_Handler(command), command);
         }
         
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Determine if there is a true boolean member contained in VALUE_HANDLER
         value_bool operator()()
         {
             return ContainsTrueFlag();
         }
         
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Used to determine the correct enum object to utilize
         VALUE_ENUM Enum_Handler(std::string command)
         {
@@ -348,7 +349,7 @@ private:
             
         }
         
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Used for the purpose of configuring the values of each flag.
         void Configure_Flags(VALUE_ENUM enumObject)
         {
@@ -406,8 +407,8 @@ private:
                     throw std::invalid_argument("\nError - configuration not found\n");
             }
         }
-        // ----------------------------------------------------------
         
+        // -----------------------------------------------------------------------
         // Used to verify the status of each flag.
         value_bool Verify_Flag(VALUE_ENUM enumObject, char * command)
         {
@@ -445,8 +446,8 @@ private:
             
             return false;
         }
-        // ----------------------------------------------------------
         
+        // -----------------------------------------------------------------------
         // Used to prevent command from being case sensetive
         void LowerCase(std::string &command)
         {
@@ -454,8 +455,7 @@ private:
                 command[i] = tolower(command[i]);
         }
         
-        // ----------------------------------------------------------
-        
+        // -----------------------------------------------------------------------
         // Used to reset values of all flags
         void Reset()
         {
@@ -463,8 +463,8 @@ private:
             this -> is_integer = false;
             this -> is_semicolon = false;
         }
-        // ----------------------------------------------------------
         
+        // -----------------------------------------------------------------------
         // Determines if VALUE_HANDLER contains any true boolean variables
         value_bool ContainsTrueFlag()
         {
@@ -486,11 +486,11 @@ private:
         
     }isValue;
     
-    // ----------------------------------------------------------------------
-    // Facilitates the boolean mechanics anytime a procedure is detected
-    // Indicates aa printf command was detected.
-    // Content in quotation marks will return a string.
-    
+    // -----------------------------------------------------------------------
+    /*  Facilitates the boolean mechanics anytime a procedure is detected
+        Indicates aa printf command was detected.
+        Content in quotation marks will return a string.
+     */
     struct PRINTF_HANDLER
     {
         // Enums used to represent each property of a particular print f component
@@ -510,7 +510,7 @@ private:
             
         };
         
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
 
         // Declare all flags used in the Printf Handler operation
         printf_bool is_print_f,
@@ -523,7 +523,7 @@ private:
         is_comma,
         is_semicolon;
         
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
 
         // Execute default constructor
         PRINTF_HANDLER() :
@@ -537,28 +537,28 @@ private:
         is_comma(false),
         is_semicolon(false) {};
         
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Modifies boolean values which belong to PRINTF_HANDLER
         void operator()(std::string command)
         {
             Configure_Flags(Enum_Handler(command));
         }
         
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Determine if boolean property is exists in PRINTF_HANDLER
         printf_bool operator()(char * command)
         {
             return Verify_Flag(Enum_Handler(command), command);
         }
         
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Determine if there is a true boolean member contained in PRINTF_HANDLER
         printf_bool operator()()
         {
             return ContainsTrueFlag();
         }
         
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Determines correct enum object to utilize
         PRINTF_ENUM Enum_Handler(std::string command)
         {
@@ -600,7 +600,7 @@ private:
             
         }
         
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Used for the purpose of configuring the values of each flag.
         void Configure_Flags(PRINTF_ENUM enumObject)
         {
@@ -733,7 +733,8 @@ private:
                     
             }
         }
-        // ----------------------------------------------------------
+        
+        // -----------------------------------------------------------------------
         // Used to verify the boolean status of each flag
         printf_bool Verify_Flag(PRINTF_ENUM enumObject, char * command)
         {
@@ -791,7 +792,7 @@ private:
             return false;
         }
         
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Used to prevent command from being case sensetive
         void LowerCase(std::string &command)
         {
@@ -799,7 +800,7 @@ private:
                 command[i] = tolower(command[i]);
         }
         
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Resets values of all flags
         void Reset()
         {
@@ -814,7 +815,8 @@ private:
             this -> is_semicolon = false;
             
         }
-        // ----------------------------------------------------------
+        
+        // -----------------------------------------------------------------------
         // Determines if PRINTF_HANDLER contains any true boolean variables
         printf_bool ContainsTrueFlag()
         {
@@ -846,6 +848,7 @@ private:
     }isPrintF;
     
     // ----------------------------------------------------------------------------------------------------
+    
     // Facilitates the boolean mechanics anytime a procedure is detected
     struct PROCEDURE_HANDLER
     {
@@ -902,14 +905,15 @@ private:
         is_comma(false),
         is_void(false) {}
 
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Modifies boolean values which belong to PROCEDURE_HANDLER
         void operator()(std::string command)
         {
             return Configure(Enum_Handler(command), command);
         }
         
-        // ----------------------------------------------------------
+        
+        // -----------------------------------------------------------------------
         // Determines correct enum object to use
         PROCEDURE_ENUM Enum_Handler(std::string command)
         {
@@ -955,21 +959,21 @@ private:
             return PROCEDURE_ENUM :: ERROR;
         }
         
-        // ----------------------------------------------------------
-         // Determine if boolean property is exists in PROCEDURE_HANDLER
+        // -----------------------------------------------------------------------
+        // Determine if boolean property is exists in PROCEDURE_HANDLER
           procedure_bool operator()(char * command)
           {
               return Verify_Flag(Enum_Handler(command), command);
           }
         
-         // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Determine if there is a true boolean member contained in PRINTF_HANDLER
         procedure_bool operator()()
         {
             return ContainsTrueFlag();
         }
       
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Used to modify boolean flags
         void Configure(PROCEDURE_ENUM enumObject, std::string command)
         {
@@ -982,8 +986,7 @@ private:
             
         }
         
-        
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Stores boolean members specifically related to is_procedure property
         void ConfigureProcedure(PROCEDURE_ENUM enumObject, std::string command)
         {
@@ -1044,7 +1047,7 @@ private:
             }
         }
         
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Stores boolean members specifically related to is_void_function property
         void ConfigureVoidFunction(PROCEDURE_ENUM enumObject, std::string command)
         {
@@ -1143,12 +1146,11 @@ private:
                         
                         throw std::invalid_argument("\nError - " + command + " is not a valid command\n");
                         
-                    // -------------------------------------------------
                 }
             }
         }
         
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Stores boolean members specifically related to is_main property
         void ConfigureMain(PROCEDURE_ENUM enumObject, std::string command)
         {
@@ -1219,7 +1221,7 @@ private:
             }
         }
 
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Used to verify the boolean status of each flag.
         procedure_bool Verify_Flag(PROCEDURE_ENUM enumObject, std::string command)
         {
@@ -1340,7 +1342,7 @@ private:
             return false;
         }
         
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Used to prevent command from being case sensetive
         void LowerCase(std::string &command)
         {
@@ -1348,7 +1350,7 @@ private:
                 command[i] = tolower(command[i]);
         }
         
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Resets values of all flags
         void Reset()
         {
@@ -1371,7 +1373,7 @@ private:
             
         }
         
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         // Determines if PROCEDURE_HANDLER contains any true boolean variables
         procedure_bool ContainsTrueFlag()
         {
@@ -1399,14 +1401,14 @@ private:
             return false;
         }
         
-        // ----------------------------------------------------------
+        // -----------------------------------------------------------------------
         
         // Deconstructor
         ~ PROCEDURE_HANDLER() = default;
         
     }isProcedure;
     
-    // ----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
     
 public:
     
