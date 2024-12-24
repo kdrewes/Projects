@@ -987,57 +987,60 @@ private:
         // Stores boolean members specifically related to is_procedure property
         void ConfigureProcedure(PROCEDURE_ENUM enumObject, std::string command)
         {
-            switch(enumObject)
+            if(!is_void_function && !is_main)
             {
-                case PROCEDURE:
-                    
-                    if(!is_procedure)
-                        is_procedure = true;
-                    
-                    else
-                        throw std::invalid_argument("\nError - is_procedure is already true\n");
-                    
-                    break;
-                    
-                    // -------------------------------------------------
-                    
-                case MAIN:
-                    
-                    if(!is_main)
-                    {
-                        Reset();
+                switch(enumObject)
+                {
+                    case PROCEDURE:
                         
-                        is_main = true;
-                    }
-                    
-                    else
-                        throw std::invalid_argument("\nError - is_main is already true\n");
-                    
-                    break;
-                    
-                    // -------------------------------------------------
-                    
-                case PROCEDURE_NAME:
-                    
-                    if(!is_void_function)
-                    {
-                        Reset();
+                        if(!is_procedure)
+                            is_procedure = true;
                         
-                        is_void_function = true;
-                    }
-                    else
-                        throw std::invalid_argument("\nError - is_procedure_name is already true\n");
-                    
-                    break;
-                    
-                    // -------------------------------------------------
-                    
-                case ERROR:
-                    
-                    throw std::invalid_argument("\nError - " + command + " is not a valid command\n");
-                    
-                    break;
-                
+                        else
+                            throw std::invalid_argument("\nError - is_procedure is already true\n");
+                        
+                        break;
+                        
+                        // -------------------------------------------------
+                        
+                    case MAIN:
+                        
+                        if(!is_main)
+                        {
+                            Reset();
+                            
+                            is_main = true;
+                        }
+                        
+                        else
+                            throw std::invalid_argument("\nError - is_main is already true\n");
+                        
+                        break;
+                        
+                        // -------------------------------------------------
+                        
+                    case PROCEDURE_NAME:
+                        
+                        if(!is_void_function)
+                        {
+                            Reset();
+                            
+                            is_void_function = true;
+                        }
+                        else
+                            throw std::invalid_argument("\nError - is_procedure_name is already true\n");
+                        
+                        break;
+                        
+                        // -------------------------------------------------
+                        
+                    case ERROR:
+                        
+                        throw std::invalid_argument("\nError - " + command + " is not a valid command\n");
+                        
+                        break;
+                        
+                }
             }
         }
         
