@@ -856,7 +856,7 @@ private:
         enum PROCEDURE_ENUM
         {
             PROCEDURE,
-            PROCEDURE_NAME,
+            VOID_FUNCTION,
             MAIN,
             VOID,
             LEFT_PARENTHESIS,
@@ -912,19 +912,18 @@ private:
             return Configure(Enum_Handler(command), command);
         }
         
-        
         // -----------------------------------------------------------------------
         // Determines correct enum object to use
         PROCEDURE_ENUM Enum_Handler(std::string command)
         {
-            // Used to prevent command from being case sensetive
+            // Prevents 'command' from being case sensetive
             LowerCase(command);
             
             if(command == "is procedure" || command == "procedure" || command == "function")
                 return PROCEDURE_ENUM :: PROCEDURE;
             
             else if(command == "procedure name" || command == "name" || command == "is void function" || command == "is regular function" || command == "void function" || command == "regular function ")
-                return PROCEDURE_ENUM :: PROCEDURE_NAME;
+                return PROCEDURE_ENUM :: VOID_FUNCTION;
             
             else if(command == "is main" || command == "main")
                 return PROCEDURE_ENUM :: MAIN;
@@ -977,12 +976,14 @@ private:
         // Used to modify boolean flags
         void Configure(PROCEDURE_ENUM enumObject, std::string command)
         {
-            
+            // Stores boolean members specifically related to is_procedure property
             ConfigureProcedure (enumObject, command);
             
+            // Stores boolean members specifically related to is_void_function property
             ConfigureVoidFunction (enumObject, command);
             
-            ConfigureMain(enumObject, command);
+            // Stores boolean members specifically related to is_main property
+            ConfigureMain (enumObject, command);
             
         }
         
@@ -1022,7 +1023,7 @@ private:
                         
                         // -------------------------------------------------
                         
-                    case PROCEDURE_NAME:
+                    case VOID_FUNCTION:
                         
                         if(!is_void_function)
                         {
@@ -1030,6 +1031,7 @@ private:
                             
                             is_void_function = true;
                         }
+                        
                         else
                             throw std::invalid_argument("\nError - is_procedure_name is already true\n");
                         
@@ -1166,6 +1168,7 @@ private:
                             is_left_parenthesis_main = true;
                             is_main = true;
                         }
+                        
                         else
                             throw std::invalid_argument("\nError - is_left_parenthesis_main is already true\n");
                         
@@ -1181,6 +1184,7 @@ private:
                             is_void = true;
                             is_main = true;
                         }
+                        
                         else
                             throw std::invalid_argument("\nError - is_void is already true\n");
                         
@@ -1225,17 +1229,65 @@ private:
         // Used to verify the boolean status of each flag.
         procedure_bool Verify_Flag(PROCEDURE_ENUM enumObject, std::string command)
         {
+            switch(enumObject)
+            {
+                case PROCEDURE:
+                    
+                    if(VerifyProcedure(enumObject, command))
+                       return true; return false;
+                    
+                case VOID_FUNCTION:
+                    
+                    if(VerifyVoidFunction(enumObject, command))
+                       return true; return false;
+                        
+                case MAIN:
+                           
+                    if(VerifyMain(enumObject, command))
+                        return true; return false;
+            }
 
+            return false;
+        }
+        
+        // -----------------------------------------------------------------------
+        // Used to verify the boolean status related to is_procedure property
+        procedure_bool VerifyProcedure(PROCEDURE_ENUM enumObject, std::string command)
+        {
+            if(!is_void_function && !is_main)
+            {
+                switch(enumObject)
+                {
+                    case PROCEDURE:
+                        
+                        if(is_procedure)
+                            return true; return false;
+                        
+                        
+                    case ERROR:
+                        
+                        throw std::invalid_argument("\nError - " + command + " is not a valid boolean command\n");
+                }
+            }
+            
+            return false;
+        }
+        
+        // -----------------------------------------------------------------------
+        // Used to verify the boolean status related to is_void_function property
+        procedure_bool VerifyVoidFunction(PROCEDURE_ENUM enumObject, std::string command)
+        {
             if(is_void_function)
             {
                 switch(enumObject)
                 {
-                    case PROCEDURE_NAME:
+                    case VOID_FUNCTION:
                         
                         if(is_void_function)
                             return true; return false;
                         
                     // -------------------------------------------------
+                        
                     case LEFT_PARENTHESIS:
                         
                         if(is_left_parenthesis)
@@ -1277,12 +1329,16 @@ private:
                         
                     // -------------------------------------------------
                 }
-
-                return true;
                     
             }
             
-            else if(is_main)
+            return false;
+        }
+        // -----------------------------------------------------------------------
+        // Used to verify the boolean status related to is_main property
+        procedure_bool VerifyMain(PROCEDURE_ENUM enumObject, std::string command)
+        {
+            if(is_main)
             {
                 switch(enumObject)
                 {
@@ -1291,57 +1347,40 @@ private:
                         if(is_main)
                             return true; return false;
                         
-                    // -------------------------------------------------
+                        // -------------------------------------------------
                         
                     case LEFT_PARENTHESIS_MAIN:
                         
                         if(is_left_parenthesis_main)
                             return true; return false;
                         
-                    // -------------------------------------------------
+                        // -------------------------------------------------
                         
                     case VOID:
                         
                         if(is_void)
                             return true; return false;
                         
-                     // -------------------------------------------------
+                        // -------------------------------------------------
                         
                     case RIGHT_PARENTHESIS_MAIN:
                         
                         if(is_right_parenthesis_main)
                             return true; return false;
                         
-                    // -------------------------------------------------
-                            
-                        case ERROR:
-                            
-                            throw std::invalid_argument("\nError - " + command + " is not a valid boolean command\n");
-                        
-                    // -------------------------------------------------
-                            
-
-                }
-            }
-            else
-            {
-                switch(enumObject)
-                {
-                    case PROCEDURE:
-                            
-                        if(is_procedure)
-                            return true; return false;
-                        
+                        // -------------------------------------------------
                         
                     case ERROR:
                         
                         throw std::invalid_argument("\nError - " + command + " is not a valid boolean command\n");
+                        
+                        // -------------------------------------------------
                 }
             }
-
+            
             return false;
         }
-        
+
         // -----------------------------------------------------------------------
         // Used to prevent command from being case sensetive
         void LowerCase(std::string &command)
@@ -1378,7 +1417,8 @@ private:
         procedure_bool ContainsTrueFlag()
         {
             // Declare array which holds all flags
-            procedure_bool procedure_array [] = {
+            procedure_bool procedure_array [] =
+            {
                 
                 is_procedure,
                 is_void_function,
