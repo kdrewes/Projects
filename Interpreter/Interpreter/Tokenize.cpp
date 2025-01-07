@@ -70,7 +70,7 @@ std::vector<std::pair<tokenType,token>> Tokenize :: ReadFile(std::ifstream &read
             else
                 std::cout << std::endl;
 
-            if(character != ' ' && character != '\n')
+            if(character != ' ' && character != '\n' && character != '\0')
             {
                 this->syntax += Verify_Token(character,read);
                 
@@ -507,7 +507,7 @@ TOKEN_TYPE Tokenize :: Read_Token(std::ifstream &read)
         else if(this -> syntax == "procedure")
         {
             isProcedure("procedure");
-            
+
             return TOKEN_TYPE :: IDENTIFIER;
         }
         else if(findVariable(TOKEN_TYPE :: INTEGER))
