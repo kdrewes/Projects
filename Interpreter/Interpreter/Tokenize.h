@@ -7,6 +7,7 @@
 #include <vector>
 #include <fstream>
 #include <cstring>
+#include <stack>
 #include "removeComments.h"
 
 // Rename string data types for organizational purposes
@@ -887,6 +888,9 @@ private:
                        is_left_parenthesis_main,
                        is_right_parenthesis_main;
         
+        // Determines amount of flags set to true
+        std::stack <int> flagStack;
+        
         // Default Constructor
         PROCEDURE_HANDLER() :
 
@@ -1014,6 +1018,8 @@ private:
                             Reset();
                             
                             is_main = true;
+                            
+                            flagStack.push(1);
                         }
                         
                         else
@@ -1030,10 +1036,12 @@ private:
                             Reset();
                             
                             is_void_function = true;
+                            
+                            flagStack.push(1);
                         }
                         
                         else
-                            throw std::invalid_argument("\nError - is_procedure_name is already true\n");
+                            throw std::invalid_argument("\nError - is_void_function is already true\n");
                         
                         break;
                         
@@ -1064,6 +1072,7 @@ private:
                             Reset();
                             is_left_parenthesis = true;
                             is_void_function = true;
+                            flagStack.push(1);
                         }
                         
                         else
@@ -1080,6 +1089,7 @@ private:
                             Reset();
                             is_data_type = true;
                             is_void_function = true;
+                            flagStack.push(1);
                         }
                         else
                             throw std::invalid_argument("\nError - is_data_type is already true\n");
@@ -1095,6 +1105,7 @@ private:
                             Reset();
                             is_variable = true;
                             is_void_function = true;
+                            flagStack.push(1);
                         }
                         
                         else
@@ -1111,6 +1122,7 @@ private:
                             Reset();
                             is_comma = true;
                             is_void_function = true;
+                            flagStack.push(1);
                         }
                         
                         else
@@ -1127,6 +1139,7 @@ private:
                             Reset();
                             is_right_parenthesis = true;
                             is_void_function = true;
+                            flagStack.push(1);
                         }
                         
                         else
@@ -1167,6 +1180,7 @@ private:
                             Reset();
                             is_left_parenthesis_main = true;
                             is_main = true;
+                            flagStack.push(1);
                         }
                         
                         else
@@ -1183,6 +1197,7 @@ private:
                             Reset();
                             is_void = true;
                             is_main = true;
+                            flagStack.push(1);
                         }
                         
                         else
@@ -1199,6 +1214,7 @@ private:
                             Reset();
                             is_right_parenthesis_main = true;
                             is_main = true;
+                            flagStack.push(1);
                         }
                         
                         else

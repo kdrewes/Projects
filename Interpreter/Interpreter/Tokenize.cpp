@@ -309,7 +309,6 @@ void Tokenize :: checkProcedure(char character, std::ifstream &read)
 {
     if(isProcedure(strdup("is procedure")))
     {
-        
         if (this->syntax.size() == 0 && !isalpha(character))
             throw std::invalid_argument("\n\nError - incorrect character " + std::string(1,character) + " used on procedure name\n\n");
         
@@ -321,7 +320,10 @@ void Tokenize :: checkProcedure(char character, std::ifstream &read)
             token tempToken = this -> syntax + character;
             
             if(tempToken == "main")
+            {
                 isProcedure("is main");
+                
+            }
             
             else
             {
@@ -330,14 +332,17 @@ void Tokenize :: checkProcedure(char character, std::ifstream &read)
 
         }
     }
-    else if(isProcedure(strdup("is regular function")))
-    {
-        
-    }
+    
     else if(isProcedure(strdup("is main")))
     {
         
     }
+    
+    else if(isProcedure(strdup("is regular function")))
+    {
+        
+    }
+    
 }
 
 // ------------------------------------------------------------------
