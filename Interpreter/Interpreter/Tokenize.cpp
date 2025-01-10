@@ -127,17 +127,16 @@ char Tokenize :: Verify_Token_Helper(char character, std::ifstream &read)
 // Checks if isInteger boolean variable is currently set as 'true'
 void Tokenize :: checkInteger(char character, std::ifstream &read)
 {
-    if(isInteger(strdup("datatype")))
-    {
-        if (this->syntax.size() == 0 && !isalpha(character))
-            throw std::invalid_argument("\n\nError - incorrect character " + std::string(1,character) + " used on integer variable\n\n");
-        
-        if((!isalpha(character) && !isnumber(character)) && this->syntax.size() > 0 && !isInteger(strdup("value")))
-            throw std::invalid_argument("\n\nError - incorrect character " + std::string(1,character) + " used on integer variable\n\n");
-    }
-    else if(isInteger(strdup("value")))
-        isInteger("reset");
-    
+        if(isInteger(strdup("datatype")))
+        {
+            if (this->syntax.size() == 0 && !isalpha(character))
+                throw std::invalid_argument("\n\nError - incorrect character " + std::string(1,character) + " used on integer variable\n\n");
+            
+            if((!isalpha(character) && !isnumber(character)) && this->syntax.size() > 0 && !isInteger(strdup("value")))
+                throw std::invalid_argument("\n\nError - incorrect character " + std::string(1,character) + " used on integer variable\n\n");
+        }
+        else if(isInteger(strdup("value")))
+            isInteger("reset");
 }
 // ------------------------------------------------------------------
 // Checks if isValue boolean variable is currently set as 'true'
@@ -306,10 +305,39 @@ void Tokenize :: checkPrintF(char character, std::ifstream &read)
 }
 // ------------------------------------------------------------------
 // Check if isProecedure boolean varaible is currently set as 'true'
-
 void Tokenize :: checkProcedure(char character, std::ifstream &read)
 {
+    if(isProcedure(strdup("is procedure")))
+    {
+        
+        if (this->syntax.size() == 0 && !isalpha(character))
+            throw std::invalid_argument("\n\nError - incorrect character " + std::string(1,character) + " used on procedure name\n\n");
+        
+        else if((!isalpha(character) && !isnumber(character)) && this->syntax.size() > 0)
+            throw std::invalid_argument("\n\nError - incorrect character " + std::string(1,character) + " used on procedure name\n\n");
+        
+        else if(read.peek() == ' ')
+        {
+            token tempToken = this -> syntax + character;
+            
+            if(tempToken == "main")
+                isProcedure("is main");
+            
+            else
+            {
+                isProcedure("regular function");
+            }
 
+        }
+    }
+    else if(isProcedure(strdup("is regular function")))
+    {
+        
+    }
+    else if(isProcedure(strdup("is main")))
+    {
+        
+    }
 }
 
 // ------------------------------------------------------------------
