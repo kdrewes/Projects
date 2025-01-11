@@ -320,16 +320,10 @@ void Tokenize :: checkProcedure(char character, std::ifstream &read)
             token tempToken = this -> syntax + character;
             
             if(tempToken == "main")
-            {
                 isProcedure("is main");
-                
-            }
             
             else
-            {
                 isProcedure("regular function");
-            }
-
         }
     }
     

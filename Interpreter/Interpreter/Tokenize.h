@@ -1002,7 +1002,12 @@ private:
                     case PROCEDURE:
                         
                         if(!is_procedure)
+                        {
                             is_procedure = true;
+                            
+                            // Notify system one flag is currently acitvated
+                            flagStack.push(1);
+                        }
                         
                         else
                             throw std::invalid_argument("\nError - is_procedure is already true\n");
@@ -1018,8 +1023,6 @@ private:
                             Reset();
                             
                             is_main = true;
-                            
-                            flagStack.push(1);
                         }
                         
                         else
@@ -1036,8 +1039,6 @@ private:
                             Reset();
                             
                             is_void_function = true;
-                            
-                            flagStack.push(1);
                         }
                         
                         else
@@ -1089,7 +1090,6 @@ private:
                             Reset();
                             is_data_type = true;
                             is_void_function = true;
-                            flagStack.push(1);
                         }
                         else
                             throw std::invalid_argument("\nError - is_data_type is already true\n");
@@ -1105,7 +1105,6 @@ private:
                             Reset();
                             is_variable = true;
                             is_void_function = true;
-                            flagStack.push(1);
                         }
                         
                         else
@@ -1122,7 +1121,6 @@ private:
                             Reset();
                             is_comma = true;
                             is_void_function = true;
-                            flagStack.push(1);
                         }
                         
                         else
@@ -1139,7 +1137,6 @@ private:
                             Reset();
                             is_right_parenthesis = true;
                             is_void_function = true;
-                            flagStack.push(1);
                         }
                         
                         else
@@ -1197,7 +1194,6 @@ private:
                             Reset();
                             is_void = true;
                             is_main = true;
-                            flagStack.push(1);
                         }
                         
                         else
@@ -1214,7 +1210,6 @@ private:
                             Reset();
                             is_right_parenthesis_main = true;
                             is_main = true;
-                            flagStack.push(1);
                         }
                         
                         else
