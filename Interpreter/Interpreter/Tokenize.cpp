@@ -25,7 +25,7 @@ void Tokenize :: Execute()
         try
         {
             // Read each file
-            std::ifstream read(TestFiles[0],std::ios::in);
+            std::ifstream read(TestFiles[1],std::ios::in);
             
             // Collect tokens from current file being read
             this -> TokenVector.push_back(ReadFile(read));
@@ -329,7 +329,14 @@ void Tokenize :: checkProcedure(char character, std::ifstream &read)
     
     else if(isProcedure(strdup("is main")))
     {
-        
+        if(isProcedure(1))
+        {
+            
+        }
+        else if(isProcedure(2))
+        {
+            
+        }
     }
     
     else if(isProcedure(strdup("is regular function")))

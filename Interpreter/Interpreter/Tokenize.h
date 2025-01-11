@@ -926,7 +926,7 @@ private:
             if(command == "is procedure" || command == "procedure" || command == "function")
                 return PROCEDURE_ENUM :: PROCEDURE;
             
-            else if(command == "procedure name" || command == "name" || command == "is void function" || command == "is regular function" || command == "void function" || command == "regular function ")
+            else if(command == "procedure name" || command == "name" || command == "is void function" || command == "is regular function" || command == "void function" || command == "regular function")
                 return PROCEDURE_ENUM :: VOID_FUNCTION;
             
             else if(command == "is main" || command == "main")
@@ -970,7 +970,14 @@ private:
           }
         
         // -----------------------------------------------------------------------
-        // Determine if there is a true boolean member contained in PRINTF_HANDLER
+        // Verify size of flagStack
+        procedure_bool operator()(int valueOfSize)
+        {
+            return flagStackSize(valueOfSize);
+        }
+        
+        // -----------------------------------------------------------------------
+        // Determine if there is a true boolean member contained in PROCEDURE_HANDLER
         procedure_bool operator()()
         {
             return ContainsTrueFlag();
@@ -988,7 +995,6 @@ private:
             
             // Stores boolean members specifically related to is_main property
             ConfigureMain (enumObject, command);
-            
         }
         
         // -----------------------------------------------------------------------
@@ -1390,6 +1396,14 @@ private:
             }
             
             return false;
+        }
+        
+        // -----------------------------------------------------------------------
+        // Verify the size of flagStack
+        procedure_bool flagStackSize(int valueOfSize)
+        {
+            if(flagStack.size() == valueOfSize)
+                return true; return false;
         }
 
         // -----------------------------------------------------------------------
