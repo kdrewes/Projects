@@ -19,6 +19,9 @@ typedef int iterator, position;
 // Rename bool data types for organization purposes
 typedef bool boolean, integer_bool, value_bool, printf_bool, procedure_bool;
 
+// Rename ifstream data type for organizational purposes
+typedef std::ifstream readDataType;
+
 // Create enums which are used as a labeling techiques for token types
 enum TOKEN_TYPE {
     IDENTIFIER,
@@ -84,6 +87,9 @@ private:
     
     // Variable used to collect character for each individual token
     token syntax;
+    
+    // Read variable used to read content from each file
+    readDataType read;
     
     // -----------------------------------------------------------------------
     
@@ -969,8 +975,10 @@ private:
         {
             if(is_procedure)
                 return PROCEDURE_ENUM :: PROCEDURE;
+            
             else if(is_main)
                 return PROCEDURE_ENUM :: MAIN;
+            
             else if(is_regular_procedure)
                 return PROCEDURE_ENUM :: REGULAR_PROCEDURE;
             
@@ -1506,10 +1514,10 @@ public:
     void Clear();
     
     // Determines if file text is an identifier
-    bool isIdentifier(std::ifstream &read);
+    bool isIdentifier();
     
     // Determines if file text is an identifier
-    bool tokenIdentifier(std::ifstream &read);
+    bool tokenIdentifier();
     
     // Determines if a BNF token was read
     bool isToken(TOKEN_TYPE token);
@@ -1521,37 +1529,37 @@ public:
     bool findFunction(TOKEN_TYPE token);
     
     // Checks if isInteger boolean variable is currently set as 'true'
-    void checkInteger(char character, std::ifstream &read);
+    void checkInteger(char character);
     
     // Checks if isEqual boolean variable is currently set as 'true'
-    void checkIsEqual(char character, std::ifstream &read);
+    void checkIsEqual(char character);
     
     // Checks if isValue boolean variable is currently set as 'true'
-    void checkValue(char character, std::ifstream &read);
+    void checkValue(char character);
     
     // Check if isPrintf boolean variable is currently set as 'true'
-    void checkPrintF(char character, std::ifstream &read);
+    void checkPrintF(char character);
     
     // Check if isProecedure boolean varaible is currently set as 'true'
-    void checkProcedure(char character, std::ifstream &read);
+    void checkProcedure(char character);
     
     // Verifies that each character is legally allowed to use
-    char Verify_Token(char character, std::ifstream &read);
+    char Verify_Token(char character);
     
     // Handles input validation with Read_Character function
-    char Verify_Token_Helper(char character, std::ifstream &read);
+    char Verify_Token_Helper(char character);
     
     // Reads characters to determine if a token is detected
-    std::vector<std::pair<tokenType,token>> ReadFile(std::ifstream &read);
+    std::vector<std::pair<tokenType,token>> ReadFile();
     
     // Determines if a token being read
-    TOKEN_TYPE Read_Token(std::ifstream &read);
+    TOKEN_TYPE Read_Token();
     
     // Determines if a token is being read, used specifically for bool isToken
-    TOKEN_TYPE isTokenHelper(std::ifstream &read);
+    TOKEN_TYPE isTokenHelper();
     
     // Consists of all necessary handlers
-    std::pair<std::string, std::string> Token_Handler(TOKEN_TYPE token, std::ifstream &read);
+    std::pair<std::string, std::string> Token_Handler(TOKEN_TYPE token);
     
     // Output Tokenize object
     friend std::ostream & operator << (std::ostream &, Tokenize &);

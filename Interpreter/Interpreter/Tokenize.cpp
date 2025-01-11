@@ -25,10 +25,10 @@ void Tokenize :: Execute()
         try
         {
             // Read each file
-            std::ifstream read(TestFiles[1],std::ios::in);
+            this -> read.open(TestFiles[1],std::ios::in);
             
             // Collect tokens from current file being read
-            this -> TokenVector.push_back(ReadFile(read));
+            this -> TokenVector.push_back(ReadFile());
         }
         catch(std::invalid_argument e)
         {
@@ -53,16 +53,16 @@ void Tokenize :: Clear()
 
 // ------------------------------------------------------------------
 // Reads contents of each individual file and extracts tokens from content
-std::vector<std::pair<tokenType,token>> Tokenize :: ReadFile(std::ifstream &read)
+std::vector<std::pair<tokenType,token>> Tokenize :: ReadFile()
 {
     // Used to collect each individual token
     std::vector<std::pair<tokenType,token>>Tokens;
     
-    if(!read)
+    if(!this->read)
         throw std::invalid_argument("Unable to open file\n");
     else
     {
-        for(char character = '\0'; !read.eof();  read >> std::noskipws >> character )
+        for(char character = '\0'; !this->read.eof();  this->read >> std::noskipws >> character )
         {
             
             if(character != '\n')
@@ -72,11 +72,11 @@ std::vector<std::pair<tokenType,token>> Tokenize :: ReadFile(std::ifstream &read
 
             if(character != ' ' && character != '\n' && character != '\0')
             {
-                this->syntax += Verify_Token(character,read);
+                this->syntax += Verify_Token(character);
                 
-                if(isToken(isTokenHelper(read)))
+                if(isToken(isTokenHelper()))
                 {
-                    Tokens.push_back(Token_Handler(Read_Token(read), read));
+                    Tokens.push_back(Token_Handler(Read_Token()));
                     this->syntax = "";
                 }
             }
@@ -101,31 +101,31 @@ std::vector<std::pair<tokenType,token>> Tokenize :: ReadFile(std::ifstream &read
 }
 // ------------------------------------------------------------------
 // Verifies that each character is legally allowed to use
-char Tokenize :: Verify_Token(char character, std::ifstream &read)
+char Tokenize :: Verify_Token(char character)
 {
-    return (Verify_Token_Helper(character, read));
+    return (Verify_Token_Helper(character));
 }
 // ------------------------------------------------------------------
 // Handles input validation with Read_Character function
-char Tokenize :: Verify_Token_Helper(char character, std::ifstream &read)
+char Tokenize :: Verify_Token_Helper(char character)
 {
     // Input validation for integer handler
-    //checkInteger(character,read);
+    checkInteger(character);
     
     // Input validation for isValue handler
-    //checkValue(character,read);
+    checkValue(character);
     
     // Input validation for isString handler
-    //checkPrintF(character, read);
+    checkPrintF(character);
     
     // Input validation for procedure handler
-    checkProcedure(character, read);
+    checkProcedure(character);
     
     return character;
 }
 // ------------------------------------------------------------------
 // Checks if isInteger boolean variable is currently set as 'true'
-void Tokenize :: checkInteger(char character, std::ifstream &read)
+void Tokenize :: checkInteger(char character)
 {
     if(!isProcedure())
     {
@@ -141,26 +141,10 @@ void Tokenize :: checkInteger(char character, std::ifstream &read)
             isInteger("reset");
     }
     
-    /*
-     else
-     {
-         std::cout << "\n\nIS PROCEDURE IS OFF\n\n";
-         
-         if(isInteger())
-         {
-             std::cout << "\n\nisInteger() IS TRUE and ";
-             
-             if(isProcedure())
-             std::cout << "is procedure is true\n\n";
-         }
-         else
-             std::cout << "\n\nisInteger() IS FALSE\n\n";
-     }
-     */
 }
 // ------------------------------------------------------------------
 // Checks if isValue boolean variable is currently set as 'true'
-void Tokenize :: checkValue(char character, std::ifstream &read)
+void Tokenize :: checkValue(char character)
 {
     
     if(!isProcedure())
@@ -169,7 +153,7 @@ void Tokenize :: checkValue(char character, std::ifstream &read)
         {
             if(character == '=')
             {
-                if(read.peek() == ' ' || isnumber(read.peek()))
+                if(read.peek() == ' ' || isnumber(this->read.peek()))
                     isValue("integer");
             }
             
@@ -184,7 +168,7 @@ void Tokenize :: checkValue(char character, std::ifstream &read)
                     !isnumber(character))
                 std::invalid_argument("\n\nError - Invalid character " + std::string(1,character) + " detected\n\n");
             
-            else if(isnumber(read.peek()))
+            else if(isnumber(this->read.peek()))
                 isValue("integer");
             
         }
@@ -201,11 +185,11 @@ void Tokenize :: checkValue(char character, std::ifstream &read)
             {
                 if(isnumber(character))
                 {
-                    if(read.peek() == ' ' || read.peek() == ';')
+                    if(this->read.peek() == ' ' || this->read.peek() == ';')
                         isValue(";");
                     else
                     {
-                        if(!isnumber(read.peek()))
+                        if(!isnumber(this->read.peek()))
                             std::invalid_argument("\n\nError - Invalid character " + std::string(1,character) + " detected\n\n");
                         
                     }
@@ -217,7 +201,7 @@ void Tokenize :: checkValue(char character, std::ifstream &read)
             if(character == ';')
                 isValue("reset");
             else
-                throw(std::invalid_argument("Error - invalid character detected\n\ncharacter must be ';' not " + character + '+'));
+                throw(std::invalid_argument("\n\nError - invalid character detected\n\ncharacter must be ';' not " + character + '+'));
         }
     }
     
@@ -225,7 +209,7 @@ void Tokenize :: checkValue(char character, std::ifstream &read)
 
 // ------------------------------------------------------------------
 // Check if isPrintf boolean variable is currently set as 'true'
-void Tokenize :: checkPrintF(char character, std::ifstream &read)
+void Tokenize :: checkPrintF(char character)
 {
     if(!isProcedure())
     {
@@ -235,15 +219,16 @@ void Tokenize :: checkPrintF(char character, std::ifstream &read)
                 isPrintF("(");
             
             else
-                throw(std::invalid_argument(&"Error - invalid character detected\n\ncharacter must be '(' not " [ character]));
+                throw(std::invalid_argument(&"\n\nError - invalid character detected\n\ncharacter must be '(' not " [ character]));
         }
         
         else if(isPrintF(strdup("(")))
         {
             if(character == '"')
                 isPrintF("beginning quotation");
+            
             else
-                throw std::invalid_argument("\n Error - Invalid character detected, character must contain quotation mark\n");
+                throw std::invalid_argument("\n\nError - Invalid character detected, character must contain quotation mark\n");
         }
         
         else if(isPrintF(strdup("beginning quotation")))
@@ -251,13 +236,13 @@ void Tokenize :: checkPrintF(char character, std::ifstream &read)
         
         else if(isPrintF(strdup("scan string")))
         {
-            if(read.peek() == '"' && character != '\\')
+            if(this->read.peek() == '"' && character != '\\')
                 isPrintF("end scanning");
             
             if((count_characters += 1) > 30)
             {
                 this -> count_characters = 0;
-                throw(std::invalid_argument("Error - printf statement contains too many characters\n\nNo quotation mark detected.\n"));
+                throw(std::invalid_argument("\n\nError - printf statement contains too many characters\n\nNo quotation mark detected.\n"));
             }
         }
         
@@ -276,7 +261,7 @@ void Tokenize :: checkPrintF(char character, std::ifstream &read)
                 isPrintF(",");
             
             else
-                throw std::invalid_argument("Error - Invalid character " + std::string(1, character) + " detected.\n");
+                throw std::invalid_argument("\n\nError - Invalid character " + std::string(1, character) + " detected.\n");
         }
         
         else if(isPrintF(strdup(",")))
@@ -284,9 +269,9 @@ void Tokenize :: checkPrintF(char character, std::ifstream &read)
             // First character of variable is not an alphabetic character
             if(this -> syntax.size() == 0)
                 if(!isalpha(character))
-                    throw std::invalid_argument("Error - Invalid character " + std::string(1, read.peek()) + " used in variable.\n");
+                    throw std::invalid_argument("\n\nError - Invalid character " + std::string(1, this->read.peek()) + " used in variable.\n");
             
-            if(read.peek() == ' ' || read.peek() == ')')
+            if(this->read.peek() == ' ' || this->read.peek() == ')')
             {
                 // Declare temporary syntax variable used as backup storage
                 token tempSyntax = this -> syntax;
@@ -296,9 +281,9 @@ void Tokenize :: checkPrintF(char character, std::ifstream &read)
                 
                 // Determine if variable (syntax) exists.  If not, throw an exception
                 if(!findVariable(TOKEN_TYPE :: INTEGER))
-                    throw(std::invalid_argument("Error - " + this -> syntax + " does not exist\n" ));
+                    throw(std::invalid_argument("\n\nError - " + this -> syntax + " does not exist\n" ));
                 
-                // Re-assign this -> syntax original value
+                // Re-assign this -> syntax its original value
                 this -> syntax = tempSyntax;
                 
                 isPrintF(")");
@@ -310,16 +295,16 @@ void Tokenize :: checkPrintF(char character, std::ifstream &read)
             if(character == ';')
                 isPrintF(";");
             
-            else if (read.peek() == ';')
+            else if (this->read.peek() == ';')
                 isPrintF(";");
             
-            else if(read.peek() != ';' &&  read.peek() != ' ')
-                throw std::invalid_argument("\n\nError - Invalid character " + std::string(1, read.peek()) + " detected ahead.  Character must be ';'\n");
+            else if(this->read.peek() != ';' &&  this->read.peek() != ' ')
+                throw std::invalid_argument("\n\nError - Invalid character " + std::string(1, this->read.peek()) + " detected ahead.  Character must be ';'\n");
             
             else if(character != ';')
             {
                 std::cout << "\n\nCHARACTER " << character << std::endl;
-                throw std::invalid_argument("\n\nError - Invalid character " + std::string(1, read.peek()) + " detected.  Character must be ';'\n");
+                throw std::invalid_argument("\n\nError - Invalid character " + std::string(1, this->read.peek()) + " detected.  Character must be ';'\n");
             }
             
         }
@@ -330,7 +315,7 @@ void Tokenize :: checkPrintF(char character, std::ifstream &read)
 }
 // ------------------------------------------------------------------
 // Check if isProecedure boolean varaible is currently set as 'true'
-void Tokenize :: checkProcedure(char character, std::ifstream &read)
+void Tokenize :: checkProcedure(char character)
 {
     if(isProcedure(strdup("is procedure")))
     {
@@ -340,7 +325,7 @@ void Tokenize :: checkProcedure(char character, std::ifstream &read)
         else if((!isalpha(character) && !isnumber(character)) && this->syntax.size() > 0)
             throw std::invalid_argument("\n\nError - incorrect character " + std::string(1,character) + " used on procedure name\n\n");
         
-        else if(read.peek() == ' ' ||  read.peek() == '(')
+        else if(this->read.peek() == ' ' ||  this->read.peek() == '(')
         {
             token tempToken = this -> syntax + character;
             
@@ -382,7 +367,7 @@ void Tokenize :: checkProcedure(char character, std::ifstream &read)
 
 // ------------------------------------------------------------------
 // Determines if file text is an identifier
-bool Tokenize :: isIdentifier(std::ifstream &read)
+bool Tokenize :: isIdentifier()
 {
     if(syntax == "void")
         return true;
@@ -414,19 +399,19 @@ bool Tokenize :: isIdentifier(std::ifstream &read)
         return true;
     else if(syntax == "int")
     {
-        if(read.peek() == ' ')
+        if(this->read.peek() == ' ')
             return true;
         else
-            std::invalid_argument("Error - invalid syntax detected.\n");
+            std::invalid_argument("\n\nError - invalid syntax detected.\n");
 
         
     }
     else if(isInteger(strdup("datatype")))
     {
-        if(read.peek() == ';' && this->syntax.size() != 0)
+        if(this->read.peek() == ';' && this->syntax.size() != 0)
             return true;
         
-        else if(read.peek() == ' ' && this->syntax.size() != 0)
+        else if(this->read.peek() == ' ' && this->syntax.size() != 0)
             return true;
         
         else if(this->syntax == ";")
@@ -441,7 +426,7 @@ bool Tokenize :: isIdentifier(std::ifstream &read)
 }
 // ------------------------------------------------------------------
 // Determines if file text is an identifier, used specifically for bool isToken
-bool Tokenize :: tokenIdentifier(std::ifstream &read)
+bool Tokenize :: tokenIdentifier()
 {
     if(this->syntax == "void")
         return true;
@@ -472,7 +457,7 @@ bool Tokenize :: tokenIdentifier(std::ifstream &read)
         return true;
     else if(syntax == "int")
     {
-        if(read.peek() == ' ')
+        if(this->read.peek() == ' ')
             return true;
         else
             std::invalid_argument("\n\nError - Invalid syntax " + this -> syntax + " detected\n\n");
@@ -480,10 +465,10 @@ bool Tokenize :: tokenIdentifier(std::ifstream &read)
     }
     else if(isInteger(strdup("datatype")))
     {
-        if(read.peek() == ';' && this->syntax.size() != 0)
+        if(this->read.peek() == ';' && this->syntax.size() != 0)
             return true;
         
-        else if(read.peek() == ' ' && this->syntax.size() != 0)
+        else if(this->read.peek() == ' ' && this->syntax.size() != 0)
             return true;
         
         else if(this->syntax == ";")
@@ -521,10 +506,10 @@ bool Tokenize :: findVariable(TOKEN_TYPE token)
 }
 // ------------------------------------------------------------------
 // Determines which token is currently being read
-TOKEN_TYPE Tokenize :: Read_Token(std::ifstream &read)
+TOKEN_TYPE Tokenize :: Read_Token()
 {
     
-    if(isIdentifier(read) &&
+    if(isIdentifier() &&
        !isValue() &&
        !isPrintF(strdup("end scanning")))
     {
@@ -537,21 +522,21 @@ TOKEN_TYPE Tokenize :: Read_Token(std::ifstream &read)
         {
             if(isInteger(strdup("datatype")))
             {
-                if((read.peek() == ';') &&
+                if((this->read.peek() == ';') &&
                    this->syntax.size() != 0)
                 {
                     isInteger("value");
                     integerCollector.push_back(syntax);
                     return TOKEN_TYPE :: IDENTIFIER;
                 }
-                else if((read.peek() == '=' ||
-                         read.peek() == ' ') &&
+                else if((this->read.peek() == '=' ||
+                         this->read.peek() == ' ') &&
                         this->syntax.size() != 0)
                 {
                     isInteger("=");
                     return TOKEN_TYPE :: IDENTIFIER;
                 }
-                else if(read.peek() == ',' && this->syntax.size() != 0)
+                else if(this->read.peek() == ',' && this->syntax.size() != 0)
                     return TOKEN_TYPE :: IDENTIFIER;
                 else if(this->syntax == ";")
                 {
@@ -561,7 +546,7 @@ TOKEN_TYPE Tokenize :: Read_Token(std::ifstream &read)
                 else if(syntax == ",")
                     return TOKEN_TYPE :: COMMA;
                 else
-                    throw std::invalid_argument("Error - Invalid character detected.");
+                    throw std::invalid_argument("\n\nError - Invalid character detected.");
             }
         }
         
@@ -655,13 +640,13 @@ TOKEN_TYPE Tokenize :: Read_Token(std::ifstream &read)
 }
 // ------------------------------------------------------------------
 // Determines if a token is currently being read
-TOKEN_TYPE Tokenize :: isTokenHelper(std::ifstream &read)
+TOKEN_TYPE Tokenize :: isTokenHelper()
 {
     if(isPrintF(strdup("scan string")))
         return BNF_IN_PROCESS;
     
     if(
-       tokenIdentifier(read) &&
+       tokenIdentifier() &&
        !isValue() &&
        !isPrintF(strdup("end scanning")))
     {
@@ -670,16 +655,16 @@ TOKEN_TYPE Tokenize :: isTokenHelper(std::ifstream &read)
         
         else if(isInteger(strdup("datatype")))
         {
-            if((read.peek() == ';') &&
+            if((this->read.peek() == ';') &&
                this->syntax.size() != 0)
                 return TOKEN_TYPE :: IDENTIFIER;
             
-            else if((read.peek() == '=' ||
-                     read.peek() == ' ') &&
+            else if((this->read.peek() == '=' ||
+                     this->read.peek() == ' ') &&
                     this->syntax.size() != 0)
                 return TOKEN_TYPE :: IDENTIFIER;
             
-            else if(read.peek() == ',' && syntax.size() != 0)
+            else if(this->read.peek() == ',' && syntax.size() != 0)
                 return TOKEN_TYPE :: IDENTIFIER;
             
             else if(this->syntax == ";")
@@ -766,14 +751,12 @@ TOKEN_TYPE Tokenize :: isTokenHelper(std::ifstream &read)
     return TOKEN_TYPE :: NON_BNF;
     
 }
-std::pair<std::string, std::string> Tokenize :: Token_Handler(TOKEN_TYPE token, std::ifstream &read)
+std::pair<std::string, std::string> Tokenize :: Token_Handler(TOKEN_TYPE token)
 {
     switch(token)
     {
         case IDENTIFIER:
-            // std::cout << " We have reached the identifier case\n";
-            //std::cout << syntax << " has been identified " << token << std::endl;
-            //exit(0);
+
             if(syntax == "procedure")
                 return {"IDENTIFIER", "procedure"};
             
