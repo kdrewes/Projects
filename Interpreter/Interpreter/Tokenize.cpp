@@ -357,8 +357,7 @@ void Tokenize :: checkProcedure(char character)
         
         else if(isProcedure(2))
         {
-         if(isProcedure(strdup("(")))
-             std::cout << "\nisProcedure(() is ACTIVATED\n\n";
+        
               
         }
     }

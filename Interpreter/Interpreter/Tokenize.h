@@ -971,7 +971,7 @@ private:
         
         // -----------------------------------------------------------------------
         // Determines type of procedure being utilized (ex - regular function or main)
-        PROCEDURE_ENUM Type_Of_Procedure(std::string command)
+        PROCEDURE_ENUM Type_Of_Procedure()
         {
             if(is_procedure)
                 return PROCEDURE_ENUM :: PROCEDURE;
@@ -989,7 +989,7 @@ private:
         // Determine if boolean property is exists in PROCEDURE_HANDLER
           procedure_bool operator()(char * command)
           {
-              return Verify_Flag(Enum_Handler(command), Type_Of_Procedure(command) ,command);
+              return Verify_Flag(Enum_Handler(command), Type_Of_Procedure() ,command);
           }
         
         // -----------------------------------------------------------------------
@@ -1272,7 +1272,7 @@ private:
 
         // -----------------------------------------------------------------------
         // Used to verify the boolean status of each flag.
-        procedure_bool Verify_Flag(PROCEDURE_ENUM procedureType, PROCEDURE_ENUM enumObject, std::string command)
+        procedure_bool Verify_Flag(PROCEDURE_ENUM enumObject, PROCEDURE_ENUM procedureType, std::string command)
         {
             switch(procedureType)
             {
