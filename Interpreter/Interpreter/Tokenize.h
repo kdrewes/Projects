@@ -131,7 +131,7 @@ private:
         INTEGER_ENUM Enum_Handler(std::string command)
         {
             // Prevents command from being case sensetive
-            LowerCase(command);
+            //LowerCase(command);
             
             if(command == "is datatype" || command == "datatype" || command == "data type")
                 return INTEGER_ENUM :: DATA_TYPE;
@@ -332,7 +332,7 @@ private:
         VALUE_ENUM Enum_Handler(std::string command)
         {
             // Prevents command from being case sensetive
-            LowerCase(command);
+            //LowerCase(command);
             
             if(command == "is equal" || command == "equal" || command == "=")
                 return VALUE_ENUM :: ASSIGNMENT_OPERATOR;
@@ -564,7 +564,7 @@ private:
         PRINTF_ENUM Enum_Handler(std::string command)
         {
             // Used to prevent command from being case sensetive
-            LowerCase(command);
+           // LowerCase(command);
             
             // Determine correct enum to use
             if(command == "printf")
@@ -857,7 +857,7 @@ private:
         enum PROCEDURE_ENUM
         {
             PROCEDURE,
-            VOID_FUNCTION,
+            REGULAR_PROCEDURE,
             MAIN,
             VOID,
             LEFT_PARENTHESIS,
@@ -868,6 +868,7 @@ private:
             VARIABLE,
             COMMA,
             RESET,
+            IN_PROCESS,
             ERROR
         };
         
@@ -875,7 +876,7 @@ private:
         procedure_bool is_procedure;
         
         // Declare boolean variables used for regular procedure and main procedure
-        procedure_bool is_void_function,
+        procedure_bool is_regular_procedure,
                        is_left_parenthesis,
                        is_data_type,
                        is_variable,
@@ -899,7 +900,7 @@ private:
         is_main(false),
         
         // Declare boolean variables used for customized procedure and main procedure
-        is_void_function(false),
+        is_regular_procedure(false),
         is_left_parenthesis(false),
         is_right_parenthesis(false),
         is_left_parenthesis_main(false),
@@ -921,39 +922,39 @@ private:
         PROCEDURE_ENUM Enum_Handler(std::string command)
         {
             // Prevents 'command' from being case sensetive
-            LowerCase(command);
+            //LowerCase(command);
             
             if(command == "is procedure" || command == "procedure" || command == "function")
                 return PROCEDURE_ENUM :: PROCEDURE;
             
             else if(command == "procedure name" || command == "name" || command == "is void function" || command == "is regular function" || command == "void function" || command == "regular function")
-                return PROCEDURE_ENUM :: VOID_FUNCTION;
+                return PROCEDURE_ENUM :: REGULAR_PROCEDURE;
             
             else if(command == "is main" || command == "main")
                 return PROCEDURE_ENUM :: MAIN;
             
-            else if(command == "is void" || command == "void")
+            else if((command == "is void" || command == "void") && is_main)
                 return PROCEDURE_ENUM :: VOID;
             
-            else if((command == "(" || command == "left parenthesis") && is_procedure)
+            else if((command == "(" || command == "left parenthesis") && is_regular_procedure)
                 return PROCEDURE_ENUM :: LEFT_PARENTHESIS;
             
-            else if((command == ")" || command == "right parenthesis")  && is_procedure)
-                return PROCEDURE_ENUM :: RIGHT_PARENTHESIS;
-            
-            else if((command == "(" || command == "left parenthesis")  && is_main)
+            else if((command == "(" || command == "left parenthesis") && is_main)
                 return PROCEDURE_ENUM :: LEFT_PARENTHESIS_MAIN;
+            
+            else if((command == ")" || command == "right parenthesis")  && is_regular_procedure)
+                return PROCEDURE_ENUM :: RIGHT_PARENTHESIS;
             
             else if((command == ")" || command == "right parenthesis")  && is_main)
                 return PROCEDURE_ENUM :: RIGHT_PARENTHESIS_MAIN;
             
-            else if(command == "datatype" || command == "data type")
+            else if((command == "datatype" || command == "data type") &&  is_regular_procedure)
                 return PROCEDURE_ENUM :: DATA_TYPE;
             
-            else if(command == "is variable" || command == "variable")
+            else if((command == "is variable" || command == "variable") && is_regular_procedure)
                 return PROCEDURE_ENUM :: VARIABLE;
             
-            else if(command == "," || command == "comma")
+            else if((command == "," || command == "comma") && is_regular_procedure)
                 return PROCEDURE_ENUM :: COMMA;
             
             else if(command == "reset")
@@ -963,10 +964,24 @@ private:
         }
         
         // -----------------------------------------------------------------------
+        // Determines type of procedure being utilized (ex - regular function or main)
+        PROCEDURE_ENUM Type_Of_Procedure(std::string command)
+        {
+            if(is_procedure)
+                return PROCEDURE_ENUM :: PROCEDURE;
+            else if(is_main)
+                return PROCEDURE_ENUM :: MAIN;
+            else if(is_regular_procedure)
+                return PROCEDURE_ENUM :: REGULAR_PROCEDURE;
+            
+            return PROCEDURE_ENUM :: IN_PROCESS;
+
+        }
+        // -----------------------------------------------------------------------
         // Determine if boolean property is exists in PROCEDURE_HANDLER
           procedure_bool operator()(char * command)
           {
-              return Verify_Flag(Enum_Handler(command), command);
+              return Verify_Flag(Enum_Handler(command), Type_Of_Procedure(command) ,command);
           }
         
         // -----------------------------------------------------------------------
@@ -991,7 +1006,7 @@ private:
             ConfigureProcedure (enumObject, command);
             
             // Stores boolean members specifically related to is_void_function property
-            ConfigureVoidFunction (enumObject, command);
+            ConfigureProcedureFunction (enumObject, command);
             
             // Stores boolean members specifically related to is_main property
             ConfigureMain (enumObject, command);
@@ -1001,7 +1016,7 @@ private:
         // Stores boolean members specifically related to is_procedure property
         void ConfigureProcedure(PROCEDURE_ENUM enumObject, std::string command)
         {
-            if(!is_void_function && !is_main)
+            if(!is_regular_procedure && !is_main)
             {
                 switch(enumObject)
                 {
@@ -1010,8 +1025,8 @@ private:
                         if(!is_procedure)
                         {
                             is_procedure = true;
-                            
-                            // Notify system one flag is currently acitvated
+                    
+                            // Notify system flag is currently acitvated
                             flagStack.push(1);
                         }
                         
@@ -1038,13 +1053,13 @@ private:
                         
                         // -------------------------------------------------
                         
-                    case VOID_FUNCTION:
+                    case REGULAR_PROCEDURE:
                         
-                        if(!is_void_function)
+                        if(!is_regular_procedure)
                         {
                             Reset();
                             
-                            is_void_function = true;
+                            is_regular_procedure = true;
                         }
                         
                         else
@@ -1066,9 +1081,9 @@ private:
         
         // -----------------------------------------------------------------------
         // Stores boolean members specifically related to is_void_function property
-        void ConfigureVoidFunction(PROCEDURE_ENUM enumObject, std::string command)
+        void ConfigureProcedureFunction(PROCEDURE_ENUM enumObject, std::string command)
         {
-            if(is_void_function)
+            if(is_regular_procedure)
             {
                 switch(enumObject)
                 {
@@ -1078,7 +1093,9 @@ private:
                         {
                             Reset();
                             is_left_parenthesis = true;
-                            is_void_function = true;
+                            is_regular_procedure = true;
+                            
+                            // Notify system another flag is currently acitvated
                             flagStack.push(1);
                         }
                         
@@ -1095,10 +1112,10 @@ private:
                         {
                             Reset();
                             is_data_type = true;
-                            is_void_function = true;
+                            is_regular_procedure = true;
                         }
                         else
-                            throw std::invalid_argument("\nError - is_data_type is already true\n");
+                            throw std::invalid_argument("\nError - is_data_type is already set to true\n");
                         
                         break;
                         
@@ -1110,7 +1127,7 @@ private:
                         {
                             Reset();
                             is_variable = true;
-                            is_void_function = true;
+                            is_regular_procedure = true;
                         }
                         
                         else
@@ -1126,7 +1143,7 @@ private:
                         {
                             Reset();
                             is_comma = true;
-                            is_void_function = true;
+                            is_regular_procedure = true;
                         }
                         
                         else
@@ -1142,7 +1159,7 @@ private:
                         {
                             Reset();
                             is_right_parenthesis = true;
-                            is_void_function = true;
+                            is_regular_procedure = true;
                         }
                         
                         else
@@ -1181,8 +1198,11 @@ private:
                         if(!is_left_parenthesis_main)
                         {
                             Reset();
+                            
                             is_left_parenthesis_main = true;
                             is_main = true;
+                            
+                            // Notify system another flag is currently acitvated
                             flagStack.push(1);
                         }
                         
@@ -1244,18 +1264,18 @@ private:
 
         // -----------------------------------------------------------------------
         // Used to verify the boolean status of each flag.
-        procedure_bool Verify_Flag(PROCEDURE_ENUM enumObject, std::string command)
+        procedure_bool Verify_Flag(PROCEDURE_ENUM procedureType, PROCEDURE_ENUM enumObject, std::string command)
         {
-            switch(enumObject)
+            switch(procedureType)
             {
                 case PROCEDURE:
                     
                     if(VerifyProcedure(enumObject, command))
                        return true; return false;
                     
-                case VOID_FUNCTION:
+                case REGULAR_PROCEDURE:
                     
-                    if(VerifyVoidFunction(enumObject, command))
+                    if(VerifyRegularFunction(enumObject, command))
                        return true; return false;
                         
                 case MAIN:
@@ -1271,7 +1291,7 @@ private:
         // Used to verify the boolean status related to is_procedure property
         procedure_bool VerifyProcedure(PROCEDURE_ENUM enumObject, std::string command)
         {
-            if(!is_void_function && !is_main)
+            if(!is_regular_procedure && !is_main)
             {
                 switch(enumObject)
                 {
@@ -1292,15 +1312,15 @@ private:
         
         // -----------------------------------------------------------------------
         // Used to verify the boolean status related to is_void_function property
-        procedure_bool VerifyVoidFunction(PROCEDURE_ENUM enumObject, std::string command)
+        procedure_bool VerifyRegularFunction(PROCEDURE_ENUM enumObject, std::string command)
         {
-            if(is_void_function)
+            if(is_regular_procedure)
             {
                 switch(enumObject)
                 {
-                    case VOID_FUNCTION:
+                    case REGULAR_PROCEDURE:
                         
-                        if(is_void_function)
+                        if(is_regular_procedure)
                             return true; return false;
                         
                     // -------------------------------------------------
@@ -1346,7 +1366,6 @@ private:
                         
                     // -------------------------------------------------
                 }
-                    
             }
             
             return false;
@@ -1422,7 +1441,7 @@ private:
             this -> is_procedure = false;
             
             // boolean members related to regular procedure
-            this -> is_void_function = false;
+            this -> is_regular_procedure = false;
             this -> is_left_parenthesis = false;
             this -> is_right_parenthesis = false;
             this -> is_data_type = false;
@@ -1446,7 +1465,7 @@ private:
             {
                 
                 is_procedure,
-                is_void_function,
+                is_regular_procedure,
                 is_left_parenthesis,
                 is_data_type,
                 is_variable,

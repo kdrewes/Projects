@@ -110,13 +110,13 @@ char Tokenize :: Verify_Token(char character, std::ifstream &read)
 char Tokenize :: Verify_Token_Helper(char character, std::ifstream &read)
 {
     // Input validation for integer handler
-    checkInteger(character,read);
+    //checkInteger(character,read);
     
     // Input validation for isValue handler
-    checkValue(character,read);
+    //checkValue(character,read);
     
     // Input validation for isString handler
-    checkPrintF(character, read);
+    //checkPrintF(character, read);
     
     // Input validation for procedure handler
     checkProcedure(character, read);
@@ -127,6 +127,8 @@ char Tokenize :: Verify_Token_Helper(char character, std::ifstream &read)
 // Checks if isInteger boolean variable is currently set as 'true'
 void Tokenize :: checkInteger(char character, std::ifstream &read)
 {
+    if(!isProcedure())
+    {
         if(isInteger(strdup("datatype")))
         {
             if (this->syntax.size() == 0 && !isalpha(character))
@@ -137,65 +139,86 @@ void Tokenize :: checkInteger(char character, std::ifstream &read)
         }
         else if(isInteger(strdup("value")))
             isInteger("reset");
+    }
+    
+    /*
+     else
+     {
+         std::cout << "\n\nIS PROCEDURE IS OFF\n\n";
+         
+         if(isInteger())
+         {
+             std::cout << "\n\nisInteger() IS TRUE and ";
+             
+             if(isProcedure())
+             std::cout << "is procedure is true\n\n";
+         }
+         else
+             std::cout << "\n\nisInteger() IS FALSE\n\n";
+     }
+     */
 }
 // ------------------------------------------------------------------
 // Checks if isValue boolean variable is currently set as 'true'
 void Tokenize :: checkValue(char character, std::ifstream &read)
 {
     
-    if(isValue(strdup("=")))
+    if(!isProcedure())
     {
-        if(character == '=')
+        if(isValue(strdup("=")))
         {
-            if(read.peek() == ' ' || isnumber(read.peek()))
-                isValue("integer");
-        }
-        
-        else if (character != '=' &&
-                 character != '+' &&
-                 character != '-' )
-            std::invalid_argument("\n\nError - Invalid character " + std::string(1,character) + " detected\n\n");
-        
-        
-        else if((syntax[0] == '+' || syntax[0] == '-') &&
-                (character != '=' && syntax.size() > 0) &&
-                !isnumber(character))
-            std::invalid_argument("\n\nError - Invalid character " + std::string(1,character) + " detected\n\n");
-        
-        else if(isnumber(read.peek()))
-            isValue("integer");
-        
-    }
-    else if(isValue(strdup("integer")))
-    {
-        
-        if(!isnumber(character) &&
-           (character != '=' && character != '-' && character != '+') &&
-           this -> syntax.size() == 0)
-            
-            throw std::invalid_argument("\n\nError - invalid character " + std::string(1,character) + " detected.  Must be integer.\n\n");
-        
-        else if(character != '-' && this -> syntax.size() != 0)
-        {
-            if(isnumber(character))
+            if(character == '=')
             {
-                if(read.peek() == ' ' || read.peek() == ';')
-                    isValue(";");
-                else
+                if(read.peek() == ' ' || isnumber(read.peek()))
+                    isValue("integer");
+            }
+            
+            else if (character != '=' &&
+                     character != '+' &&
+                     character != '-' )
+                std::invalid_argument("\n\nError - Invalid character " + std::string(1,character) + " detected\n\n");
+            
+            
+            else if((syntax[0] == '+' || syntax[0] == '-') &&
+                    (character != '=' && syntax.size() > 0) &&
+                    !isnumber(character))
+                std::invalid_argument("\n\nError - Invalid character " + std::string(1,character) + " detected\n\n");
+            
+            else if(isnumber(read.peek()))
+                isValue("integer");
+            
+        }
+        else if(isValue(strdup("integer")))
+        {
+            
+            if(!isnumber(character) &&
+               (character != '=' && character != '-' && character != '+') &&
+               this -> syntax.size() == 0)
+                
+                throw std::invalid_argument("\n\nError - invalid character " + std::string(1,character) + " detected.  Must be integer.\n\n");
+            
+            else if(character != '-' && this -> syntax.size() != 0)
+            {
+                if(isnumber(character))
                 {
-                    if(!isnumber(read.peek()))
-                        std::invalid_argument("\n\nError - Invalid character " + std::string(1,character) + " detected\n\n");
-                  
+                    if(read.peek() == ' ' || read.peek() == ';')
+                        isValue(";");
+                    else
+                    {
+                        if(!isnumber(read.peek()))
+                            std::invalid_argument("\n\nError - Invalid character " + std::string(1,character) + " detected\n\n");
+                        
+                    }
                 }
             }
         }
-    }
-    else if(isValue(strdup(";")))
-    {
-        if(character == ';')
-            isValue("reset");
-        else
-            throw(std::invalid_argument("Error - invalid character detected\n\ncharacter must be ';' not " + character + '+'));
+        else if(isValue(strdup(";")))
+        {
+            if(character == ';')
+                isValue("reset");
+            else
+                throw(std::invalid_argument("Error - invalid character detected\n\ncharacter must be ';' not " + character + '+'));
+        }
     }
     
 }
@@ -204,104 +227,106 @@ void Tokenize :: checkValue(char character, std::ifstream &read)
 // Check if isPrintf boolean variable is currently set as 'true'
 void Tokenize :: checkPrintF(char character, std::ifstream &read)
 {
-    if(isPrintF(strdup("printf")))
+    if(!isProcedure())
     {
-        if(character == '(')
-            isPrintF("(");
-        
-        else
-            throw(std::invalid_argument(&"Error - invalid character detected\n\ncharacter must be '(' not " [ character]));
-    }
-    
-    else if(isPrintF(strdup("(")))
-    {
-        if(character == '"')
-            isPrintF("beginning quotation");
-        else
-            throw std::invalid_argument("\n Error - Invalid character detected, character must contain quotation mark\n");
-    }
-    
-    else if(isPrintF(strdup("beginning quotation")))
-        isPrintF("scan string");
-    
-    else if(isPrintF(strdup("scan string")))
-    {
-        if(read.peek() == '"' && character != '\\')
-            isPrintF("end scanning");
-        
-        if((count_characters += 1) > 30)
+        if(isPrintF(strdup("printf")))
         {
-            this -> count_characters = 0;
-            throw(std::invalid_argument("Error - printf statement contains too many characters\n\nNo quotation mark detected.\n"));
-        }
-    }
-    
-    else if(isPrintF(strdup("end scanning")))
-    {
-        if(character == '"')
-            isPrintF("end quotation");
-    }
-    
-    else if(isPrintF(strdup("end quotation")))
-    {
-        if(character == ')')
-            isPrintF(")");
-        
-        else if(character == ',')
-            isPrintF(",");
-        
-        else
-            throw std::invalid_argument("Error - Invalid character " + std::string(1, character) + " detected.\n");
-    }
-    
-    else if(isPrintF(strdup(",")))
-    {
-        // First character of variable is not an alphabetic character
-        if(this -> syntax.size() == 0)
-            if(!isalpha(character))
-                throw std::invalid_argument("Error - Invalid character " + std::string(1, read.peek()) + " used in variable.\n");
-        
-        if(read.peek() == ' ' || read.peek() == ')')
-        {
-            // Declare temporary syntax variable used as backup storage
-            token tempSyntax = this -> syntax;
+            if(character == '(')
+                isPrintF("(");
             
-            // Add character to syntax to make it temporarily complete
-            this -> syntax += character;
-            
-            // Determine if variable (syntax) exists.  If not, throw an exception
-            if(!findVariable(TOKEN_TYPE :: INTEGER))
-                throw(std::invalid_argument("Error - " + this -> syntax + " does not exist\n" ));
-            
-            // Re-assign this -> syntax original value
-            this -> syntax = tempSyntax;
-            
-            isPrintF(")");
-        }
-    }
-    
-    else if(isPrintF(strdup(")")))
-    {
-        if(character == ';')
-            isPrintF(";");
-        
-        else if (read.peek() == ';')
-            isPrintF(";");
-        
-        else if(read.peek() != ';' &&  read.peek() != ' ')
-            throw std::invalid_argument("\n\nError - Invalid character " + std::string(1, read.peek()) + " detected ahead.  Character must be ';'\n");
-        
-        else if(character != ';')
-        {
-            std::cout << "\n\nCHARACTER " << character << std::endl;
-            throw std::invalid_argument("\n\nError - Invalid character " + std::string(1, read.peek()) + " detected.  Character must be ';'\n");
+            else
+                throw(std::invalid_argument(&"Error - invalid character detected\n\ncharacter must be '(' not " [ character]));
         }
         
+        else if(isPrintF(strdup("(")))
+        {
+            if(character == '"')
+                isPrintF("beginning quotation");
+            else
+                throw std::invalid_argument("\n Error - Invalid character detected, character must contain quotation mark\n");
+        }
+        
+        else if(isPrintF(strdup("beginning quotation")))
+            isPrintF("scan string");
+        
+        else if(isPrintF(strdup("scan string")))
+        {
+            if(read.peek() == '"' && character != '\\')
+                isPrintF("end scanning");
+            
+            if((count_characters += 1) > 30)
+            {
+                this -> count_characters = 0;
+                throw(std::invalid_argument("Error - printf statement contains too many characters\n\nNo quotation mark detected.\n"));
+            }
+        }
+        
+        else if(isPrintF(strdup("end scanning")))
+        {
+            if(character == '"')
+                isPrintF("end quotation");
+        }
+        
+        else if(isPrintF(strdup("end quotation")))
+        {
+            if(character == ')')
+                isPrintF(")");
+            
+            else if(character == ',')
+                isPrintF(",");
+            
+            else
+                throw std::invalid_argument("Error - Invalid character " + std::string(1, character) + " detected.\n");
+        }
+        
+        else if(isPrintF(strdup(",")))
+        {
+            // First character of variable is not an alphabetic character
+            if(this -> syntax.size() == 0)
+                if(!isalpha(character))
+                    throw std::invalid_argument("Error - Invalid character " + std::string(1, read.peek()) + " used in variable.\n");
+            
+            if(read.peek() == ' ' || read.peek() == ')')
+            {
+                // Declare temporary syntax variable used as backup storage
+                token tempSyntax = this -> syntax;
+                
+                // Add character to syntax to make it temporarily complete
+                this -> syntax += character;
+                
+                // Determine if variable (syntax) exists.  If not, throw an exception
+                if(!findVariable(TOKEN_TYPE :: INTEGER))
+                    throw(std::invalid_argument("Error - " + this -> syntax + " does not exist\n" ));
+                
+                // Re-assign this -> syntax original value
+                this -> syntax = tempSyntax;
+                
+                isPrintF(")");
+            }
+        }
+        
+        else if(isPrintF(strdup(")")))
+        {
+            if(character == ';')
+                isPrintF(";");
+            
+            else if (read.peek() == ';')
+                isPrintF(";");
+            
+            else if(read.peek() != ';' &&  read.peek() != ' ')
+                throw std::invalid_argument("\n\nError - Invalid character " + std::string(1, read.peek()) + " detected ahead.  Character must be ';'\n");
+            
+            else if(character != ';')
+            {
+                std::cout << "\n\nCHARACTER " << character << std::endl;
+                throw std::invalid_argument("\n\nError - Invalid character " + std::string(1, read.peek()) + " detected.  Character must be ';'\n");
+            }
+            
+        }
+        
+        else if(isPrintF(strdup(";")))
+            isPrintF("reset");
     }
-    
-    else if(isPrintF(strdup(";")))
-        isPrintF("reset");
-    
 }
 // ------------------------------------------------------------------
 // Check if isProecedure boolean varaible is currently set as 'true'
@@ -315,7 +340,7 @@ void Tokenize :: checkProcedure(char character, std::ifstream &read)
         else if((!isalpha(character) && !isnumber(character)) && this->syntax.size() > 0)
             throw std::invalid_argument("\n\nError - incorrect character " + std::string(1,character) + " used on procedure name\n\n");
         
-        else if(read.peek() == ' ')
+        else if(read.peek() == ' ' ||  read.peek() == '(')
         {
             token tempToken = this -> syntax + character;
             
@@ -330,9 +355,8 @@ void Tokenize :: checkProcedure(char character, std::ifstream &read)
     else if(isProcedure(strdup("is main")))
     {
         if(isProcedure(1))
-        {
-            
-        }
+            isProcedure("(");
+        
         else if(isProcedure(2))
         {
             
@@ -342,6 +366,16 @@ void Tokenize :: checkProcedure(char character, std::ifstream &read)
     else if(isProcedure(strdup("is regular function")))
     {
         
+        if(isProcedure(1))
+            isProcedure("(");
+            
+        
+        else if(isProcedure(2))
+        {
+         if(isProcedure(strdup("(")))
+             std::cout << "\nisProcedure(() is ACTIVATED\n\n";
+              
+        }
     }
     
 }
@@ -494,12 +528,12 @@ TOKEN_TYPE Tokenize :: Read_Token(std::ifstream &read)
        !isValue() &&
        !isPrintF(strdup("end scanning")))
     {
-        if(this->syntax == "int")
+        if(this->syntax == "int" && !isProcedure())
         {
             isInteger("datatype");
             return TOKEN_TYPE :: IDENTIFIER;
         }
-        else if(isInteger())
+        else if(isInteger() && !isProcedure())
         {
             if(isInteger(strdup("datatype")))
             {
@@ -538,7 +572,7 @@ TOKEN_TYPE Tokenize :: Read_Token(std::ifstream &read)
             return TOKEN_TYPE :: IDENTIFIER;
         }
         
-        else if(this -> syntax == "procedure")
+        else if(this -> syntax == "procedure" && !isProcedure())
         {
             isProcedure("procedure");
 
@@ -548,7 +582,7 @@ TOKEN_TYPE Tokenize :: Read_Token(std::ifstream &read)
         {
             if(!isPrintF())
                 isValue("=");
-            
+        
             return TOKEN_TYPE :: IDENTIFIER;
             
         }
