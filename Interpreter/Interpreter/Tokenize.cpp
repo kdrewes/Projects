@@ -356,19 +356,27 @@ void Tokenize :: checkProcedure(char character)
     {
         
         if(isProcedure(1))
-            
+        {
             if(character == '(')
-            {
-                std::cout << "\n\nthis -> syntax = " << this -> syntax << std::endl;
-                std::cout << "\n\ncharacter = " << character << std::endl;
                 isProcedure("(");
-            }
+        
             else
                 throw std::invalid_argument("\n\nError - character must be ) not " + std::string(1,character));
-            
+        }
         
         else if(isProcedure(2))
         {
+            
+            if(isProcedure(strdup("(")))
+            {
+                std::string tempString = this -> syntax + character;
+                
+                if(tempString == "int" || tempString == "char" ||  tempString == "string")
+                    isProcedure("data type");
+                
+                else if(character == ')')
+                    isProcedure(")");
+            }
             
                
         }
@@ -550,6 +558,7 @@ TOKEN_TYPE Tokenize :: Read_Token()
             isInteger("datatype");
             return TOKEN_TYPE :: IDENTIFIER;
         }
+    
         else if(isInteger() && !isProcedure())
         {
             if(isInteger(strdup("datatype")))
