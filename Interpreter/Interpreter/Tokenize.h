@@ -79,8 +79,11 @@ private:
     // Vector used to collect tokens from each file
     std::vector<std::vector<std::pair<tokenType,token>>>TokenVector;
     
-    // Contains index of integer/string variable found
+    // Contains index of integer variable found
     position integer_index;
+    
+    // Contains index of procedure found
+    position procedure_index;
     
     // Count the amount of character being used within printf statement
     iterator count_characters;
@@ -933,7 +936,7 @@ private:
             if(command == "is procedure" || command == "procedure" || command == "function")
                 return PROCEDURE_ENUM :: PROCEDURE;
             
-            else if(command == "procedure name" || command == "name" || command == "is void function" || command == "is regular function" || command == "void function" || command == "regular function")
+            else if(command == "procedure name" || command == "name" || command == "is void function" || command == "is regular function" || command == "void function" || command == "regular function" || command == "is regular procedure")
                 return PROCEDURE_ENUM :: REGULAR_PROCEDURE;
             
             else if(command == "is main" || command == "main")

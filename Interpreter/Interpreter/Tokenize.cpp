@@ -333,7 +333,10 @@ void Tokenize :: checkProcedure(char character)
                 isProcedure("is main");
             
             else
+            {
                 isProcedure("regular function");
+                procedureCollector.push_back(this -> syntax + character);
+            }
         }
     }
     
@@ -341,6 +344,7 @@ void Tokenize :: checkProcedure(char character)
     {
         if(isProcedure(1))
             isProcedure("(");
+        
         
         else if(isProcedure(2))
         {
@@ -352,13 +356,21 @@ void Tokenize :: checkProcedure(char character)
     {
         
         if(isProcedure(1))
-            isProcedure("(");
+            
+            if(character == '(')
+            {
+                std::cout << "\n\nthis -> syntax = " << this -> syntax << std::endl;
+                std::cout << "\n\ncharacter = " << character << std::endl;
+                isProcedure("(");
+            }
+            else
+                throw std::invalid_argument("\n\nError - character must be ) not " + std::string(1,character));
             
         
         else if(isProcedure(2))
         {
-        
-              
+            
+               
         }
     }
     
@@ -421,6 +433,9 @@ bool Tokenize :: isIdentifier()
     else if(findVariable(TOKEN_TYPE :: INTEGER))
         return true;
     
+    else if(findVariable(TOKEN_TYPE :: IDENTIFIER))
+        return true;
+    
     return false;
 }
 // ------------------------------------------------------------------
@@ -477,6 +492,9 @@ bool Tokenize :: tokenIdentifier()
     else if(findVariable(TOKEN_TYPE :: INTEGER))
         return true;
     
+    else if(findVariable(TOKEN_TYPE :: IDENTIFIER))
+        return true;
+    
     return false;
 }
 // ------------------------------------------------------------------
@@ -499,6 +517,21 @@ bool Tokenize :: findVariable(TOKEN_TYPE token)
                         this -> integer_index = i;
                         return true;
                     }
+            break;
+            
+        case IDENTIFIER:
+            if(isProcedure())
+            {
+                if(!procedureCollector.empty())
+                    for(std::vector<dataType> :: size_type i = 0; i < procedureCollector.size(); i++)
+                        if(this->syntax == procedureCollector[i])
+                        {
+                            this -> procedure_index = i;
+                            return true;
+                        }
+            }
+            
+            break;
     }
     
     return false;
@@ -528,8 +561,8 @@ TOKEN_TYPE Tokenize :: Read_Token()
                     integerCollector.push_back(syntax);
                     return TOKEN_TYPE :: IDENTIFIER;
                 }
-                else if((this->read.peek() == '=' ||
-                         this->read.peek() == ' ') &&
+                else if((this -> read.peek() == '=' ||
+                         this -> read.peek() == ' ') &&
                         this->syntax.size() != 0)
                 {
                     isInteger("=");
@@ -562,6 +595,7 @@ TOKEN_TYPE Tokenize :: Read_Token()
 
             return TOKEN_TYPE :: IDENTIFIER;
         }
+
         else if(findVariable(TOKEN_TYPE :: INTEGER))
         {
             if(!isPrintF())
@@ -570,6 +604,9 @@ TOKEN_TYPE Tokenize :: Read_Token()
             return TOKEN_TYPE :: IDENTIFIER;
             
         }
+        
+        else if(findVariable(TOKEN_TYPE :: IDENTIFIER))
+            return TOKEN_TYPE :: IDENTIFIER;
         
         return TOKEN_TYPE :: IDENTIFIER;
     }
@@ -767,12 +804,26 @@ std::pair<std::string, std::string> Tokenize :: Token_Handler(TOKEN_TYPE token)
             
             else if(findVariable(TOKEN_TYPE :: INTEGER))
             {
-                position tempIndex = this ->integer_index; this -> integer_index = 0;
+                position tempIndex = this -> integer_index;
+                
+                this -> integer_index = 0;
+                
                 return {"IDENTIFIER", this -> integerCollector[tempIndex]};
                 
             }
+            else if(findVariable(TOKEN_TYPE :: IDENTIFIER) && isProcedure(strdup("is regular procedure")))
+            {
+                position tempIndex = this -> procedure_index;
+                
+                this -> procedure_index = 0;
+                
+                return {"IDENTIFIER", this -> procedureCollector[tempIndex]};
+            }
+            
             else
-                return {"IDENTIFIER", syntax};
+                return {"IDENTIFIER", this -> syntax};
+            
+           
             
         case LEFT_PARENTHESIS:
             return {"LEFT_PARENTHESIS", "("};
