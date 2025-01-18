@@ -878,6 +878,8 @@ private:
             COMMA,
             RESET,
             IN_PROCESS,
+            SCANNING_FOR_LEFT_PARENTHESIS,
+            LEFT_PARENTHESIS_DETECTED,
             ERROR
         };
         
@@ -897,9 +899,11 @@ private:
                        is_void,
                        is_left_parenthesis_main,
                        is_right_parenthesis_main;
+       
+        // Declare boolean variable used to determine tenetive outcomes
+        procedure_bool scanning_for_left_parenthesis,
+                       left_parenthesis_detected;
         
-        // Determines amount of flags set to true
-        std::stack <int> flagStack;
         
         // Default Constructor
         PROCEDURE_HANDLER() :
@@ -917,7 +921,13 @@ private:
         is_data_type(false),
         is_variable(false),
         is_comma(false),
-        is_void(false) {}
+        is_void(false),
+        
+        // Declare boolean variables used for tenetive scenarios
+        scanning_for_left_parenthesis(false),
+        left_parenthesis_detected(false)
+        
+        {}
 
         // -----------------------------------------------------------------------
         // Modifies boolean values which belong to PROCEDURE_HANDLER
@@ -966,6 +976,15 @@ private:
             else if((command == "," || command == "comma") && is_regular_procedure)
                 return PROCEDURE_ENUM :: COMMA;
             
+            else if(command == "scanning for left parenthesis" ||
+                    command == "searching for left parenthesis" ||
+                    command == "scanning for (")
+                return PROCEDURE_ENUM :: SCANNING_FOR_LEFT_PARENTHESIS;
+            
+            else if(command == "found left parenthesis" ||
+                    command == "found (")
+                return PROCEDURE_ENUM :: LEFT_PARENTHESIS_DETECTED;
+            
             else if(command == "reset")
                 return PROCEDURE_ENUM :: RESET;
 
@@ -974,7 +993,7 @@ private:
         
         // -----------------------------------------------------------------------
         // Determines type of procedure being utilized (ex - regular function or main)
-        PROCEDURE_ENUM Type_Of_Procedure()
+        PROCEDURE_ENUM ProcedureType()
         {
             if(is_procedure)
                 return PROCEDURE_ENUM :: PROCEDURE;
@@ -992,15 +1011,8 @@ private:
         // Determine if boolean property is exists in PROCEDURE_HANDLER
           procedure_bool operator()(char * command)
           {
-              return Verify_Flag(Enum_Handler(command), Type_Of_Procedure() ,command);
+              return Verify_Flag(Enum_Handler(command), ProcedureType() ,command);
           }
-        
-        // -----------------------------------------------------------------------
-        // Verify size of flagStack
-        procedure_bool operator()(int valueOfSize)
-        {
-            return flagStackSize(valueOfSize);
-        }
         
         // -----------------------------------------------------------------------
         // Determine if there is a true boolean member contained in PROCEDURE_HANDLER
@@ -1034,13 +1046,8 @@ private:
                     case PROCEDURE:
                         
                         if(!is_procedure)
-                        {
                             is_procedure = true;
-                    
-                            // Notify system flag is currently acitvated
-                            flagStack.push(1);
-                        }
-                        
+
                         else
                             throw std::invalid_argument("\nError - is_procedure is already true\n");
                         
@@ -1105,9 +1112,6 @@ private:
                             Reset();
                             is_left_parenthesis = true;
                             is_regular_procedure = true;
-                            
-                            // Notify system another flag is currently acitvated
-                            flagStack.push(1);
                         }
                         
                         else
@@ -1180,13 +1184,34 @@ private:
                         
                     // -------------------------------------------------
                         
+                    case SCANNING_FOR_LEFT_PARENTHESIS:
+                        
+                        if(!scanning_for_left_parenthesis)
+                            scanning_for_left_parenthesis = true;
+                        
+                        else
+                            throw std::invalid_argument("\nError - scanning_for_left_parenthesis is already true\n");
+                                           
+                        break;
+                    // -------------------------------------------------
+                        
+                    case LEFT_PARENTHESIS_DETECTED:
+                        
+                        if(!left_parenthesis_detected)
+                            left_parenthesis_detected = true;
+                        
+                        else
+                            throw std::invalid_argument("\nError - left_parenthesis_detected is already true\n");
+                                           
+                        break;
+                        
+                    // -------------------------------------------------
+                            
                     case RESET:
 
                         Reset();
                         
                         break;
-                        
-                    // -------------------------------------------------
                         
                     case ERROR:
                         
@@ -1209,12 +1234,9 @@ private:
                         if(!is_left_parenthesis_main)
                         {
                             Reset();
-                            
                             is_left_parenthesis_main = true;
                             is_main = true;
                             
-                            // Notify system another flag is currently acitvated
-                            flagStack.push(1);
                         }
                         
                         else
@@ -1252,6 +1274,30 @@ private:
                         else
                             throw std::invalid_argument("\nError - is_right_parenthesis_main is already true\n");
                         
+                        break;
+                        
+                    // -------------------------------------------------
+                            
+                    case SCANNING_FOR_LEFT_PARENTHESIS:
+                            
+                        if(!scanning_for_left_parenthesis)
+                            scanning_for_left_parenthesis = true;
+                            
+                        else
+                            throw std::invalid_argument("\nError - scanning_for_left_parenthesis is already true\n");
+                                               
+                        break;
+                        
+                    // -------------------------------------------------
+                            
+                    case LEFT_PARENTHESIS_DETECTED:
+                            
+                        if(!left_parenthesis_detected)
+                                left_parenthesis_detected = true;
+                            
+                        else
+                            throw std::invalid_argument("\nError - left_parenthesis_detected is already true\n");
+                                               
                         break;
                             
                     // -------------------------------------------------
@@ -1370,6 +1416,20 @@ private:
                             return true; return false;
                         
                     // -------------------------------------------------
+                            
+                    case SCANNING_FOR_LEFT_PARENTHESIS:
+                        
+                        if(scanning_for_left_parenthesis)
+                            return true; return false;
+                            
+                    // -------------------------------------------------
+                            
+                    case LEFT_PARENTHESIS_DETECTED:
+              
+                        if(left_parenthesis_detected)
+                            return true; return false;
+                            
+                    // -------------------------------------------------
                         
                     case ERROR:
                         
@@ -1417,6 +1477,20 @@ private:
                         
                         // -------------------------------------------------
                         
+                    case SCANNING_FOR_LEFT_PARENTHESIS:
+                        
+                        if(scanning_for_left_parenthesis)
+                            return true; return false;
+                            
+                    // -------------------------------------------------
+                            
+                    case LEFT_PARENTHESIS_DETECTED:
+              
+                        if(left_parenthesis_detected)
+                            return true; return false;
+                            
+                    // -------------------------------------------------
+                        
                     case ERROR:
                         
                         throw std::invalid_argument("\nError - " + command + " is not a valid boolean command\n");
@@ -1428,14 +1502,6 @@ private:
             return false;
         }
         
-        // -----------------------------------------------------------------------
-        // Verify the size of flagStack
-        procedure_bool flagStackSize(int valueOfSize)
-        {
-            if(flagStack.size() == valueOfSize)
-                return true; return false;
-        }
-
         // -----------------------------------------------------------------------
         // Used to prevent command from being case sensetive
         void LowerCase(std::string &command)
@@ -1464,6 +1530,8 @@ private:
             this -> is_left_parenthesis_main = false;
             this -> is_right_parenthesis_main = false;
             this -> is_void = false;
+            this -> scanning_for_left_parenthesis = false;
+            this -> left_parenthesis_detected = false;
             
         }
         
@@ -1485,7 +1553,9 @@ private:
                 is_main,
                 is_left_parenthesis_main,
                 is_void,
-                is_right_parenthesis_main
+                is_right_parenthesis_main,
+                scanning_for_left_parenthesis,
+                left_parenthesis_detected
                 
             };
             

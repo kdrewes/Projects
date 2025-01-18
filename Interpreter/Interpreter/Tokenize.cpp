@@ -286,6 +286,7 @@ void Tokenize :: checkPrintF(char character)
                 // Re-assign this -> syntax its original value
                 this -> syntax = tempSyntax;
                 
+                // Activate is_right_paranthesis variable
                 isPrintF(")");
             }
         }
@@ -306,7 +307,6 @@ void Tokenize :: checkPrintF(char character)
                 std::cout << "\n\nCHARACTER " << character << std::endl;
                 throw std::invalid_argument("\n\nError - Invalid character " + std::string(1, this->read.peek()) + " detected.  Character must be ';'\n");
             }
-            
         }
         
         else if(isPrintF(strdup(";")))
@@ -317,6 +317,7 @@ void Tokenize :: checkPrintF(char character)
 // Check if isProecedure boolean varaible is currently set as 'true'
 void Tokenize :: checkProcedure(char character)
 {
+    // Determines procedure type (ex - main or regular procedure)
     if(isProcedure(strdup("is procedure")))
     {
         if (this->syntax.size() == 0 && !isalpha(character))
@@ -335,11 +336,21 @@ void Tokenize :: checkProcedure(char character)
             else
             {
                 isProcedure("regular function");
-                procedureCollector.push_back(this -> syntax + character);
+                
+                procedureCollector.push_back
+                (this -> syntax + character);
             }
         }
     }
     
+    else if(isProcedure(strdup("is regular function")))
+    {
+        
+    }
+    
+    // Analyzes arguments and parameters of procedure
+
+    /*
     else if(isProcedure(strdup("is main")))
     {
         if(isProcedure(1))
@@ -369,9 +380,10 @@ void Tokenize :: checkProcedure(char character)
             
             if(isProcedure(strdup("(")))
             {
-                std::string tempString = this -> syntax + character;
-                
-                if(tempString == "int" || tempString == "char" ||  tempString == "string")
+
+                if(this -> syntax + character == "int" ||
+                   this -> syntax + character == "char" ||
+                   this -> syntax + character == "string")
                     isProcedure("data type");
                 
                 else if(character == ')')
@@ -381,6 +393,7 @@ void Tokenize :: checkProcedure(char character)
                
         }
     }
+     */
     
 }
 
@@ -601,7 +614,7 @@ TOKEN_TYPE Tokenize :: Read_Token()
         else if(this -> syntax == "procedure" && !isProcedure())
         {
             isProcedure("procedure");
-
+            
             return TOKEN_TYPE :: IDENTIFIER;
         }
 
