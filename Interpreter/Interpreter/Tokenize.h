@@ -57,9 +57,6 @@ enum TOKEN_TYPE {
     NON_BNF
 };
 
-
-
-
 class Tokenize
 {
 private:
@@ -123,18 +120,21 @@ private:
         {
             Configure_Flags(Enum_Handler(command));
         }
+        
         // -----------------------------------------------------------------------
         // Determine if boolean property exists in INTEGER_HANDLER
         integer_bool operator()(char * command)
         {
             return Verify_Flag(Enum_Handler(command), command);
         }
+        
         // -----------------------------------------------------------------------
         // Determine if there is a true boolean member within INTEGER_HANDLER
         integer_bool operator()()
         {
             return ContainsTrueFlag();
         }
+        
         // -----------------------------------------------------------------------
         // Used to determine the correct enum object to utilize
         INTEGER_ENUM Enum_Handler(std::string command)
@@ -220,19 +220,16 @@ private:
         {
             switch(enum_propery)
             {
-                    
                 case DATA_TYPE:
                 
                     if(is_data_type)
                         return true; return false;
                 
-                    
                 case VALUE:
                 
                     if(is_value)
                         return true; return false;
-                
-                    
+                 
                 case ASSIGNMENT_OPERATOR:
                 
                     if(is_assignment_operator)
@@ -978,11 +975,13 @@ private:
             
             else if(command == "scanning for left parenthesis" ||
                     command == "searching for left parenthesis" ||
-                    command == "scanning for (")
+                    command == "scanning for (" ||
+                    command == "searching for (")
                 return PROCEDURE_ENUM :: SCANNING_FOR_LEFT_PARENTHESIS;
             
             else if(command == "found left parenthesis" ||
-                    command == "found (")
+                    command == "found (" ||
+                    command == "left parenthesis detected")
                 return PROCEDURE_ENUM :: LEFT_PARENTHESIS_DETECTED;
             
             else if(command == "reset")
@@ -1530,6 +1529,8 @@ private:
             this -> is_left_parenthesis_main = false;
             this -> is_right_parenthesis_main = false;
             this -> is_void = false;
+            
+            // boolean member
             this -> scanning_for_left_parenthesis = false;
             this -> left_parenthesis_detected = false;
             

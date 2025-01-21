@@ -326,16 +326,44 @@ void Tokenize :: checkProcedure(char character)
         else if((!isalpha(character) && !isnumber(character)) && this->syntax.size() > 0)
             throw std::invalid_argument("\n\nError - incorrect character " + std::string(1,character) + " used on procedure name\n\n");
         
-        else if(this->read.peek() == ' ' ||  this->read.peek() == '(')
+        else if (this -> read.peek() == '(')
         {
             token tempToken = this -> syntax + character;
             
             if(tempToken == "main")
+            {
                 isProcedure("is main");
+                
+                isProcedure("left parenthesis detected");
+            }
             
             else
             {
                 isProcedure("regular function");
+                
+                isProcedure("left parenthesis detected");
+                
+                procedureCollector.push_back
+                (this -> syntax + character);
+            }
+        }
+        
+        else if (this -> read.peek() == ' ')
+        {
+            token tempToken = this -> syntax + character;
+            
+            if(tempToken == "main")
+            {
+                isProcedure("is main");
+                
+                isProcedure("searching for left parenthesis");
+            }
+            
+            else
+            {
+                isProcedure("regular function");
+                
+                isProcedure("searching for left parenthesis");
                 
                 procedureCollector.push_back
                 (this -> syntax + character);
@@ -344,6 +372,17 @@ void Tokenize :: checkProcedure(char character)
     }
     
     else if(isProcedure(strdup("is regular function")))
+    {
+        if(isProcedure(strdup("searching for left parenthesis")))
+        {
+            if(character == '(')
+                isProcedure("(");
+
+            else
+                throw std::invalid_argument("\n\nError - character must be ( not " + std::string(1,character) + "\n\n");
+        }
+    }
+    else if(isProcedure(strdup("is main")))
     {
         
     }
@@ -613,7 +652,7 @@ TOKEN_TYPE Tokenize :: Read_Token()
         
         else if(this -> syntax == "procedure" && !isProcedure())
         {
-            isProcedure("procedure");
+           isProcedure("procedure");
             
             return TOKEN_TYPE :: IDENTIFIER;
         }
@@ -664,34 +703,34 @@ TOKEN_TYPE Tokenize :: Read_Token()
         else
             return TOKEN_TYPE :: BNF_IN_PROCESS;
     
-        else if(syntax == "*")
-            return TOKEN_TYPE :: ASTERISK;
-        else if(syntax == "/")
-            return TOKEN_TYPE :: DIVIDE;
-        else if(syntax == "%")
-            return TOKEN_TYPE :: MODULO;
-        else if(syntax == "^")
-            return TOKEN_TYPE :: CARET;
-        else if(syntax == "<")
-            return TOKEN_TYPE :: LESS_THAN;
-        else if(syntax == "<=")
-            return TOKEN_TYPE :: LESS_THAN_OR_EQUAL;
-        else if(syntax == ">")
-            return TOKEN_TYPE :: GREATER_THAN;
-        else if(syntax == ">=")
-            return TOKEN_TYPE :: GREATER_THAN_OR_EQUAL;
-        else if(syntax == "&&")
-            return TOKEN_TYPE :: BOOLEAN_AND;
-        else if(syntax == "||")
-            return TOKEN_TYPE :: BOOLEAN_OR;
-        else if(syntax == "!")
-            return TOKEN_TYPE :: BOOLEAN_NOT;
-        else if(syntax == "==")
-            return TOKEN_TYPE :: BOOLEAN_EQUAL;
-        else if(syntax == "!=")
-            return TOKEN_TYPE :: BOOLEAN_NOT_EQUAL;
-        else if(isValue(strdup(";")))
-            return TOKEN_TYPE :: INTEGER;
+    else if(syntax == "*")
+        return TOKEN_TYPE :: ASTERISK;
+    else if(syntax == "/")
+        return TOKEN_TYPE :: DIVIDE;
+    else if(syntax == "%")
+        return TOKEN_TYPE :: MODULO;
+    else if(syntax == "^")
+        return TOKEN_TYPE :: CARET;
+    else if(syntax == "<")
+        return TOKEN_TYPE :: LESS_THAN;
+    else if(syntax == "<=")
+        return TOKEN_TYPE :: LESS_THAN_OR_EQUAL;
+    else if(syntax == ">")
+        return TOKEN_TYPE :: GREATER_THAN;
+    else if(syntax == ">=")
+        return TOKEN_TYPE :: GREATER_THAN_OR_EQUAL;
+    else if(syntax == "&&")
+        return TOKEN_TYPE :: BOOLEAN_AND;
+    else if(syntax == "||")
+        return TOKEN_TYPE :: BOOLEAN_OR;
+    else if(syntax == "!")
+        return TOKEN_TYPE :: BOOLEAN_NOT;
+    else if(syntax == "==")
+        return TOKEN_TYPE :: BOOLEAN_EQUAL;
+    else if(syntax == "!=")
+        return TOKEN_TYPE :: BOOLEAN_NOT_EQUAL;
+    else if(isValue(strdup(";")))
+           return TOKEN_TYPE :: INTEGER;
     
     return TOKEN_TYPE :: NON_BNF;
     
