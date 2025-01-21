@@ -59,7 +59,6 @@ std::string removeComments :: ReadFile(std::string fileName, int count){
 void removeComments :: WriteFile(int count, std::string fileContents){
     std::ofstream write("textFile" + std::to_string(count) + ".txt", std::ios::out);
     {
-       // std:: cout << "Writing " << "textFile" + std::to_string(count) + ".txt";
         write << fileContents << std::endl;
     }
     write.close();
