@@ -304,7 +304,6 @@ void Tokenize :: checkPrintF(char character)
             
             else if(character != ';')
             {
-                std::cout << "\n\nCHARACTER " << character << std::endl;
                 throw std::invalid_argument("\n\nError - Invalid character " + std::string(1, this->read.peek()) + " detected.  Character must be ';'\n");
             }
         }
