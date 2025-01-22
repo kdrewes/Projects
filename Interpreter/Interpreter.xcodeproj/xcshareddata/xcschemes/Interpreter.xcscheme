@@ -36,7 +36,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/kyledrewes/Desktop/Computer Science/C++ Projects/Interpreter Project/Tokenization/Files"
+      customWorkingDirectory = "/Users/kyledrewes/Desktop/Computer Science/C++ Projects/Interpreter Project/Interpreter/Interpreter/Projects/Interpreter/Files"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"

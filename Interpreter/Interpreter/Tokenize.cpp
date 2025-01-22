@@ -19,7 +19,8 @@ Tokenize :: Tokenize(std::vector<std::string> TestFiles)
 // Initiates process of collecting content of each file
 void Tokenize :: Execute()
 {
-    for(std::vector<std::string>::size_type i = 0; i < 1; i++){
+    for(std::vector<std::string>::size_type i = 0; i < 1; i++)
+    {
         
         // Input validation
         try
@@ -80,8 +81,10 @@ std::vector<std::pair<tokenType,token>> Tokenize :: ReadFile()
                     this->syntax = "";
                 }
             }
+            
             else if(isPrintF(strdup("scan string")))
                 this -> syntax += character;
+            
             else
                 this->syntax = "";
             
@@ -372,7 +375,55 @@ void Tokenize :: checkProcedure(char character)
     
     else if(isProcedure(strdup("is regular function")))
     {
-        if(isProcedure(strdup("searching for left parenthesis")))
+        if (isProcedure(strdup("left parenthesis detected")))
+        {
+            if(character == '(')
+                isProcedure("(");
+        }
+        
+        else if(isProcedure(strdup("searching for left parenthesis")))
+        {
+            
+            
+            if(character == '(')
+                isProcedure("(");
+            
+
+            else
+            {
+                throw std::invalid_argument("\n\nError - character must be ( not " + std::string(1,character) + "\n\n");
+            }
+        }
+        
+        else if(isProcedure(strdup("(")))
+        {
+            if((this -> syntax + character == "int" ||
+               this -> syntax + character == "char" ||
+               this -> syntax + character == "string") &&
+               read.peek() == ' ')
+                isProcedure("data type");
+            
+            else if(character == ')' && this -> syntax.size() == 0)
+                isProcedure(")");
+            
+            else if(this -> syntax.size() > 0 && (read.peek() == ')'))
+            {
+                std::string tempString = this -> syntax + character;
+                
+                throw std::invalid_argument("\n\nError - " + tempString + " is invalid syntax\n\n");
+            }
+        }
+    }
+    
+    else if(isProcedure(strdup("is main")))
+    {
+        if (isProcedure(strdup("left parenthesis detected")))
+        {
+            if(character == '(')
+                isProcedure("(");
+        }
+        
+        else if(isProcedure(strdup("searching for left parenthesis")))
         {
             if(character == '(')
                 isProcedure("(");
@@ -380,10 +431,6 @@ void Tokenize :: checkProcedure(char character)
             else
                 throw std::invalid_argument("\n\nError - character must be ( not " + std::string(1,character) + "\n\n");
         }
-    }
-    else if(isProcedure(strdup("is main")))
-    {
-        
     }
     
     // Analyzes arguments and parameters of procedure
