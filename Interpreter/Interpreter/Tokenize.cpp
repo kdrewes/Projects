@@ -34,7 +34,7 @@ void Tokenize :: Execute()
         catch(std::invalid_argument e)
         {
             // Display error message
-            std::cout << e.what() << std::endl;
+            std::cerr << e.what() << std::endl;
         }
     }
     
@@ -113,22 +113,22 @@ char Tokenize :: Verify_Token(char character)
 char Tokenize :: Verify_Token_Helper(char character)
 {
     // Input validation for integer handler
-    checkInteger(character);
+    configureInteger(character);
     
     // Input validation for isValue handler
-    checkValue(character);
+    configureValue(character);
     
     // Input validation for isString handler
-    checkPrintF(character);
+    configurePrintF(character);
     
     // Input validation for procedure handler
-    checkProcedure(character);
+    configureProcedure(character);
     
     return character;
 }
 // ------------------------------------------------------------------
 // Checks if isInteger boolean variable is currently set as 'true'
-void Tokenize :: checkInteger(char character)
+void Tokenize :: configureInteger(char character)
 {
     if(!isProcedure())
     {
@@ -147,7 +147,7 @@ void Tokenize :: checkInteger(char character)
 }
 // ------------------------------------------------------------------
 // Checks if isValue boolean variable is currently set as 'true'
-void Tokenize :: checkValue(char character)
+void Tokenize :: configureValue(char character)
 {
     
     if(!isProcedure())
@@ -212,7 +212,7 @@ void Tokenize :: checkValue(char character)
 
 // ------------------------------------------------------------------
 // Check if isPrintf boolean variable is currently set as 'true'
-void Tokenize :: checkPrintF(char character)
+void Tokenize :: configurePrintF(char character)
 {
     if(!isProcedure())
     {
@@ -317,7 +317,7 @@ void Tokenize :: checkPrintF(char character)
 }
 // ------------------------------------------------------------------
 // Check if isProecedure boolean varaible is currently set as 'true'
-void Tokenize :: checkProcedure(char character)
+void Tokenize :: configureProcedure(char character)
 {
     // Determines procedure type (ex - main or regular procedure)
     if(isProcedure(strdup("is procedure")))
@@ -384,15 +384,12 @@ void Tokenize :: checkProcedure(char character)
         else if(isProcedure(strdup("searching for left parenthesis")))
         {
             
-            
             if(character == '(')
                 isProcedure("(");
-            
-
+        
             else
-            {
                 throw std::invalid_argument("\n\nError - character must be ( not " + std::string(1,character) + "\n\n");
-            }
+    
         }
         
         else if(isProcedure(strdup("(")))
@@ -432,54 +429,6 @@ void Tokenize :: checkProcedure(char character)
                 throw std::invalid_argument("\n\nError - character must be ( not " + std::string(1,character) + "\n\n");
         }
     }
-    
-    // Analyzes arguments and parameters of procedure
-
-    /*
-    else if(isProcedure(strdup("is main")))
-    {
-        if(isProcedure(1))
-            isProcedure("(");
-        
-        
-        else if(isProcedure(2))
-        {
-            
-        }
-    }
-    
-    else if(isProcedure(strdup("is regular function")))
-    {
-        
-        if(isProcedure(1))
-        {
-            if(character == '(')
-                isProcedure("(");
-        
-            else
-                throw std::invalid_argument("\n\nError - character must be ) not " + std::string(1,character));
-        }
-        
-        else if(isProcedure(2))
-        {
-            
-            if(isProcedure(strdup("(")))
-            {
-
-                if(this -> syntax + character == "int" ||
-                   this -> syntax + character == "char" ||
-                   this -> syntax + character == "string")
-                    isProcedure("data type");
-                
-                else if(character == ')')
-                    isProcedure(")");
-            }
-            
-               
-        }
-    }
-     */
-    
 }
 
 // ------------------------------------------------------------------

@@ -1603,19 +1603,19 @@ public:
     bool findFunction(TOKEN_TYPE token);
     
     // Checks if isInteger boolean variable is currently set as 'true'
-    void checkInteger(char character);
+    void configureInteger(char character);
     
     // Checks if isEqual boolean variable is currently set as 'true'
-    void checkIsEqual(char character);
+    void configureIsEqual(char character);
     
     // Checks if isValue boolean variable is currently set as 'true'
-    void checkValue(char character);
+    void configureValue(char character);
     
     // Check if isPrintf boolean variable is currently set as 'true'
-    void checkPrintF(char character);
+    void configurePrintF(char character);
     
     // Check if isProecedure boolean varaible is currently set as 'true'
-    void checkProcedure(char character);
+    void configureProcedure(char character);
     
     // Verifies that each character is legally allowed to use
     char Verify_Token(char character);
