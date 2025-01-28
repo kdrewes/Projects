@@ -1597,7 +1597,10 @@ public:
     bool isToken(TOKEN_TYPE token);
     
     // Used to find if a integer or string variable is present within an operation/equation
-    bool findVariable(TOKEN_TYPE token);
+    bool findInteger();
+    
+    // Used to find if a integer or string variable is present within an operation/equation
+    bool findProcedure();
     
     // Used to find a function name that is present within an operation/equation
     bool findFunction(TOKEN_TYPE token);

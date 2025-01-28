@@ -283,7 +283,7 @@ void Tokenize :: configurePrintF(char character)
                 this -> syntax += character;
                 
                 // Determine if variable (syntax) exists.  If not, throw an exception
-                if(!findVariable(TOKEN_TYPE :: INTEGER))
+                if(!findInteger())
                     throw(std::invalid_argument("\n\nError - " + this -> syntax + " does not exist\n" ));
                 
                 // Re-assign this -> syntax its original value
@@ -398,7 +398,9 @@ void Tokenize :: configureProcedure(char character)
                this -> syntax + character == "char" ||
                this -> syntax + character == "string") &&
                read.peek() == ' ')
+            {
                 isProcedure("data type");
+            }
             
             else if(character == ')' && this -> syntax.size() == 0)
                 isProcedure(")");
@@ -485,10 +487,10 @@ bool Tokenize :: isIdentifier()
         
     }
     
-    else if(findVariable(TOKEN_TYPE :: INTEGER))
+    else if(findInteger())
         return true;
     
-    else if(findVariable(TOKEN_TYPE :: IDENTIFIER))
+    else if(findProcedure())
         return true;
     
     return false;
@@ -544,10 +546,10 @@ bool Tokenize :: tokenIdentifier()
             return true;
         
     }
-    else if(findVariable(TOKEN_TYPE :: INTEGER))
+    else if(findInteger())
         return true;
     
-    else if(findVariable(TOKEN_TYPE :: IDENTIFIER))
+    else if(findProcedure())
         return true;
     
     return false;
@@ -560,33 +562,30 @@ bool Tokenize :: isToken(TOKEN_TYPE token)
         return false; return true;
 }
 // ------------------------------------------------------------------
-bool Tokenize :: findVariable(TOKEN_TYPE token)
+bool Tokenize :: findInteger()
 {
-    switch(token)
+        if(!integerCollector.empty())
+            for(std::vector<dataType> :: size_type i = 0; i < integerCollector.size(); i++)
+                if(this->syntax == integerCollector[i])
+                {
+                    this -> integer_index = i;
+                    return true;
+                }
+    
+    return false;
+}
+// ------------------------------------------------------------------
+bool Tokenize :: findProcedure()
+{
+    if(isProcedure())
     {
-        case INTEGER:
-            if(!integerCollector.empty())
-                for(std::vector<dataType> :: size_type i = 0; i < integerCollector.size(); i++)
-                    if(this->syntax == integerCollector[i])
-                    {
-                        this -> integer_index = i;
-                        return true;
-                    }
-            break;
-            
-        case IDENTIFIER:
-            if(isProcedure())
-            {
-                if(!procedureCollector.empty())
-                    for(std::vector<dataType> :: size_type i = 0; i < procedureCollector.size(); i++)
-                        if(this->syntax == procedureCollector[i])
-                        {
-                            this -> procedure_index = i;
-                            return true;
-                        }
-            }
-            
-            break;
+        if(!procedureCollector.empty())
+            for(std::vector<dataType> :: size_type i = 0; i < procedureCollector.size(); i++)
+                if(this->syntax == procedureCollector[i])
+                {
+                    this -> procedure_index = i;
+                    return true;
+                }
     }
     
     return false;
@@ -652,7 +651,7 @@ TOKEN_TYPE Tokenize :: Read_Token()
             return TOKEN_TYPE :: IDENTIFIER;
         }
 
-        else if(findVariable(TOKEN_TYPE :: INTEGER))
+        else if(findInteger())
         {
             if(!isPrintF())
                 isValue("=");
@@ -661,7 +660,7 @@ TOKEN_TYPE Tokenize :: Read_Token()
             
         }
         
-        else if(findVariable(TOKEN_TYPE :: IDENTIFIER))
+        else if(findProcedure())
             return TOKEN_TYPE :: IDENTIFIER;
         
         return TOKEN_TYPE :: IDENTIFIER;
@@ -858,7 +857,7 @@ std::pair<std::string, std::string> Tokenize :: Token_Handler(TOKEN_TYPE token)
             else if(syntax == "void")
                 return {"IDENTIFIER", "void"};
             
-            else if(findVariable(TOKEN_TYPE :: INTEGER))
+            else if(findInteger())
             {
                 position tempIndex = this -> integer_index;
                 
@@ -867,7 +866,7 @@ std::pair<std::string, std::string> Tokenize :: Token_Handler(TOKEN_TYPE token)
                 return {"IDENTIFIER", this -> integerCollector[tempIndex]};
                 
             }
-            else if(findVariable(TOKEN_TYPE :: IDENTIFIER) && isProcedure(strdup("is regular procedure")))
+            else if(findProcedure() && isProcedure(strdup("is regular procedure")))
             {
                 position tempIndex = this -> procedure_index;
                 
