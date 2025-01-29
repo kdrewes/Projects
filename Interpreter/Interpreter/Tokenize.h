@@ -1606,25 +1606,22 @@ public:
     bool findFunction(TOKEN_TYPE token);
     
     // Checks if isInteger boolean variable is currently set as 'true'
-    void configureInteger(char character);
-    
-    // Checks if isEqual boolean variable is currently set as 'true'
-    void configureIsEqual(char character);
+    void Configure_Integer(char character);
     
     // Checks if isValue boolean variable is currently set as 'true'
-    void configureValue(char character);
+    void Configure_Value(char character);
     
     // Check if isPrintf boolean variable is currently set as 'true'
-    void configurePrintF(char character);
+    void Configure_PrintF(char character);
     
     // Check if isProecedure boolean varaible is currently set as 'true'
-    void configureProcedure(char character);
+    void Configure_Procedure(char character);
     
     // Verifies that each character is legally allowed to use
-    char Verify_Token(char character);
+    char Configure_Token(char character);
     
     // Handles input validation with Read_Character function
-    char Verify_Token_Helper(char character);
+    char Configure_Token_Helper(char character);
     
     // Reads characters to determine if a token is detected
     std::vector<std::pair<tokenType,token>> ReadFile();

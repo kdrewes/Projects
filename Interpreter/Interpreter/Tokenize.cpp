@@ -26,7 +26,7 @@ void Tokenize :: Execute()
         try
         {
             // Read each file
-            this -> read.open(TestFiles[1],std::ios::in);
+            this -> read.open(TestFiles[0],std::ios::in);
             
             // Collect tokens from current file being read
             this -> TokenVector.push_back(ReadFile());
@@ -73,7 +73,7 @@ std::vector<std::pair<tokenType,token>> Tokenize :: ReadFile()
 
             if(character != ' ' && character != '\n' && character != '\0')
             {
-                this->syntax += Verify_Token(character);
+                this->syntax += Configure_Token(character);
                 
                 if(isToken(isTokenHelper()))
                 {
@@ -104,31 +104,31 @@ std::vector<std::pair<tokenType,token>> Tokenize :: ReadFile()
 }
 // ------------------------------------------------------------------
 // Verifies that each character is legally allowed to use
-char Tokenize :: Verify_Token(char character)
+char Tokenize :: Configure_Token(char character)
 {
-    return (Verify_Token_Helper(character));
+    return (Configure_Token_Helper(character));
 }
 // ------------------------------------------------------------------
 // Handles input validation with Read_Character function
-char Tokenize :: Verify_Token_Helper(char character)
+char Tokenize :: Configure_Token_Helper(char character)
 {
     // Input validation for integer handler
-    configureInteger(character);
+    Configure_Integer(character);
     
     // Input validation for isValue handler
-    configureValue(character);
+    Configure_Value(character);
     
     // Input validation for isString handler
-    configurePrintF(character);
+    Configure_PrintF(character);
     
     // Input validation for procedure handler
-    configureProcedure(character);
+    Configure_Procedure(character);
     
     return character;
 }
 // ------------------------------------------------------------------
 // Checks if isInteger boolean variable is currently set as 'true'
-void Tokenize :: configureInteger(char character)
+void Tokenize :: Configure_Integer(char character)
 {
     if(!isProcedure())
     {
@@ -147,7 +147,7 @@ void Tokenize :: configureInteger(char character)
 }
 // ------------------------------------------------------------------
 // Checks if isValue boolean variable is currently set as 'true'
-void Tokenize :: configureValue(char character)
+void Tokenize :: Configure_Value(char character)
 {
     
     if(!isProcedure())
@@ -212,7 +212,7 @@ void Tokenize :: configureValue(char character)
 
 // ------------------------------------------------------------------
 // Check if isPrintf boolean variable is currently set as 'true'
-void Tokenize :: configurePrintF(char character)
+void Tokenize :: Configure_PrintF(char character)
 {
     if(!isProcedure())
     {
@@ -317,7 +317,7 @@ void Tokenize :: configurePrintF(char character)
 }
 // ------------------------------------------------------------------
 // Check if isProecedure boolean varaible is currently set as 'true'
-void Tokenize :: configureProcedure(char character)
+void Tokenize :: Configure_Procedure(char character)
 {
     // Determines procedure type (ex - main or regular procedure)
     if(isProcedure(strdup("is procedure")))
@@ -646,7 +646,7 @@ TOKEN_TYPE Tokenize :: Read_Token()
         
         else if(this -> syntax == "procedure" && !isProcedure())
         {
-           isProcedure("procedure");
+            isProcedure("procedure");
             
             return TOKEN_TYPE :: IDENTIFIER;
         }
