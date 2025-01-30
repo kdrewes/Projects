@@ -871,6 +871,9 @@ private:
             LEFT_PARENTHESIS_MAIN,
             RIGHT_PARENTHESIS_MAIN,
             DATA_TYPE,
+            INTEGER,
+            CHAR,
+            STRING,
             VARIABLE,
             COMMA,
             RESET,
@@ -1006,15 +1009,23 @@ private:
             return PROCEDURE_ENUM :: IN_PROCESS;
 
         }
+        
         // -----------------------------------------------------------------------
-        //
-        /*
-        PROCEDURE_ENUM dataTypeEnum(std::string command)
+        // Determine the correct data type utlized
+        PROCEDURE_ENUM dataType(std::string command)
         {
             if(command == "int")
-                PROCEDURE_ENUM ::
+                return PROCEDURE_ENUM :: INTEGER;
+            
+            if(command == "char")
+                return PROCEDURE_ENUM :: CHAR;
+            
+            if(command == "string")
+                return PROCEDURE_ENUM :: STRING;
+            
+            return PROCEDURE_ENUM :: ERROR;
         }
-        */
+        
         // -----------------------------------------------------------------------
         // Determine if boolean property is exists in PROCEDURE_HANDLER
           procedure_bool operator()(char * command)
@@ -1134,10 +1145,26 @@ private:
                         if(!is_data_type)
                         {
                             Reset();
-                          
                             
-                            
+                            switch(dataType(disectDataType(command).second))
+                            {
+                                case INTEGER:
+
+                                    break;
+                                    
+                                case CHAR:
+                                    break;
+                                    
+                                case STRING:
+                                    break;
+                                    
+                                case ERROR:
+                                    throw std::invalid_argument("\n\nError - " + std::string(disectDataType(command).second) + " is an invalid data type " + "\n\n");
+
+                            }
+
                             is_data_type = true;
+                            
                             is_regular_procedure = true;
                         }
                         else
