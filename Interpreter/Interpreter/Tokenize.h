@@ -964,7 +964,7 @@ private:
             else if((command == ")" || command == "right parenthesis")  && is_main)
                 return PROCEDURE_ENUM :: RIGHT_PARENTHESIS_MAIN;
             
-            else if((command == "datatype" || command == "data type") &&  is_regular_procedure)
+            else if(searchForDataType(command) &&  is_regular_procedure)
                 return PROCEDURE_ENUM :: DATA_TYPE;
             
             else if((command == "is variable" || command == "variable") && is_regular_procedure)
@@ -1006,6 +1006,15 @@ private:
             return PROCEDURE_ENUM :: IN_PROCESS;
 
         }
+        // -----------------------------------------------------------------------
+        //
+        /*
+        PROCEDURE_ENUM dataTypeEnum(std::string command)
+        {
+            if(command == "int")
+                PROCEDURE_ENUM ::
+        }
+        */
         // -----------------------------------------------------------------------
         // Determine if boolean property is exists in PROCEDURE_HANDLER
           procedure_bool operator()(char * command)
@@ -1125,6 +1134,9 @@ private:
                         if(!is_data_type)
                         {
                             Reset();
+                          
+                            
+                            
                             is_data_type = true;
                             is_regular_procedure = true;
                         }
@@ -1214,7 +1226,7 @@ private:
                         
                     case ERROR:
                         
-                        throw std::invalid_argument("\nError - " + command + " is not a valid command\n");
+                        throw std::invalid_argument("\n\nError - " + command + " is not a valid command\n");
                         
                 }
             }
@@ -1568,6 +1580,91 @@ private:
         }
         
         // -----------------------------------------------------------------------
+        // Determine if a datatype is present or not
+        bool searchForDataType(std::string command)
+                {
+                    std::string tempString = "";
+                    
+                    for(int i = 0; i < command.size(); i++)
+                    {
+                        if(command[i] == ' ')
+                        {
+                            if(tempString == "datatype" || tempString == "data type")
+                                return true;
+                            
+                            else
+                                break;
+                        }
+                        
+                        tempString += command[i];
+                        
+                     
+                    }
+                    
+                    return false;
+                }
+                
+                // -----------------------------------------------------------------------
+                // Determins if string is data type
+                std::pair<std::string, std::string> disectDataType(std::string command)
+                {
+                    std::string tempString = "";
+                    
+                    std::pair<std::string, std::string> pairString;
+                    
+                    // Determines if the searchingForDataType condition should be executed
+                    bool searchingForDataType = true;
+
+                    // Determines if there is a space after datatype is detected
+                    bool isSpace = false;
+                    
+                    // Determines if actual datatype is being read
+                    bool isDataType = false;
+                    
+                    for(int i = 0; i < command.size(); i++)
+                    {
+                        if(command[i] != ' ')
+                            tempString += command[i];
+                        
+                        if((tempString == "datatype" || tempString == "data type") && searchingForDataType)
+                        {
+                            pairString.first = tempString;
+                            tempString = "";
+                            isSpace = true;
+                            searchingForDataType = false;
+                        }
+
+                        else if(isSpace)
+                        {
+                            if(command[i] == ' ')
+                            {
+                                isSpace = false;
+                                continue;
+                            }
+                            else
+                            {
+                                throw std::invalid_argument("\n\nError - Space is not detected\n\n");
+                            }
+                            
+                        }
+                        
+                    }
+
+                    // Generate lowercase letters
+                    for(int i = 0; i < tempString.size(); i++)
+                        tempString[i] = std::tolower(tempString[i]);
+                    
+                    if(tempString == "int" || tempString == "char" || tempString == "string")
+                        isDataType = true;
+                       
+                    if(isDataType)
+                        pairString.second = tempString;
+                    
+                    else
+                        throw std::invalid_argument("\n\nError - " + std::string(tempString) + " is not a datatype\n\n");
+
+                    return pairString;
+                }
         
         // Deconstructor
         ~ PROCEDURE_HANDLER() = default;

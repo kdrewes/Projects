@@ -26,7 +26,7 @@ void Tokenize :: Execute()
         try
         {
             // Read each file
-            this -> read.open(TestFiles[0],std::ios::in);
+            this -> read.open(TestFiles[1],std::ios::in);
             
             // Collect tokens from current file being read
             this -> TokenVector.push_back(ReadFile());
@@ -398,9 +398,7 @@ void Tokenize :: Configure_Procedure(char character)
                this -> syntax + character == "char" ||
                this -> syntax + character == "string") &&
                read.peek() == ' ')
-            {
-                isProcedure("data type");
-            }
+                isProcedure("datatype int");
             
             else if(character == ')' && this -> syntax.size() == 0)
                 isProcedure(")");
