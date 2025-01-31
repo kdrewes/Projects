@@ -884,10 +884,10 @@ private:
         };
         
         // Declare boolean varialble when procedure is found
-        procedure_bool is_procedure;
+        bool is_procedure;
         
         // Declare boolean variables used for regular procedure and main procedure
-        procedure_bool is_regular_procedure,
+        bool is_regular_procedure,
                        is_left_parenthesis,
                        is_data_type,
                        is_variable,
@@ -895,15 +895,17 @@ private:
                        is_right_parenthesis;
         
         // Declare boolean variables used for main procedure
-        procedure_bool is_main,
+        bool           is_main,
                        is_void,
                        is_left_parenthesis_main,
                        is_right_parenthesis_main;
        
         // Declare boolean variable used to determine tenetive outcomes
-        procedure_bool scanning_for_left_parenthesis,
+        bool           scanning_for_left_parenthesis,
                        left_parenthesis_detected;
         
+        // Record the last datatype used when PROCEDURE_ENUM :: DATA_TYPE is called
+        std::string saveDataType;
         
         // Default Constructor
         PROCEDURE_HANDLER() :
@@ -1146,7 +1148,10 @@ private:
                         {
                             Reset();
                             
-                            switch(dataType(disectDataType(command).second))
+                            this -> saveDataType = disectDataType(command).second;
+                                                    
+                            /*
+                            switch(dataType(this -> saveDataType))
                             {
                                 case INTEGER:
 
@@ -1162,7 +1167,7 @@ private:
                                     throw std::invalid_argument("\n\nError - " + std::string(disectDataType(command).second) + " is an invalid data type " + "\n\n");
 
                             }
-
+                             */
                             is_data_type = true;
                             
                             is_regular_procedure = true;
