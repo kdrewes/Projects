@@ -969,7 +969,7 @@ private:
             else if((command == ")" || command == "right parenthesis")  && is_main)
                 return PROCEDURE_ENUM :: RIGHT_PARENTHESIS_MAIN;
             
-            else if(searchForDataType(command) &&  is_regular_procedure)
+            else if(((command == "is data type" || command == "is datatype") || searchForDataType(command)) &&  is_regular_procedure)
                 return PROCEDURE_ENUM :: DATA_TYPE;
             
             else if((command == "is variable" || command == "variable") && is_regular_procedure)
@@ -1149,25 +1149,9 @@ private:
                             Reset();
                             
                             this -> saveDataType = disectDataType(command).second;
+                            
+                            std::cout << "\n\nthis -> saveDataType = " << this -> saveDataType << std::endl << std::endl;
                                                     
-                            /*
-                            switch(dataType(this -> saveDataType))
-                            {
-                                case INTEGER:
-
-                                    break;
-                                    
-                                case CHAR:
-                                    break;
-                                    
-                                case STRING:
-                                    break;
-                                    
-                                case ERROR:
-                                    throw std::invalid_argument("\n\nError - " + std::string(disectDataType(command).second) + " is an invalid data type " + "\n\n");
-
-                            }
-                             */
                             is_data_type = true;
                             
                             is_regular_procedure = true;

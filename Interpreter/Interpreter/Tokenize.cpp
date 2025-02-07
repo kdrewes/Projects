@@ -410,6 +410,28 @@ void Tokenize :: Configure_Procedure(char character)
                 throw std::invalid_argument("\n\nError - " + tempString + " is invalid syntax\n\n");
             }
         }
+        else if(isProcedure(strdup("is datatype")))
+        {
+            std::cout << "\n\nIS DATA TYPE\n\n";
+            /*
+            switch(dataType(this -> saveDataType))
+            {
+                case INTEGER:
+
+                    break;
+                    
+                case CHAR:
+                    break;
+                    
+                case STRING:
+                    break;
+                    
+                case ERROR:
+                    throw std::invalid_argument("\n\nError - " + std::string(disectDataType(command).second) + " is an invalid data type " + "\n\n");
+
+            }
+             */
+        }
     }
     
     else if(isProcedure(strdup("is main")))
