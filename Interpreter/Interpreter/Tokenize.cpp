@@ -400,7 +400,16 @@ void Tokenize :: Configure_Procedure(char character)
                this -> syntax + character == "char" ||
                this -> syntax + character == "string") &&
                read.peek() == ' ')
-                isProcedure("datatype int");
+            {
+                if(this -> syntax + character == "int")
+                    isProcedure("datatype int");
+                
+                else if(this -> syntax + character == "char")
+                    isProcedure("datatype char");
+                
+                else if(this -> syntax + character == "string")
+                    isProcedure("datatype string");
+            }
             
             else if(character == ')' && this -> syntax.size() == 0)
                 isProcedure(")");

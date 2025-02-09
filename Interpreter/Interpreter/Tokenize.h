@@ -903,8 +903,10 @@ private:
                        is_right_parenthesis_main;
        
         // Declare boolean variable used to determine tenetive outcomes
-        bool           scanning_for_left_parenthesis,
-                       left_parenthesis_detected;
+        bool           searching_for_left_parenthesis,
+                       searching_for_right_parenthesis,
+                       left_parenthesis_detected,
+                       right_parenthesis_detected;
         
         // Record the last datatype used when PROCEDURE_ENUM :: DATA_TYPE is called
         std::string saveDataType;
@@ -928,8 +930,10 @@ private:
         is_void(false),
         
         // Declare boolean variables used for tenetive scenarios
-        scanning_for_left_parenthesis(false),
-        left_parenthesis_detected(false)
+        searching_for_left_parenthesis(false),
+        searching_for_right_parenthesis(false),
+        left_parenthesis_detected(false),
+        right_parenthesis_detected(false)
         
         {}
 
@@ -986,10 +990,22 @@ private:
                     command == "searching for (")
                 return PROCEDURE_ENUM :: SEARCHING_FOR_LEFT_PARENTHESIS;
             
+            
+            else if(command == "scanning for right parenthesis" ||
+                    command == "searching for right parenthesis" ||
+                    command == "scanning for )" ||
+                    command == "searching for )")
+                return PROCEDURE_ENUM :: SEARCHING_FOR_RIGHT_PARENTHESIS;
+            
             else if(command == "found left parenthesis" ||
-                    command == "found (" ||
-                    command == "left parenthesis detected")
+                    command == "left parenthesis detected" ||
+                    command == "found (")
                 return PROCEDURE_ENUM :: LEFT_PARENTHESIS_DETECTED;
+            
+            else if(command == "found right parenthesis" ||
+                    command == "right parenthesis detected" ||
+                    command == "found )")
+                return PROCEDURE_ENUM :: RIGHT_PARENTHESIS_DETECTED;
             
             else if(command == "reset")
                 return PROCEDURE_ENUM :: RESET;
@@ -1213,11 +1229,22 @@ private:
                         
                     case SEARCHING_FOR_LEFT_PARENTHESIS:
                         
-                        if(!scanning_for_left_parenthesis)
-                            scanning_for_left_parenthesis = true;
+                        if(!searching_for_left_parenthesis)
+                            searching_for_left_parenthesis = true;
                         
                         else
-                            throw std::invalid_argument("\nError - scanning_for_left_parenthesis is already true\n");
+                            throw std::invalid_argument("\nError - searching_for_left_parenthesis is already true\n");
+                                           
+                        break;
+                    // -------------------------------------------------
+                        
+                    case SEARCHING_FOR_RIGHT_PARENTHESIS:
+                        
+                        if(!searching_for_right_parenthesis)
+                            searching_for_right_parenthesis = true;
+                        
+                        else
+                            throw std::invalid_argument("\nError - searching_for_right_parenthesis is already true\n");
                                            
                         break;
                     // -------------------------------------------------
@@ -1229,6 +1256,18 @@ private:
                         
                         else
                             throw std::invalid_argument("\nError - left_parenthesis_detected is already true\n");
+                                           
+                        break;
+                        
+                    // -------------------------------------------------
+                        
+                    case RIGHT_PARENTHESIS_DETECTED:
+                        
+                        if(!right_parenthesis_detected)
+                            right_parenthesis_detected = true;
+                        
+                        else
+                            throw std::invalid_argument("\nError - right_parenthesis_detected is already true\n");
                                            
                         break;
                         
@@ -1307,14 +1346,25 @@ private:
                             
                     case SEARCHING_FOR_LEFT_PARENTHESIS:
                             
-                        if(!scanning_for_left_parenthesis)
-                            scanning_for_left_parenthesis = true;
+                        if(!searching_for_left_parenthesis)
+                            searching_for_left_parenthesis = true;
                             
                         else
                             throw std::invalid_argument("\nError - scanning_for_left_parenthesis is already true\n");
                                                
                         break;
                         
+                    // -------------------------------------------------
+                        
+                    case SEARCHING_FOR_RIGHT_PARENTHESIS:
+                        
+                        if(!searching_for_right_parenthesis)
+                            searching_for_right_parenthesis = true;
+                        
+                        else
+                            throw std::invalid_argument("\nError - searching_for_right_parenthesis is already true\n");
+                                           
+                        break;
                     // -------------------------------------------------
                             
                     case LEFT_PARENTHESIS_DETECTED:
@@ -1327,6 +1377,18 @@ private:
                                                
                         break;
                             
+                    // -------------------------------------------------
+                        
+                    case RIGHT_PARENTHESIS_DETECTED:
+                        
+                        if(!right_parenthesis_detected)
+                            right_parenthesis_detected = true;
+                        
+                        else
+                            throw std::invalid_argument("\nError - right_parenthesis_detected is already true\n");
+                                           
+                        break;
+                        
                     // -------------------------------------------------
                             
                     case RESET:
@@ -1446,7 +1508,14 @@ private:
                             
                     case SEARCHING_FOR_LEFT_PARENTHESIS:
                         
-                        if(scanning_for_left_parenthesis)
+                        if(searching_for_left_parenthesis)
+                            return true; return false;
+                            
+                    // -------------------------------------------------
+                        
+                    case SEARCHING_FOR_RIGHT_PARENTHESIS:
+                        
+                        if(searching_for_right_parenthesis)
                             return true; return false;
                             
                     // -------------------------------------------------
@@ -1454,6 +1523,13 @@ private:
                     case LEFT_PARENTHESIS_DETECTED:
               
                         if(left_parenthesis_detected)
+                            return true; return false;
+                            
+                    // -------------------------------------------------
+                        
+                    case RIGHT_PARENTHESIS_DETECTED:
+              
+                        if(right_parenthesis_detected)
                             return true; return false;
                             
                     // -------------------------------------------------
@@ -1506,7 +1582,14 @@ private:
                         
                     case SEARCHING_FOR_LEFT_PARENTHESIS:
                         
-                        if(scanning_for_left_parenthesis)
+                        if(searching_for_left_parenthesis)
+                            return true; return false;
+                            
+                    // -------------------------------------------------
+                        
+                    case SEARCHING_FOR_RIGHT_PARENTHESIS:
+                        
+                        if(searching_for_right_parenthesis)
                             return true; return false;
                             
                     // -------------------------------------------------
@@ -1514,6 +1597,13 @@ private:
                     case LEFT_PARENTHESIS_DETECTED:
               
                         if(left_parenthesis_detected)
+                            return true; return false;
+                            
+                    // -------------------------------------------------
+                        
+                    case RIGHT_PARENTHESIS_DETECTED:
+              
+                        if(right_parenthesis_detected)
                             return true; return false;
                             
                     // -------------------------------------------------
@@ -1558,9 +1648,11 @@ private:
             this -> is_right_parenthesis_main = false;
             this -> is_void = false;
             
-            // boolean member
-            this -> scanning_for_left_parenthesis = false;
+            // boolean members
+            this -> searching_for_left_parenthesis = false;
+            this -> searching_for_right_parenthesis = false;
             this -> left_parenthesis_detected = false;
+            this -> right_parenthesis_detected = false;
             
         }
         
@@ -1583,9 +1675,10 @@ private:
                 is_left_parenthesis_main,
                 is_void,
                 is_right_parenthesis_main,
-                scanning_for_left_parenthesis,
-                left_parenthesis_detected
-                
+                searching_for_left_parenthesis,
+                searching_for_right_parenthesis,
+                left_parenthesis_detected,
+                right_parenthesis_detected
             };
             
             for(int i = 0; i < sizeof(procedure_array)/sizeof(procedure_array[0]); i++)
