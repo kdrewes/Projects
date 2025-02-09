@@ -412,7 +412,7 @@ void Tokenize :: Configure_Procedure(char character)
         }
         else if(isProcedure(strdup("is datatype")))
         {
-            std::cout << "\n\nIS DATA TYPE\n\n";
+
             /*
             switch(dataType(this -> saveDataType))
             {

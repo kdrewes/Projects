@@ -878,8 +878,10 @@ private:
             COMMA,
             RESET,
             IN_PROCESS,
-            SCANNING_FOR_LEFT_PARENTHESIS,
+            SEARCHING_FOR_LEFT_PARENTHESIS,
+            SEARCHING_FOR_RIGHT_PARENTHESIS,
             LEFT_PARENTHESIS_DETECTED,
+            RIGHT_PARENTHESIS_DETECTED,
             ERROR
         };
         
@@ -982,7 +984,7 @@ private:
                     command == "searching for left parenthesis" ||
                     command == "scanning for (" ||
                     command == "searching for (")
-                return PROCEDURE_ENUM :: SCANNING_FOR_LEFT_PARENTHESIS;
+                return PROCEDURE_ENUM :: SEARCHING_FOR_LEFT_PARENTHESIS;
             
             else if(command == "found left parenthesis" ||
                     command == "found (" ||
@@ -1211,7 +1213,7 @@ private:
                         
                     // -------------------------------------------------
                         
-                    case SCANNING_FOR_LEFT_PARENTHESIS:
+                    case SEARCHING_FOR_LEFT_PARENTHESIS:
                         
                         if(!scanning_for_left_parenthesis)
                             scanning_for_left_parenthesis = true;
@@ -1305,7 +1307,7 @@ private:
                         
                     // -------------------------------------------------
                             
-                    case SCANNING_FOR_LEFT_PARENTHESIS:
+                    case SEARCHING_FOR_LEFT_PARENTHESIS:
                             
                         if(!scanning_for_left_parenthesis)
                             scanning_for_left_parenthesis = true;
@@ -1444,7 +1446,7 @@ private:
                         
                     // -------------------------------------------------
                             
-                    case SCANNING_FOR_LEFT_PARENTHESIS:
+                    case SEARCHING_FOR_LEFT_PARENTHESIS:
                         
                         if(scanning_for_left_parenthesis)
                             return true; return false;
@@ -1504,7 +1506,7 @@ private:
                         
                         // -------------------------------------------------
                         
-                    case SCANNING_FOR_LEFT_PARENTHESIS:
+                    case SEARCHING_FOR_LEFT_PARENTHESIS:
                         
                         if(scanning_for_left_parenthesis)
                             return true; return false;
