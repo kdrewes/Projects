@@ -1152,8 +1152,6 @@ private:
                             
                             this -> saveDataType = disectDataType(command).second;
                             
-                            std::cout << "\n\nthis -> saveDataType = " << this -> saveDataType << std::endl << std::endl;
-                                                    
                             is_data_type = true;
                             
                             is_regular_procedure = true;
@@ -1721,13 +1719,13 @@ public:
     bool findFunction(TOKEN_TYPE token);
     
     // Checks if isInteger boolean variable is currently set as 'true'
-    void Configure_Integer(char character);
+    //void Configure_Integer(char character);
     
     // Checks if isValue boolean variable is currently set as 'true'
-    void Configure_Value(char character);
+    //void Configure_Value(char character);
     
     // Check if isPrintf boolean variable is currently set as 'true'
-    void Configure_PrintF(char character);
+    //void Configure_PrintF(char character);
     
     // Check if isProecedure boolean varaible is currently set as 'true'
     void Configure_Procedure(char character);
