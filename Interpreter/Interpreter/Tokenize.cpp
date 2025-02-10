@@ -329,7 +329,7 @@ void Tokenize :: Configure_PrintF(char character)
     }
 }
  */
-// ------------------------------------------------------------------
+//------------------------------------------------------------------
 // Check if isProecedure boolean varaible is currently set as 'true'
 void Tokenize :: Configure_Procedure(char character)
 {
@@ -441,6 +441,8 @@ void Tokenize :: Configure_Procedure(char character)
                 std::string variable = "variable " + this->syntax + character;
                 
                 isProcedure(variable);
+                
+                assignVector();
             }
             /*
             if(read.peek() == ')')
@@ -451,6 +453,13 @@ void Tokenize :: Configure_Procedure(char character)
             */
 
         }
+        
+        else if(isProcedure(strdup("is variable")))
+        {
+            if(character == ')')
+                isProcedure(")");
+        }
+        
         else if(isProcedure(strdup(")")))
         {
             if(character == '{')
@@ -476,6 +485,39 @@ void Tokenize :: Configure_Procedure(char character)
         }
     }
 }
+//------------------------------------------------------------------
+// Assigns vector from PROCEDURE_HANDLER to private vectors located in Tokenize class
+void Tokenize :: assignVector()
+
+{
+    std::cout << "\n\nACTIVATED";
+    std::cout << "\nisProcedure.saveDataType = " << isProcedure.saveDataType << std::endl << std::endl;
+    
+    switch(isProcedure.dataType(isProcedure.saveDataType))
+    {
+        case INTEGER:
+            
+            integerArgCollector.assign(isProcedure.integerCollector.begin(),isProcedure.integerCollector.end());
+            
+            std::cout << "\n\nslkdfjdslkjflksjdflkjfds\n\n";
+            break;
+            
+        case STRING:
+
+            stringArgCollector.assign(isProcedure.stringCollector.begin(),isProcedure.stringCollector.end());
+            break;
+            
+        case CHAR:
+            
+            charArgCollector.assign(isProcedure.charCollector.begin(),isProcedure.charCollector.end());
+            break;
+
+        case ERROR:
+            throw std::invalid_argument("\n\nError - " + std::string(isProcedure.saveDataType) + " is an invalid data type " + "\n\n");
+
+    }
+
+}
 
 // ------------------------------------------------------------------
 // Determines if file text is an identifier
@@ -489,7 +531,6 @@ bool Tokenize :: isIdentifier()
     
     else if(syntax == "if")
     {
-        
         //this -> isIf = {true,false};
         return true;
     }
@@ -837,62 +878,90 @@ TOKEN_TYPE Tokenize :: Read_Token()
     }
     else if(isPrintF(strdup("end scanning")))
         return TOKEN_TYPE :: STRING;
+    
     else if(this->syntax == "(")
         return TOKEN_TYPE :: LEFT_PARENTHESIS;
+    
     else if(this->syntax == ")")
         return TOKEN_TYPE :: RIGHT_PARENTHESIS;
+    
     else if(this->syntax == "[")
         return TOKEN_TYPE :: LEFT_BRACKET;
+    
     else if(this->syntax == "]")
         return TOKEN_TYPE :: RIGHT_BRACKET;
+    
     else if(this->syntax == "{")
         return TOKEN_TYPE :: LEFT_BRACE;
+    
     else if(this->syntax == "}")
         return TOKEN_TYPE :: RIGHT_BRACE;
+    
     else if(this->syntax == "\"")
         return TOKEN_TYPE :: DOUBLE_QUOTE;
+    
     else if(this->syntax == "'")
         return TOKEN_TYPE :: SINGLE_QUOTE;
+    
     else if(this->syntax == ";")
         return TOKEN_TYPE :: SEMICOLON;
+    
     else if(this->syntax == ",")
         return TOKEN_TYPE :: COMMA;
+    
     else if(this->syntax == "=")
         return TOKEN_TYPE :: ASSIGNMENT_OPERATOR;
+    
     else if(syntax == "+")
         return TOKEN_TYPE :: PLUS;
+    
     else if(syntax == "-")
+        
         if(!isValue(strdup("integer")))
             return TOKEN_TYPE :: MINUS;
+    
         else
             return TOKEN_TYPE :: BNF_IN_PROCESS;
     
     else if(syntax == "*")
         return TOKEN_TYPE :: ASTERISK;
+    
     else if(syntax == "/")
         return TOKEN_TYPE :: DIVIDE;
+    
     else if(syntax == "%")
         return TOKEN_TYPE :: MODULO;
+    
     else if(syntax == "^")
         return TOKEN_TYPE :: CARET;
+    
     else if(syntax == "<")
         return TOKEN_TYPE :: LESS_THAN;
+    
     else if(syntax == "<=")
         return TOKEN_TYPE :: LESS_THAN_OR_EQUAL;
+    
     else if(syntax == ">")
         return TOKEN_TYPE :: GREATER_THAN;
+    
     else if(syntax == ">=")
         return TOKEN_TYPE :: GREATER_THAN_OR_EQUAL;
+    
     else if(syntax == "&&")
         return TOKEN_TYPE :: BOOLEAN_AND;
+    
     else if(syntax == "||")
         return TOKEN_TYPE :: BOOLEAN_OR;
+    
     else if(syntax == "!")
         return TOKEN_TYPE :: BOOLEAN_NOT;
+    
     else if(syntax == "==")
         return TOKEN_TYPE :: BOOLEAN_EQUAL;
+    
     else if(syntax == "!=")
         return TOKEN_TYPE :: BOOLEAN_NOT_EQUAL;
+    
     else if(isValue(strdup(";")))
            return TOKEN_TYPE :: INTEGER;
     

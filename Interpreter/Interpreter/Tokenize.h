@@ -51,10 +51,12 @@ enum TOKEN_TYPE {
     BOOLEAN_NOT,
     BOOLEAN_EQUAL,
     BOOLEAN_NOT_EQUAL,
-    STRING,
     INTEGER,
+    STRING,
+    CHAR,
     BNF_IN_PROCESS,
-    NON_BNF
+    NON_BNF,
+    ERROR
 };
 
 class Tokenize
@@ -965,6 +967,7 @@ private:
         left_parenthesis_detected(false),
         right_parenthesis_detected(false),
         
+        // Initialize tenetive variables
         saveDataType(""),
         argument("")
         
@@ -979,7 +982,7 @@ private:
         // Collects char datatype
         charCollector;
         
-        // -----------------------------------------------------------------------
+        //-----------------------------------------------------------------------
         // Modifies boolean values which belong to PROCEDURE_HANDLER
         void operator()(std::string command)
         {
@@ -1233,26 +1236,8 @@ private:
                             is_variable = true;
                             
                             is_regular_procedure = true;
-                           
-                            switch(dataType(this -> saveDataType))
-                            {
-                                case INTEGER:
-                                    
-                                    std::cout << "\n\nINTEGER IS ACTIVATED\n\n";
-
-                                    break;
-                                    
-                                case CHAR:
-                                    break;
-                                    
-                                case STRING:
-                                    break;
-                                    
-                                case ERROR:
-                                    throw std::invalid_argument("\n\nError - " + std::string(disectDataType(command).second) + " is an invalid data type " + "\n\n");
-
-                            }
-                             
+                            
+                            storeArgument(command);
                         }
                         
                         else
@@ -1303,6 +1288,7 @@ private:
                             throw std::invalid_argument("\nError - searching_for_left_parenthesis is already true\n");
                         
                         break;
+                        
                         // -------------------------------------------------
                         
                     case SEARCHING_FOR_RIGHT_PARENTHESIS:
@@ -1314,6 +1300,7 @@ private:
                             throw std::invalid_argument("\nError - searching_for_right_parenthesis is already true\n");
                         
                         break;
+                        
                         // -------------------------------------------------
                         
                     case LEFT_PARENTHESIS_DETECTED:
@@ -1345,6 +1332,8 @@ private:
                         Reset();
                         
                         break;
+                        
+                        // -------------------------------------------------
                         
                     case ERROR:
                         
@@ -1476,8 +1465,39 @@ private:
         }
         
         // -----------------------------------------------------------------------
+        // Collects argument of applicable datatype
+        void storeArgument(std::string command)
+        {
+            switch(dataType(this -> saveDataType))
+            {
+                case INTEGER:
+
+                    integerCollector.push_back(argument);
+                    
+                    break;
+                    
+                case STRING:
+                    
+                    stringCollector.push_back(argument);
+                    
+                    break;
+                    
+                case CHAR:
+                    
+                    charCollector.push_back(argument);
+                    
+                    break;
+
+                case ERROR:
+                    throw std::invalid_argument("\n\nError - " + std::string(disectDataType(command).second) + " is an invalid data type " + "\n\n");
+
+            }
+            
+            argument = "";
+        }
+        // -----------------------------------------------------------------------
         // Used to verify the boolean status of each flag.
-        procedure_bool Verify_Flag(PROCEDURE_ENUM enumObject, PROCEDURE_ENUM procedureType, std::string command)
+        bool Verify_Flag(PROCEDURE_ENUM enumObject, PROCEDURE_ENUM procedureType, std::string command)
         {
             switch(procedureType)
             {
@@ -1942,6 +1962,9 @@ public:
     
     // Check if isProecedure boolean varaible is currently set as 'true'
     void Configure_Procedure(char character);
+    
+    // Assigns vector from PROCEDURE_HANDLER to private vectors located in Tokenize class
+    void assignVector();
     
     // Verifies that each character is legally allowed to use
     char Configure_Token(char character);
