@@ -594,6 +594,7 @@ bool Tokenize :: isToken(TOKEN_TYPE token)
         return false; return true;
 }
 // ------------------------------------------------------------------
+// Determines if an integer variable is present within an operation/equation
 bool Tokenize :: findInteger()
 {
         if(!integerCollector.empty())
@@ -606,7 +607,36 @@ bool Tokenize :: findInteger()
     
     return false;
 }
+//------------------------------------------------------------------
+// Determines if a string variable is present within an operation/equation
+bool Tokenize :: findString()
+{
+    if(!stringCollector.empty())
+        for(std::vector<dataType> :: size_type i = 0; i < stringCollector.size(); i++)
+            if(this->syntax == stringCollector[i])
+            {
+                this -> string_index = i;
+                return true;
+            }
+
+    return false;
+}
+//------------------------------------------------------------------
+// Determines if a char variable is present within an operation/equation
+bool Tokenize :: findChar()
+{
+    if(!charCollector.empty())
+        for(std::vector<dataType> :: size_type i = 0; i < charCollector.size(); i++)
+            if(this->syntax == charCollector[i])
+            {
+                this -> char_index = i;
+                return true;
+            }
+
+    return false;
+}
 // ------------------------------------------------------------------
+// Determines if a procedure is present within an operation/equation
 bool Tokenize :: findProcedure()
 {
     if(isProcedure())
@@ -898,6 +928,27 @@ std::pair<std::string, std::string> Tokenize :: Token_Handler(TOKEN_TYPE token)
                 return {"IDENTIFIER", this -> integerCollector[tempIndex]};
                 
             }
+            
+            else if(findString())
+            {
+                position tempIndex = this -> string_index;
+                
+                this -> string_index = 0;
+                
+                return {"IDENTIFIER", this -> stringCollector[tempIndex]};
+                
+            }
+            
+            else if(findChar())
+            {
+                position tempIndex = this -> char_index;
+                
+                this -> char_index = 0;
+                
+                return {"IDENTIFIER", this -> charCollector[tempIndex]};
+                
+            }
+            
             else if(findProcedure() && isProcedure(strdup("is regular procedure")))
             {
                 position tempIndex = this -> procedure_index;

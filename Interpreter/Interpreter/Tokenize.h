@@ -65,10 +65,10 @@ private:
     std::vector<fileName> TestFiles;
     
     // Collects string datatype
-    std::vector<dataType> stringCollector,
+    std::vector<dataType> integerCollector,
     
     // Collects int datatype
-    integerCollector,
+    stringCollector,
     
     // Collects char datatype
     charCollector,
@@ -81,6 +81,12 @@ private:
     
     // Contains index of integer variable found
     position integer_index;
+    
+    // Contains index of string variable found
+    position string_index;
+    
+    // Contains index of char variable found
+    position char_index;
     
     // Contains index of procedure found
     position procedure_index;
@@ -1876,14 +1882,17 @@ public:
     // Determines if a BNF token was read
     bool isToken(TOKEN_TYPE token);
     
-    // Used to find if a integer or string variable is present within an operation/equation
+    // Determines if an integer variable is present within an operation/equation
     bool findInteger();
     
-    // Used to find if a integer or string variable is present within an operation/equation
-    bool findProcedure();
+    // Determines if an string variable is present within an operation/equation
+    bool findString();
     
-    // Used to find a function name that is present within an operation/equation
-    bool findFunction(TOKEN_TYPE token);
+    // Determines if an char variable is present within an operation/equation
+    bool findChar();
+    
+    // Determines if a procedure is present within an operation/equation
+    bool findProcedure();
     
     // Checks if isInteger boolean variable is currently set as 'true'
     //void Configure_Integer(char character);
