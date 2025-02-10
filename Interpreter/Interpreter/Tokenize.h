@@ -1192,7 +1192,9 @@ private:
                         if(!is_left_parenthesis)
                         {
                             Reset();
+                            
                             is_left_parenthesis = true;
+                            
                             is_regular_procedure = true;
                         }
                         
@@ -1227,17 +1229,17 @@ private:
                         if(!is_variable)
                         {
                             Reset();
+                            
                             is_variable = true;
+                            
                             is_regular_procedure = true;
                            
-                            /*
                             switch(dataType(this -> saveDataType))
                             {
                                 case INTEGER:
                                     
                                     std::cout << "\n\nINTEGER IS ACTIVATED\n\n";
 
-≈
                                     break;
                                     
                                 case CHAR:
@@ -1250,7 +1252,7 @@ private:
                                     throw std::invalid_argument("\n\nError - " + std::string(disectDataType(command).second) + " is an invalid data type " + "\n\n");
 
                             }
-                             */
+                             
                         }
                         
                         else

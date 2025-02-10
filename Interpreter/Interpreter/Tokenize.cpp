@@ -483,8 +483,10 @@ bool Tokenize :: isIdentifier()
 {
     if(syntax == "void")
         return true;
+    
     else if(this->syntax == "printf")
         return true;
+    
     else if(syntax == "if")
     {
         
@@ -493,31 +495,39 @@ bool Tokenize :: isIdentifier()
     }
     else if(syntax == "else")
         return true;
+    
     else if(syntax == "else if")
         return true;
+    
     else if(syntax == "for")
         return true;
+    
     else if(syntax == "while")
         return true;
+    
     else if(syntax == "do")
         return true;
+    
     else if(syntax == "function")
         return true;
+    
     else if(syntax == "procedure")
         return true;
+    
     else if(syntax == "main")
         return true;
+    
     else if(syntax == "void")
         return true;
+    
     else if(syntax == "int")
     {
         if(this->read.peek() == ' ')
             return true;
         else
             std::invalid_argument("\n\nError - invalid syntax detected.\n");
-
-        
     }
+    
     else if(isInteger(strdup("datatype")))
     {
         if(this->read.peek() == ';' && this->syntax.size() != 0)
@@ -531,10 +541,28 @@ bool Tokenize :: isIdentifier()
         
     }
     
-    else if(findInteger())
+    else if(findInteger() && !isProcedure())
         return true;
     
-    else if(findProcedure())
+    else if(findString() && !isProcedure())
+        return true;
+    
+    else if(findChar() && !isProcedure())
+        return true;
+    
+    else if(findIntegerArg() && isProcedure())
+        return true;
+    
+    else if(findStringArg() && isProcedure())
+        return true;
+    
+    else if(findCharArg() && isProcedure())
+        return true;
+    
+    else if(findProcedure() && isProcedure())
+        return true;
+    
+    else if(findProcedure() && isProcedure())
         return true;
     
     return false;
@@ -545,31 +573,43 @@ bool Tokenize :: tokenIdentifier()
 {
     if(this->syntax == "void")
         return true;
+    
     else if(this->syntax == "printf")
         return true;
+    
     else if(this->syntax == "if")
     {
         //this -> isIf = {true,false};
         return true;
     }
+    
     else if(syntax == "else")
         return true;
+    
     else if(syntax == "else if")
         return true;
+    
     else if(syntax == "for")
         return true;
+    
     else if(syntax == "while")
         return true;
+    
     else if(syntax == "do")
         return true;
+    
     else if(syntax == "function")
         return true;
+    
     else if(syntax == "procedure")
         return true;
+    
     else if(syntax == "main")
         return true;
+    
     else if(syntax == "void")
         return true;
+    
     else if(syntax == "int")
     {
         if(this->read.peek() == ' ')
@@ -578,6 +618,7 @@ bool Tokenize :: tokenIdentifier()
             std::invalid_argument("\n\nError - Invalid syntax " + this -> syntax + " detected\n\n");
         
     }
+    
     else if(isInteger(strdup("datatype")))
     {
         if(this->read.peek() == ';' && this->syntax.size() != 0)
@@ -590,10 +631,26 @@ bool Tokenize :: tokenIdentifier()
             return true;
         
     }
-    else if(findInteger())
+    
+    else if(findInteger() && !isProcedure())
         return true;
     
-    else if(findProcedure())
+    else if(findString() && !isProcedure())
+        return true;
+    
+    else if(findChar() && !isProcedure())
+        return true;
+    
+    else if(findIntegerArg() && isProcedure())
+        return true;
+    
+    else if(findStringArg() && isProcedure())
+        return true;
+    
+    else if(findCharArg() && isProcedure())
+        return true;
+    
+    else if(findProcedure() && isProcedure())
         return true;
     
     return false;
@@ -771,9 +828,6 @@ TOKEN_TYPE Tokenize :: Read_Token()
         {
             if(!isPrintF())
                 isValue("=");
-        
-            return TOKEN_TYPE :: IDENTIFIER;
-            
         }
         
         else if(findProcedure())
