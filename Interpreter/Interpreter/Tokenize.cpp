@@ -1005,12 +1005,29 @@ std::pair<std::string, std::string> Tokenize :: Token_Handler(TOKEN_TYPE token)
             
             else if(findIntegerArg() && isProcedure())
             {
-                position tempIndex = this -> integer_index;
+                position tempIndex = this -> integer_arg_index;
                 
-                this -> integer_index = 0;
+                this -> integer_arg_index = 0;
                 
-                return {"IDENTIFIER", this -> integerCollector[tempIndex]};
+                return {"IDENTIFIER", this -> integerArgCollector[tempIndex]};
+            }
+            
+            else if(findStringArg() && isProcedure())
+            {
+                position tempIndex = this -> string_arg_index;
                 
+                this -> string_arg_index = 0;
+                
+                return {"IDENTIFIER", this -> stringArgCollector[tempIndex]};
+            }
+            
+            else if(findCharArg() && isProcedure())
+            {
+                position tempIndex = this -> char_arg_index;
+                
+                this -> char_arg_index = 0;
+                
+                return {"IDENTIFIER", this -> charArgCollector[tempIndex]};
             }
             
             else if(findProcedure() && isProcedure(strdup("is regular procedure")))
@@ -1024,8 +1041,6 @@ std::pair<std::string, std::string> Tokenize :: Token_Handler(TOKEN_TYPE token)
             
             else
                 return {"IDENTIFIER", this -> syntax};
-            
-           
             
         case LEFT_PARENTHESIS:
             return {"LEFT_PARENTHESIS", "("};
