@@ -10,6 +10,18 @@ Tokenize :: Tokenize(std::vector<std::string> TestFiles)
     
     this -> integer_index = 0;
     
+    this -> string_index = 0;
+    
+    this -> char_index = 0;
+    
+    this -> integer_arg_index = 0;
+    
+    this -> string_arg_index = 0;
+    
+    this -> char_arg_index = 0;
+    
+    this -> procedure_index = 0;
+    
     this -> count_characters = 0;
     
     this -> syntax = "";
@@ -635,7 +647,49 @@ bool Tokenize :: findChar()
 
     return false;
 }
-// ------------------------------------------------------------------
+//------------------------------------------------------------------
+// Determines if an integer argument variable is present within a procedure
+bool Tokenize :: findIntegerArg()
+{
+        if(!integerArgCollector.empty())
+            for(std::vector<dataType> :: size_type i = 0; i < integerArgCollector.size(); i++)
+                if(this->syntax == integerArgCollector[i])
+                {
+                    this -> integer_arg_index = i;
+                    return true;
+                }
+        
+    return false;
+}
+//------------------------------------------------------------------
+// Determines if an string argument variable is present within a procedure
+    bool Tokenize :: findStringArg()
+    {
+        if(!stringArgCollector.empty())
+            for(std::vector<dataType> :: size_type i = 0; i < stringArgCollector.size(); i++)
+                if(this->syntax == stringArgCollector[i])
+                {
+                    this -> string_arg_index = i;
+                    return true;
+                }
+            
+        return false;
+    }
+//------------------------------------------------------------------
+// Determines if an char argument variable is present within a procedure
+    bool Tokenize :: findCharArg()
+    {
+        if(!charArgCollector.empty())
+            for(std::vector<dataType> :: size_type i = 0; i < charArgCollector.size(); i++)
+                if(this->syntax == charArgCollector[i])
+                {
+                    this -> char_arg_index = i;
+                    return true;
+                }
+                
+        return false;
+    }
+    //------------------------------------------------------------------
 // Determines if a procedure is present within an operation/equation
 bool Tokenize :: findProcedure()
 {
@@ -919,7 +973,7 @@ std::pair<std::string, std::string> Tokenize :: Token_Handler(TOKEN_TYPE token)
             else if(syntax == "void")
                 return {"IDENTIFIER", "void"};
             
-            else if(findInteger())
+            else if(findInteger() && !isProcedure())
             {
                 position tempIndex = this -> integer_index;
                 
@@ -929,7 +983,7 @@ std::pair<std::string, std::string> Tokenize :: Token_Handler(TOKEN_TYPE token)
                 
             }
             
-            else if(findString())
+            else if(findString() && !isProcedure())
             {
                 position tempIndex = this -> string_index;
                 
@@ -939,13 +993,23 @@ std::pair<std::string, std::string> Tokenize :: Token_Handler(TOKEN_TYPE token)
                 
             }
             
-            else if(findChar())
+            else if(findChar() && !isProcedure())
             {
                 position tempIndex = this -> char_index;
                 
                 this -> char_index = 0;
                 
                 return {"IDENTIFIER", this -> charCollector[tempIndex]};
+                
+            }
+            
+            else if(findIntegerArg() && isProcedure())
+            {
+                position tempIndex = this -> integer_index;
+                
+                this -> integer_index = 0;
+                
+                return {"IDENTIFIER", this -> integerCollector[tempIndex]};
                 
             }
             

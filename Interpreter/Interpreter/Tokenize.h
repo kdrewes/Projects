@@ -64,14 +64,23 @@ private:
     // Test file vector
     std::vector<fileName> TestFiles;
     
-    // Collects string datatype
+    // Collects int datatype
     std::vector<dataType> integerCollector,
     
-    // Collects int datatype
+    // Collects string datatype
     stringCollector,
     
     // Collects char datatype
     charCollector,
+    
+    // Collects int arguments from procedure
+    integerArgCollector,
+    
+    // Collects string arguments from procedure
+    stringArgCollector,
+    
+    // Collects char arguments from procedure
+    charArgCollector,
     
     // Collects procedures/functions
     procedureCollector;
@@ -87,6 +96,15 @@ private:
     
     // Contains index of char variable found
     position char_index;
+    
+    // Contains index of integer argument found
+    position integer_arg_index;
+    
+    // Contains index of string argument found
+    position string_arg_index;
+    
+    // Contains index of char argument found
+    position char_arg_index;
     
     // Contains index of procedure found
     position procedure_index;
@@ -951,6 +969,15 @@ private:
         argument("")
         
         {}
+        
+        // Collects int datatype
+        std::vector<dataType> integerCollector,
+        
+        // Collects string datatype
+        stringCollector,
+        
+        // Collects char datatype
+        charCollector;
         
         // -----------------------------------------------------------------------
         // Modifies boolean values which belong to PROCEDURE_HANDLER
@@ -1859,8 +1886,7 @@ private:
         ~ PROCEDURE_HANDLER() = default;
         
     }isProcedure;
-    
-    // -----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
     
 public:
     
@@ -1890,6 +1916,15 @@ public:
     
     // Determines if an char variable is present within an operation/equation
     bool findChar();
+    
+    // Determines if an integer argument variable is present within a procedure
+    bool findIntegerArg();
+    
+    // Determines if a string argument variable is present within a procedure
+    bool findStringArg();
+    
+    // Determines if a char argument variable is present within a procedure
+    bool findCharArg();
     
     // Determines if a procedure is present within an operation/equation
     bool findProcedure();
