@@ -423,27 +423,21 @@ void Tokenize :: Configure_Procedure(char character)
         }
         else if(isProcedure(strdup("is datatype")))
         {
-            if(character == ')')
-                isProcedure(")");
-
-            /*
-            switch(dataType(this -> saveDataType))
+            
+            if(read.peek() == ')')
             {
-                case INTEGER:
-
-                    break;
-                    
-                case CHAR:
-                    break;
-                    
-                case STRING:
-                    break;
-                    
-                case ERROR:
-                    throw std::invalid_argument("\n\nError - " + std::string(disectDataType(command).second) + " is an invalid data type " + "\n\n");
-
+                std::string variable = "variable " + this->syntax + character;
+                
+                isProcedure(variable);
             }
-             */
+            /*
+            if(read.peek() == ')')
+                isProcedure(")");
+            
+            else if(read.peek() == ' ')
+                isProcedure("searching for right parenthesis");
+            */
+
         }
         else if(isProcedure(strdup(")")))
         {
@@ -651,7 +645,7 @@ TOKEN_TYPE Tokenize :: Read_Token()
                    this->syntax.size() != 0)
                 {
                     isInteger("value");
-                    integerCollector.push_back(syntax);
+                    integerCollector.push_back(this -> syntax);
                     return TOKEN_TYPE :: IDENTIFIER;
                 }
                 else if((this -> read.peek() == '=' ||

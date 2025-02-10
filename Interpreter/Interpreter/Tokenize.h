@@ -70,6 +70,9 @@ private:
     // Collects int datatype
     integerCollector,
     
+    // Collects char datatype
+    charCollector,
+    
     // Collects procedures/functions
     procedureCollector;
     
@@ -107,8 +110,8 @@ private:
         };
         
         integer_bool is_data_type,
-                     is_value,
-                     is_assignment_operator;
+        is_value,
+        is_assignment_operator;
         
         INTEGER_HANDLER() :
         is_data_type(false),
@@ -165,7 +168,7 @@ private:
             switch(enumObject)
             {
                 case DATA_TYPE:
-                
+                    
                     if(!this -> is_data_type)
                     {
                         Reset();
@@ -175,10 +178,10 @@ private:
                         throw std::invalid_argument("\nError - is_data_type is already set to true\n");
                     
                     break;
-                
+                    
                     
                 case VALUE:
-                
+                    
                     if(!this -> is_value)
                     {
                         Reset();
@@ -189,10 +192,10 @@ private:
                         throw std::invalid_argument("\nError - is_value is already set to true\n");
                     
                     break;
-                
+                    
                     
                 case ASSIGNMENT_OPERATOR:
-                
+                    
                     if(!this -> is_assignment_operator)
                     {
                         Reset();
@@ -202,7 +205,7 @@ private:
                         throw std::invalid_argument("\nError - is_assignment_operator is already set to true\n");
                     
                     break;
-                
+                    
                 case RESET:
                     
                     Reset();
@@ -221,17 +224,17 @@ private:
             switch(enum_propery)
             {
                 case DATA_TYPE:
-                
+                    
                     if(is_data_type)
                         return true; return false;
-                
+                    
                 case VALUE:
-                
+                    
                     if(is_value)
                         return true; return false;
-                 
+                    
                 case ASSIGNMENT_OPERATOR:
-                
+                    
                     if(is_assignment_operator)
                         return true; return false;
                     
@@ -278,7 +281,7 @@ private:
             
             return false;
         }
-
+        
         // Deconstructor
         ~ INTEGER_HANDLER() = default;
         
@@ -302,8 +305,8 @@ private:
         // -----------------------------------------------------------------------
         // Declare boolean variable for VALUE_HANDLER
         value_bool is_equal,
-                   is_integer,
-                   is_semicolon;
+        is_integer,
+        is_semicolon;
         
         // -----------------------------------------------------------------------
         // Declare paramatarized constructor
@@ -363,7 +366,7 @@ private:
             switch(enumObject)
             {
                 case ASSIGNMENT_OPERATOR:
-                
+                    
                     if(!this -> is_equal)
                     {
                         Reset();
@@ -374,10 +377,10 @@ private:
                         throw std::invalid_argument("\nError - is_equal is already set to true\n");
                     
                     break;
-                
+                    
                     
                 case INTEGER:
-                
+                    
                     if(!this -> is_integer)
                     {
                         Reset();
@@ -388,10 +391,10 @@ private:
                         throw std::invalid_argument("\nError - is_integer is already set to true\n");
                     
                     break;
-                
+                    
                     
                 case SEMICOLON:
-                
+                    
                     if(!this -> is_semicolon)
                     {
                         Reset();
@@ -401,7 +404,7 @@ private:
                         throw std::invalid_argument("\nError - is_semicolon is already set to true\n");
                     
                     break;
-                
+                    
                 case RESET:
                     
                     Reset();
@@ -423,22 +426,22 @@ private:
             {
                     
                 case ASSIGNMENT_OPERATOR:
-                
+                    
                     if(is_equal)
                         return true; return false;
-                
+                    
                     
                 case INTEGER:
-                
+                    
                     if(is_integer)
                         return true; return false;
-                
+                    
                     
                 case SEMICOLON:
-                
+                    
                     if(is_semicolon)
                         return true; return false;
-                
+                    
                     
                 case RESET:
                     
@@ -495,8 +498,8 @@ private:
     
     // -----------------------------------------------------------------------
     /*  Facilitates the boolean mechanics anytime a procedure is detected
-        Indicates aa printf command was detected.
-        Content in quotation marks will return a string.
+     Indicates aa printf command was detected.
+     Content in quotation marks will return a string.
      */
     struct PRINTF_HANDLER
     {
@@ -518,7 +521,7 @@ private:
         };
         
         // -----------------------------------------------------------------------
-
+        
         // Declare all flags used in the Printf Handler operation
         printf_bool is_print_f,
         is_left_paranthesis,
@@ -531,7 +534,7 @@ private:
         is_semicolon;
         
         // -----------------------------------------------------------------------
-
+        
         // Execute default constructor
         PRINTF_HANDLER() :
         is_print_f(false),
@@ -570,7 +573,7 @@ private:
         PRINTF_ENUM Enum_Handler(std::string command)
         {
             // Used to prevent command from being case sensetive
-           // LowerCase(command);
+            // LowerCase(command);
             
             // Determine correct enum to use
             if(command == "printf")
@@ -890,30 +893,33 @@ private:
         
         // Declare boolean variables used for regular procedure and main procedure
         bool is_regular_procedure,
-                       is_left_parenthesis,
-                       is_data_type,
-                       is_variable,
-                       is_comma,
-                       is_right_parenthesis;
+             is_left_parenthesis,
+             is_data_type,
+             is_variable,
+             is_comma,
+             is_right_parenthesis;
         
         // Declare boolean variables used for main procedure
-        bool           is_main,
-                       is_void,
-                       is_left_parenthesis_main,
-                       is_right_parenthesis_main;
-       
-        // Declare boolean variable used to determine tenetive outcomes
-        bool           searching_for_left_parenthesis,
-                       searching_for_right_parenthesis,
-                       left_parenthesis_detected,
-                       right_parenthesis_detected;
+        bool is_main,
+             is_void,
+             is_left_parenthesis_main,
+             is_right_parenthesis_main;
         
-        // Record the last datatype used when PROCEDURE_ENUM :: DATA_TYPE is called
+        // Declare boolean variable used to determine tenetive outcomes
+        bool searching_for_left_parenthesis,
+             searching_for_right_parenthesis,
+             left_parenthesis_detected,
+             right_parenthesis_detected;
+        
+        // Record the last datatype used when PROCEDURE_ENUM :: DATA_TYPE is detected
         std::string saveDataType;
+        
+        // Record name of argument when PROCEDURE_ENUM :: VARIABLE is detected
+        std::string argument;
         
         // Default Constructor
         PROCEDURE_HANDLER() :
-
+        
         // Determines if a main or regular procedure has been detected
         is_procedure(false),
         is_main(false),
@@ -933,14 +939,18 @@ private:
         searching_for_left_parenthesis(false),
         searching_for_right_parenthesis(false),
         left_parenthesis_detected(false),
-        right_parenthesis_detected(false)
+        right_parenthesis_detected(false),
+        
+        saveDataType(""),
+        argument("")
         
         {}
-
+        
         // -----------------------------------------------------------------------
         // Modifies boolean values which belong to PROCEDURE_HANDLER
         void operator()(std::string command)
         {
+
             return Configure(Enum_Handler(command), command);
         }
         
@@ -978,7 +988,7 @@ private:
             else if(((command == "is data type" || command == "is datatype") || searchForDataType(command)) &&  is_regular_procedure)
                 return PROCEDURE_ENUM :: DATA_TYPE;
             
-            else if((command == "is variable" || command == "variable") && is_regular_procedure)
+            else if(((command == "is variable" || command == "variable") || searchForVariable(command)) && is_regular_procedure)
                 return PROCEDURE_ENUM :: VARIABLE;
             
             else if((command == "," || command == "comma") && is_regular_procedure)
@@ -1009,7 +1019,7 @@ private:
             
             else if(command == "reset")
                 return PROCEDURE_ENUM :: RESET;
-
+            
             return PROCEDURE_ENUM :: ERROR;
         }
         
@@ -1027,7 +1037,7 @@ private:
                 return PROCEDURE_ENUM :: REGULAR_PROCEDURE;
             
             return PROCEDURE_ENUM :: IN_PROCESS;
-
+            
         }
         
         // -----------------------------------------------------------------------
@@ -1048,10 +1058,10 @@ private:
         
         // -----------------------------------------------------------------------
         // Determine if boolean property is exists in PROCEDURE_HANDLER
-          procedure_bool operator()(char * command)
-          {
-              return Verify_Flag(Enum_Handler(command), ProcedureType() ,command);
-          }
+        procedure_bool operator()(char * command)
+        {
+            return Verify_Flag(Enum_Handler(command), ProcedureType() ,command);
+        }
         
         // -----------------------------------------------------------------------
         // Determine if there is a true boolean member contained in PROCEDURE_HANDLER
@@ -1059,7 +1069,7 @@ private:
         {
             return ContainsTrueFlag();
         }
-      
+        
         // -----------------------------------------------------------------------
         // Used to modify boolean flags
         void Configure(PROCEDURE_ENUM enumObject, std::string command)
@@ -1086,7 +1096,7 @@ private:
                         
                         if(!is_procedure)
                             is_procedure = true;
-
+                        
                         else
                             throw std::invalid_argument("\nError - is_procedure is already true\n");
                         
@@ -1186,6 +1196,28 @@ private:
                             Reset();
                             is_variable = true;
                             is_regular_procedure = true;
+                           
+                            /*
+                            switch(dataType(this -> saveDataType))
+                            {
+                                case INTEGER:
+                                    
+                                    std::cout << "\n\nINTEGER IS ACTIVATED\n\n";
+
+≈
+                                    break;
+                                    
+                                case CHAR:
+                                    break;
+                                    
+                                case STRING:
+                                    break;
+                                    
+                                case ERROR:
+                                    throw std::invalid_argument("\n\nError - " + std::string(disectDataType(command).second) + " is an invalid data type " + "\n\n");
+
+                            }
+                             */
                         }
                         
                         else
@@ -1209,7 +1241,7 @@ private:
                         
                         break;
                         
-                    // -------------------------------------------------
+                        // -------------------------------------------------
                         
                     case RIGHT_PARENTHESIS:
                         
@@ -1225,7 +1257,7 @@ private:
                         
                         break;
                         
-                    // -------------------------------------------------
+                        // -------------------------------------------------
                         
                     case SEARCHING_FOR_LEFT_PARENTHESIS:
                         
@@ -1234,9 +1266,9 @@ private:
                         
                         else
                             throw std::invalid_argument("\nError - searching_for_left_parenthesis is already true\n");
-                                           
+                        
                         break;
-                    // -------------------------------------------------
+                        // -------------------------------------------------
                         
                     case SEARCHING_FOR_RIGHT_PARENTHESIS:
                         
@@ -1245,9 +1277,9 @@ private:
                         
                         else
                             throw std::invalid_argument("\nError - searching_for_right_parenthesis is already true\n");
-                                           
+                        
                         break;
-                    // -------------------------------------------------
+                        // -------------------------------------------------
                         
                     case LEFT_PARENTHESIS_DETECTED:
                         
@@ -1256,10 +1288,10 @@ private:
                         
                         else
                             throw std::invalid_argument("\nError - left_parenthesis_detected is already true\n");
-                                           
+                        
                         break;
                         
-                    // -------------------------------------------------
+                        // -------------------------------------------------
                         
                     case RIGHT_PARENTHESIS_DETECTED:
                         
@@ -1268,13 +1300,13 @@ private:
                         
                         else
                             throw std::invalid_argument("\nError - right_parenthesis_detected is already true\n");
-                                           
+                        
                         break;
                         
-                    // -------------------------------------------------
-                            
+                        // -------------------------------------------------
+                        
                     case RESET:
-
+                        
                         Reset();
                         
                         break;
@@ -1326,7 +1358,7 @@ private:
                         
                         break;
                         
-                     // -------------------------------------------------
+                        // -------------------------------------------------
                         
                     case RIGHT_PARENTHESIS_MAIN:
                         
@@ -1342,19 +1374,19 @@ private:
                         
                         break;
                         
-                    // -------------------------------------------------
-                            
+                        // -------------------------------------------------
+                        
                     case SEARCHING_FOR_LEFT_PARENTHESIS:
-                            
+                        
                         if(!searching_for_left_parenthesis)
                             searching_for_left_parenthesis = true;
-                            
+                        
                         else
                             throw std::invalid_argument("\nError - scanning_for_left_parenthesis is already true\n");
-                                               
+                        
                         break;
                         
-                    // -------------------------------------------------
+                        // -------------------------------------------------
                         
                     case SEARCHING_FOR_RIGHT_PARENTHESIS:
                         
@@ -1363,21 +1395,21 @@ private:
                         
                         else
                             throw std::invalid_argument("\nError - searching_for_right_parenthesis is already true\n");
-                                           
+                        
                         break;
-                    // -------------------------------------------------
-                            
+                        // -------------------------------------------------
+                        
                     case LEFT_PARENTHESIS_DETECTED:
-                            
+                        
                         if(!left_parenthesis_detected)
-                                left_parenthesis_detected = true;
-                            
+                            left_parenthesis_detected = true;
+                        
                         else
                             throw std::invalid_argument("\nError - left_parenthesis_detected is already true\n");
-                                               
+                        
                         break;
-                            
-                    // -------------------------------------------------
+                        
+                        // -------------------------------------------------
                         
                     case RIGHT_PARENTHESIS_DETECTED:
                         
@@ -1386,28 +1418,28 @@ private:
                         
                         else
                             throw std::invalid_argument("\nError - right_parenthesis_detected is already true\n");
-                                           
+                        
                         break;
                         
-                    // -------------------------------------------------
-                            
+                        // -------------------------------------------------
+                        
                     case RESET:
-   
+                        
                         Reset();
                         
                         break;
-                    
-                    // -------------------------------------------------
+                        
+                        // -------------------------------------------------
                         
                     case ERROR:
                         
                         throw std::invalid_argument("\nError - " + command + " is not a valid command\n");
                         
-                    // -------------------------------------------------
+                        // -------------------------------------------------
                 }
             }
         }
-
+        
         // -----------------------------------------------------------------------
         // Used to verify the boolean status of each flag.
         procedure_bool Verify_Flag(PROCEDURE_ENUM enumObject, PROCEDURE_ENUM procedureType, std::string command)
@@ -1417,19 +1449,19 @@ private:
                 case PROCEDURE:
                     
                     if(VerifyProcedure(enumObject, command))
-                       return true; return false;
+                        return true; return false;
                     
                 case REGULAR_PROCEDURE:
                     
                     if(VerifyRegularFunction(enumObject, command))
-                       return true; return false;
-                        
+                        return true; return false;
+                    
                 case MAIN:
-                           
+                    
                     if(VerifyMain(enumObject, command))
                         return true; return false;
             }
-
+            
             return false;
         }
         
@@ -1469,7 +1501,7 @@ private:
                         if(is_regular_procedure)
                             return true; return false;
                         
-                    // -------------------------------------------------
+                        // -------------------------------------------------
                         
                     case LEFT_PARENTHESIS:
                         
@@ -1496,49 +1528,49 @@ private:
                         
                         if(is_comma)
                             return true; return false;
-     
-                    // -------------------------------------------------
+                        
+                        // -------------------------------------------------
                         
                     case RIGHT_PARENTHESIS:
                         
                         if(is_right_parenthesis)
                             return true; return false;
                         
-                    // -------------------------------------------------
-                            
+                        // -------------------------------------------------
+                        
                     case SEARCHING_FOR_LEFT_PARENTHESIS:
                         
                         if(searching_for_left_parenthesis)
                             return true; return false;
-                            
-                    // -------------------------------------------------
+                        
+                        // -------------------------------------------------
                         
                     case SEARCHING_FOR_RIGHT_PARENTHESIS:
                         
                         if(searching_for_right_parenthesis)
                             return true; return false;
-                            
-                    // -------------------------------------------------
-                            
+                        
+                        // -------------------------------------------------
+                        
                     case LEFT_PARENTHESIS_DETECTED:
-              
+                        
                         if(left_parenthesis_detected)
                             return true; return false;
-                            
-                    // -------------------------------------------------
+                        
+                        // -------------------------------------------------
                         
                     case RIGHT_PARENTHESIS_DETECTED:
-              
+                        
                         if(right_parenthesis_detected)
                             return true; return false;
-                            
-                    // -------------------------------------------------
+                        
+                        // -------------------------------------------------
                         
                     case ERROR:
                         
                         throw std::invalid_argument("\nError - " + command + " is not a valid boolean command\n");
                         
-                    // -------------------------------------------------
+                        // -------------------------------------------------
                 }
             }
             
@@ -1584,29 +1616,29 @@ private:
                         
                         if(searching_for_left_parenthesis)
                             return true; return false;
-                            
-                    // -------------------------------------------------
+                        
+                        // -------------------------------------------------
                         
                     case SEARCHING_FOR_RIGHT_PARENTHESIS:
                         
                         if(searching_for_right_parenthesis)
                             return true; return false;
-                            
-                    // -------------------------------------------------
-                            
+                        
+                        // -------------------------------------------------
+                        
                     case LEFT_PARENTHESIS_DETECTED:
-              
+                        
                         if(left_parenthesis_detected)
                             return true; return false;
-                            
-                    // -------------------------------------------------
+                        
+                        // -------------------------------------------------
                         
                     case RIGHT_PARENTHESIS_DETECTED:
-              
+                        
                         if(right_parenthesis_detected)
                             return true; return false;
-                            
-                    // -------------------------------------------------
+                        
+                        // -------------------------------------------------
                         
                     case ERROR:
                         
@@ -1691,96 +1723,138 @@ private:
         // -----------------------------------------------------------------------
         // Determine if a datatype is present or not
         bool searchForDataType(std::string command)
+        {
+            std::string tempString = "";
+            
+            for(int i = 0; i < command.size(); i++)
+            {
+                if(command[i] == ' ')
                 {
-                    std::string tempString = "";
-                    
-                    for(int i = 0; i < command.size(); i++)
-                    {
-                        if(command[i] == ' ')
-                        {
-                            if(tempString == "datatype" || tempString == "data type")
-                                return true;
-                            
-                            else
-                                break;
-                        }
-                        
-                        tempString += command[i];
-                        
-                     
-                    }
-                    
-                    return false;
-                }
-                
-                // -----------------------------------------------------------------------
-                // Determins if string is data type
-                std::pair<std::string, std::string> disectDataType(std::string command)
-                {
-                    std::string tempString = "";
-                    
-                    std::pair<std::string, std::string> pairString;
-                    
-                    // Determines if the searchingForDataType condition should be executed
-                    bool searchingForDataType = true;
-
-                    // Determines if there is a space after datatype is detected
-                    bool isSpace = false;
-                    
-                    // Determines if actual datatype is being read
-                    bool isDataType = false;
-                    
-                    for(int i = 0; i < command.size(); i++)
-                    {
-                        if(command[i] != ' ')
-                            tempString += command[i];
-                        
-                        if((tempString == "datatype" || tempString == "data type") && searchingForDataType)
-                        {
-                            pairString.first = tempString;
-                            tempString = "";
-                            isSpace = true;
-                            searchingForDataType = false;
-                        }
-
-                        else if(isSpace)
-                        {
-                            if(command[i] == ' ')
-                            {
-                                isSpace = false;
-                                continue;
-                            }
-                            else
-                            {
-                                throw std::invalid_argument("\n\nError - Space is not detected\n\n");
-                            }
-                            
-                        }
-                        
-                    }
-
-                    // Generate lowercase letters
-                    for(int i = 0; i < tempString.size(); i++)
-                        tempString[i] = std::tolower(tempString[i]);
-                    
-                    if(tempString == "int" || tempString == "char" || tempString == "string")
-                        isDataType = true;
-                       
-                    if(isDataType)
-                        pairString.second = tempString;
+                    if(tempString == "datatype" || tempString == "data type")
+                        return true;
                     
                     else
-                        throw std::invalid_argument("\n\nError - " + std::string(tempString) + " is not a datatype\n\n");
-
-                    return pairString;
+                        break;
                 }
+                
+                tempString += std::tolower(command[i]);
+            }
+            
+            return false;
+        }
+        
+        // -----------------------------------------------------------------------
+        // Determine if variable is present or not
+        // If variable is found then modify its value
+        bool searchForVariable(std::string command)
+        {
+            std::string tempString = "";
+            
+            int index = 0;
+            
+            bool isVariable = false;
+            
+            for(int i = 0; i < command.size(); i++)
+            {
+                if(command[i] == ' ')
+                {
+                    if(tempString == "variable")
+                    {
+                        tempString = "";
+                        index = i + 1;
+                        isVariable = true;
+                        break;
+                    }
+                    
+                    else
+                        break;
+                }
+                
+                tempString += std::tolower(command[i]);
+            }
+            
+            // If variable is found then modify its value
+            if(isVariable)
+            {
+                for(int i = index; i < command.size(); i++)
+                    tempString += std::tolower(command[i]);
+                
+                this -> argument = tempString;
+                
+                return true;
+            }
+            
+            return false;
+        }
+        
+        // -----------------------------------------------------------------------
+        // Determins if string is data type
+        std::pair<std::string, std::string> disectDataType(std::string command)
+        {
+            std::string tempString = "";
+            
+            std::pair<std::string, std::string> pairString;
+            
+            // Determines if the searchingForDataType condition should be executed
+            bool searchingForDataType = true;
+            
+            // Determines if there is a space after datatype is detected
+            bool isSpace = false;
+            
+            // Determines if actual datatype is being read
+            bool isDataType = false;
+            
+            for(int i = 0; i < command.size(); i++)
+            {
+                if(command[i] != ' ')
+                    tempString += command[i];
+                
+                if((tempString == "datatype" || tempString == "data type") && searchingForDataType)
+                {
+                    pairString.first = tempString;
+                    tempString = "";
+                    isSpace = true;
+                    searchingForDataType = false;
+                }
+                
+                else if(isSpace)
+                {
+                    if(command[i] == ' ')
+                    {
+                        isSpace = false;
+                        continue;
+                    }
+                    else
+                    {
+                        throw std::invalid_argument("\n\nError - Space is not detected\n\n");
+                    }
+                    
+                }
+                
+            }
+            
+            // Generate lowercase letters
+            for(int i = 0; i < tempString.size(); i++)
+                tempString[i] = std::tolower(tempString[i]);
+            
+            if(tempString == "int" || tempString == "char" || tempString == "string")
+                isDataType = true;
+            
+            if(isDataType)
+                pairString.second = tempString;
+            
+            else
+                throw std::invalid_argument("\n\nError - " + std::string(tempString) + " is not a datatype\n\n");
+            
+            return pairString;
+        }
         
         // Deconstructor
         ~ PROCEDURE_HANDLER() = default;
         
     }isProcedure;
     
-        // -----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     
 public:
     
@@ -1843,6 +1917,9 @@ public:
     
     // Output Tokenize object
     friend std::ostream & operator << (std::ostream &, Tokenize &);
+    
+    // Allow PROCEDURE_HANDLER the authority to access class membersfrom Tokenize
+    friend struct PROCEDURE_HANDLER;
     
 };
 
