@@ -493,30 +493,29 @@ void Tokenize :: assignVector()
     std::cout << "\n\nACTIVATED";
     std::cout << "\nisProcedure.saveDataType = " << isProcedure.saveDataType << std::endl << std::endl;
     
-    switch(isProcedure.dataType(isProcedure.saveDataType))
+    switch(dataType(isProcedure.saveDataType))
     {
         case INTEGER:
             
             integerArgCollector.assign(isProcedure.integerCollector.begin(),isProcedure.integerCollector.end());
             
-            std::cout << "\n\nslkdfjdslkjflksjdflkjfds\n\n";
             break;
             
         case STRING:
 
             stringArgCollector.assign(isProcedure.stringCollector.begin(),isProcedure.stringCollector.end());
+            
             break;
             
         case CHAR:
             
             charArgCollector.assign(isProcedure.charCollector.begin(),isProcedure.charCollector.end());
+            
             break;
 
         case ERROR:
             throw std::invalid_argument("\n\nError - " + std::string(isProcedure.saveDataType) + " is an invalid data type " + "\n\n");
-
     }
-
 }
 
 // ------------------------------------------------------------------
@@ -708,7 +707,7 @@ bool Tokenize :: isToken(TOKEN_TYPE token)
 bool Tokenize :: findInteger()
 {
         if(!integerCollector.empty())
-            for(std::vector<dataType> :: size_type i = 0; i < integerCollector.size(); i++)
+            for(std::vector <std::string> :: size_type i = 0; i < integerCollector.size(); i++)
                 if(this->syntax == integerCollector[i])
                 {
                     this -> integer_index = i;
@@ -722,7 +721,7 @@ bool Tokenize :: findInteger()
 bool Tokenize :: findString()
 {
     if(!stringCollector.empty())
-        for(std::vector<dataType> :: size_type i = 0; i < stringCollector.size(); i++)
+        for(std::vector <std::string> :: size_type i = 0; i < stringCollector.size(); i++)
             if(this->syntax == stringCollector[i])
             {
                 this -> string_index = i;
@@ -736,7 +735,7 @@ bool Tokenize :: findString()
 bool Tokenize :: findChar()
 {
     if(!charCollector.empty())
-        for(std::vector<dataType> :: size_type i = 0; i < charCollector.size(); i++)
+        for(std::vector <std::string> :: size_type i = 0; i < charCollector.size(); i++)
             if(this->syntax == charCollector[i])
             {
                 this -> char_index = i;
@@ -750,7 +749,7 @@ bool Tokenize :: findChar()
 bool Tokenize :: findIntegerArg()
 {
         if(!integerArgCollector.empty())
-            for(std::vector<dataType> :: size_type i = 0; i < integerArgCollector.size(); i++)
+            for(std::vector <std::string> :: size_type i = 0; i < integerArgCollector.size(); i++)
                 if(this->syntax == integerArgCollector[i])
                 {
                     this -> integer_arg_index = i;
@@ -764,7 +763,7 @@ bool Tokenize :: findIntegerArg()
     bool Tokenize :: findStringArg()
     {
         if(!stringArgCollector.empty())
-            for(std::vector<dataType> :: size_type i = 0; i < stringArgCollector.size(); i++)
+            for(std::vector <std::string> :: size_type i = 0; i < stringArgCollector.size(); i++)
                 if(this->syntax == stringArgCollector[i])
                 {
                     this -> string_arg_index = i;
@@ -778,7 +777,7 @@ bool Tokenize :: findIntegerArg()
     bool Tokenize :: findCharArg()
     {
         if(!charArgCollector.empty())
-            for(std::vector<dataType> :: size_type i = 0; i < charArgCollector.size(); i++)
+            for(std::vector <std::string> :: size_type i = 0; i < charArgCollector.size(); i++)
                 if(this->syntax == charArgCollector[i])
                 {
                     this -> char_arg_index = i;
@@ -794,7 +793,7 @@ bool Tokenize :: findProcedure()
     if(isProcedure())
     {
         if(!procedureCollector.empty())
-            for(std::vector<dataType> :: size_type i = 0; i < procedureCollector.size(); i++)
+            for(std::vector <std::string> :: size_type i = 0; i < procedureCollector.size(); i++)
                 if(this->syntax == procedureCollector[i])
                 {
                     this -> procedure_index = i;
@@ -1081,6 +1080,25 @@ TOKEN_TYPE Tokenize :: isTokenHelper()
     return TOKEN_TYPE :: NON_BNF;
     
 }
+// ------------------------------------------------------------------
+
+// Determine datatype being used for the purpose of selecting which collector vector to utilize
+TOKEN_TYPE Tokenize :: dataType(std::string command)
+{
+    if(command == "int")
+        return TOKEN_TYPE :: INTEGER;
+    
+    if(command == "char")
+        return TOKEN_TYPE :: CHAR;
+    
+    if(command == "string")
+        return TOKEN_TYPE :: STRING;
+    
+    return TOKEN_TYPE :: ERROR;
+}
+
+// ------------------------------------------------------------------
+
 std::pair<std::string, std::string> Tokenize :: Token_Handler(TOKEN_TYPE token)
 {
     switch(token)

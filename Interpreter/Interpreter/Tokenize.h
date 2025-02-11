@@ -11,7 +11,7 @@
 #include "removeComments.h"
 
 // Rename string data types for organizational purposes
-typedef std::string fileName, tokenType, token, dataType;
+typedef std::string fileName, tokenType, token;
 
 // Rename integer data types for organization purposes
 typedef int iterator, position;
@@ -67,7 +67,7 @@ private:
     std::vector<fileName> TestFiles;
     
     // Collects int datatype
-    std::vector<dataType> integerCollector,
+    std::vector <std::string> integerCollector,
     
     // Collects string datatype
     stringCollector,
@@ -974,7 +974,7 @@ private:
         {}
         
         // Collects int datatype
-        std::vector<dataType> integerCollector,
+        std::vector <std::string> integerCollector,
         
         // Collects string datatype
         stringCollector,
@@ -1980,6 +1980,9 @@ public:
     
     // Determines if a token is being read, used specifically for bool isToken
     TOKEN_TYPE isTokenHelper();
+    
+    // Determine datatype being used for the purpose of selecting which collector vector to utilize
+    TOKEN_TYPE dataType(std::string command);
     
     // Consists of all necessary handlers
     std::pair<std::string, std::string> Token_Handler(TOKEN_TYPE token);
