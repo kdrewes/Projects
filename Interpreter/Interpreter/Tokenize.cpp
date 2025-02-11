@@ -60,6 +60,10 @@ void Tokenize :: Clear()
     this -> TestFiles.clear();
     this -> integerCollector.clear();
     this -> stringCollector.clear();
+    this -> charCollector.clear();
+    this -> integerArgCollector.clear();
+    this -> stringArgCollector.clear();
+    this -> charArgCollector.clear();
     this -> procedureCollector.clear();
     this -> TokenVector.clear();
 }
@@ -444,26 +448,32 @@ void Tokenize :: Configure_Procedure(char character)
                 
                 assignVector();
             }
-            /*
-            if(read.peek() == ')')
-                isProcedure(")");
-            
             else if(read.peek() == ' ')
                 isProcedure("searching for right parenthesis");
-            */
 
         }
         
         else if(isProcedure(strdup("is variable")))
+                isProcedure(")");
+        
+        else if(isProcedure(strdup("searching for right parenthesis")))
         {
+            
             if(character == ')')
                 isProcedure(")");
+            
+            else
+                throw std::invalid_argument("\n\nError - " + std::string(0,character) + " is an valid character, ) must be used\n");
+                
         }
         
         else if(isProcedure(strdup(")")))
         {
             if(character == '{')
                 isProcedure("reset");
+            
+            else
+                throw std::invalid_argument("\n\nError - " + std::string(0,character) + " is an valid character, { must be used\n");
         }
     }
     
@@ -488,11 +498,7 @@ void Tokenize :: Configure_Procedure(char character)
 //------------------------------------------------------------------
 // Assigns vector from PROCEDURE_HANDLER to private vectors located in Tokenize class
 void Tokenize :: assignVector()
-
 {
-    std::cout << "\n\nACTIVATED";
-    std::cout << "\nisProcedure.saveDataType = " << isProcedure.saveDataType << std::endl << std::endl;
-    
     switch(dataType(isProcedure.saveDataType))
     {
         case INTEGER:
@@ -581,28 +587,28 @@ bool Tokenize :: isIdentifier()
         
     }
     
-    else if(findInteger() && !isProcedure())
+    else if(findInteger())
         return true;
     
-    else if(findString() && !isProcedure())
+    else if(findString())
         return true;
     
-    else if(findChar() && !isProcedure())
+    else if(findChar())
         return true;
     
-    else if(findIntegerArg() && isProcedure())
+    else if(findIntegerArg())
         return true;
     
-    else if(findStringArg() && isProcedure())
+    else if(findStringArg())
         return true;
     
-    else if(findCharArg() && isProcedure())
+    else if(findCharArg())
         return true;
     
-    else if(findProcedure() && isProcedure())
+    else if(findProcedure())
         return true;
     
-    else if(findProcedure() && isProcedure())
+    else if(findProcedure())
         return true;
     
     return false;
@@ -672,25 +678,25 @@ bool Tokenize :: tokenIdentifier()
         
     }
     
-    else if(findInteger() && !isProcedure())
+    else if(findInteger())
         return true;
     
-    else if(findString() && !isProcedure())
+    else if(findString())
         return true;
     
-    else if(findChar() && !isProcedure())
+    else if(findChar())
         return true;
     
-    else if(findIntegerArg() && isProcedure())
+    else if(findIntegerArg())
         return true;
     
-    else if(findStringArg() && isProcedure())
+    else if(findStringArg())
         return true;
     
-    else if(findCharArg() && isProcedure())
+    else if(findCharArg())
         return true;
     
-    else if(findProcedure() && isProcedure())
+    else if(findProcedure())
         return true;
     
     return false;

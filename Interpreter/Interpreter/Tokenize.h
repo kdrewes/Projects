@@ -1842,7 +1842,7 @@ private:
             return false;
         }
         
-        // -----------------------------------------------------------------------
+        //-----------------------------------------------------------------------
         // Determins if string is data type
         std::pair<std::string, std::string> disectDataType(std::string command)
         {
