@@ -997,37 +997,67 @@ private:
             // Prevents 'command' from being case sensetive
             //LowerCase(command);
             
-            if(command == "is procedure" || command == "procedure" || command == "function")
+            if(command == "is procedure" ||
+               command == "procedure" ||
+               command == "function")
                 return PROCEDURE_ENUM :: PROCEDURE;
             
-            else if(command == "procedure name" || command == "name" || command == "is void function" || command == "is regular function" || command == "void function" || command == "regular function" || command == "is regular procedure")
+            else if(command == "procedure name" ||
+                    command == "name" ||
+                    command == "is void function" ||
+                    command == "is regular function" ||
+                    command == "void function" ||
+                    command == "regular function" ||
+                    command == "is regular procedure")
                 return PROCEDURE_ENUM :: REGULAR_PROCEDURE;
             
-            else if(command == "is main" || command == "main")
+            else if(command == "is main" ||
+                    command == "main")
                 return PROCEDURE_ENUM :: MAIN;
             
-            else if((command == "is void" || command == "void") && is_main)
+            else if((command == "is void" ||
+                     command == "void") &&
+                     is_main)
                 return PROCEDURE_ENUM :: VOID;
             
-            else if((command == "(" || command == "left parenthesis") && is_regular_procedure)
+            else if((command == "(" ||
+                     command == "left parenthesis" ||
+                     command == "comma detected") &&
+                     is_regular_procedure)
                 return PROCEDURE_ENUM :: LEFT_PARENTHESIS;
             
-            else if((command == "(" || command == "left parenthesis") && is_main)
+            else if((command == "(" ||
+                     command == "left parenthesis") &&
+                     is_main)
                 return PROCEDURE_ENUM :: LEFT_PARENTHESIS_MAIN;
             
-            else if((command == ")" || command == "right parenthesis")  && is_regular_procedure)
+            else if((command == ")" ||
+                     command == "right parenthesis")  &&
+                     is_regular_procedure)
                 return PROCEDURE_ENUM :: RIGHT_PARENTHESIS;
             
-            else if((command == ")" || command == "right parenthesis")  && is_main)
+            else if((command == ")" ||
+                     command == "right parenthesis") &&
+                     is_main)
                 return PROCEDURE_ENUM :: RIGHT_PARENTHESIS_MAIN;
             
-            else if(((command == "is data type" || command == "is datatype" || command == "is detecting variable" || command == "detecting variable") || searchForDataType(command)) &&  is_regular_procedure)
+            else if(((command == "is data type" ||
+                      command == "is datatype" ||
+                      command == "is detecting variable" ||
+                      command == "detecting variable") ||
+                      searchForDataType(command)) &&
+                      is_regular_procedure)
                 return PROCEDURE_ENUM :: DATA_TYPE;
             
-            else if(((command == "is variable" || command == "variable") || searchForVariable(command)) && is_regular_procedure)
+            else if(((command == "is variable" ||
+                      command == "variable") ||
+                      searchForVariable(command)) &&
+                      is_regular_procedure)
                 return PROCEDURE_ENUM :: VARIABLE;
             
-            else if((command == "," || command == "comma") && is_regular_procedure)
+            else if((command == "," ||
+                     command == "comma") &&
+                     is_regular_procedure)
                 return PROCEDURE_ENUM :: COMMA;
             
             else if(command == "scanning for left parenthesis" ||

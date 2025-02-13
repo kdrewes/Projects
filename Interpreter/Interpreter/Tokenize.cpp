@@ -447,10 +447,11 @@ void Tokenize :: Configure_Procedure(char character)
         
         else if(isProcedure(strdup("is detecting variable")))
         {
-            // Perform input validation
+            // Perform input validation on first character of this -> syntax
             if(!isalpha(character) && this -> syntax.size() == 0)
                 throw std::invalid_argument("\n\nError - first character of variable must be an alphabetic character\n");
             
+            // Perform input validation on all character after first character of this -> syntax
             else if(ispunct(character) && this -> syntax.size() > 0)
                 throw std::invalid_argument("\n\nError - character must not be puncuation\n");
                 
@@ -503,16 +504,8 @@ void Tokenize :: Configure_Procedure(char character)
         else if(isProcedure(strdup(",")))
         {
             if(character == ',')
-            {
-                if(isProcedure.saveDataType == "int")
-                    isProcedure("datatype int");
-                
-                else if(isProcedure.saveDataType == "char")
-                    isProcedure("datatype char");
-                
-                else if(isProcedure.saveDataType == "string")
-                    isProcedure("datatype string");
-            }
+                isProcedure("comma detected");
+            
             else
                 throw std::invalid_argument("\n\nError - character must be comma, " + std::string(1,character) + " is not a valid character.\n");
         }
@@ -550,23 +543,48 @@ void Tokenize :: Configure_Procedure(char character)
 // Assigns vector from PROCEDURE_HANDLER to private vectors located in Tokenize class
 void Tokenize :: assignVector()
 {
-    switch(dataType(isProcedure.saveDataType))
+    // Declare variables for organization purposes
+    
+    std::string datatype = isProcedure.saveDataType;
+    
+    switch(dataType(datatype))
     {
         case INTEGER:
             
-            integerArgCollector.assign(isProcedure.integerCollector.begin(),isProcedure.integerCollector.end());
-            
+            if(!isProcedure.integerCollector.empty())
+            {
+                std::vector<std::string> intVector = isProcedure.integerCollector;
+                
+                integerArgCollector.assign(intVector.begin(),intVector.end());
+            }
+            else
+                throw std::invalid_argument("\n\nError - Attempting to access data from empty vector - integerCollector\n");
+                    
             break;
             
         case STRING:
-
-            stringArgCollector.assign(isProcedure.stringCollector.begin(),isProcedure.stringCollector.end());
+            
+            if(!isProcedure.stringCollector.empty())
+            {
+                std::vector<std::string> stringVector = isProcedure.stringCollector;
+                
+                stringArgCollector.assign(stringVector.begin(),stringVector.end());
+            }
+            else
+                throw std::invalid_argument("\n\nError - Attempting to access data from empty vector - stringCollector\n");
             
             break;
             
         case CHAR:
             
-            charArgCollector.assign(isProcedure.charCollector.begin(),isProcedure.charCollector.end());
+            if(!isProcedure.charCollector.empty())
+            {
+                std::vector<std::string> charVector = isProcedure.charCollector;
+                
+                charArgCollector.assign(charVector.begin(), charVector.end());
+            }
+            else
+                throw std::invalid_argument("\n\nError - Attempting to access data from empty vector - charCollector\n");
             
             break;
 
@@ -926,6 +944,10 @@ TOKEN_TYPE Tokenize :: Read_Token()
             if(!isPrintF())
                 isValue("=");
         }
+        
+        /*
+         Add all the other FIND VARAIBLES as well
+         */
         
         else if(findProcedure())
             return TOKEN_TYPE :: IDENTIFIER;
