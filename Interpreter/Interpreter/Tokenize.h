@@ -135,9 +135,9 @@ private:
             ERROR
         };
         
-        integer_bool is_data_type,
-        is_value,
-        is_assignment_operator;
+        bool is_data_type,
+             is_value,
+             is_assignment_operator;
         
         INTEGER_HANDLER() :
         is_data_type(false),
@@ -1021,7 +1021,7 @@ private:
             else if((command == ")" || command == "right parenthesis")  && is_main)
                 return PROCEDURE_ENUM :: RIGHT_PARENTHESIS_MAIN;
             
-            else if(((command == "is data type" || command == "is datatype") || searchForDataType(command)) &&  is_regular_procedure)
+            else if(((command == "is data type" || command == "is datatype" || command == "is detecting variable" || command == "detecting variable") || searchForDataType(command)) &&  is_regular_procedure)
                 return PROCEDURE_ENUM :: DATA_TYPE;
             
             else if(((command == "is variable" || command == "variable") || searchForVariable(command)) && is_regular_procedure)
@@ -1237,7 +1237,7 @@ private:
                             
                             is_regular_procedure = true;
                             
-                            storeArgument(command);
+                            storeArgument();
                         }
                         
                         else
@@ -1466,7 +1466,7 @@ private:
         
         // -----------------------------------------------------------------------
         // Collects argument of applicable datatype
-        void storeArgument(std::string command)
+        void storeArgument()
         {
             switch(dataType(this -> saveDataType))
             {
@@ -1489,7 +1489,7 @@ private:
                     break;
 
                 case ERROR:
-                    throw std::invalid_argument("\n\nError - " + std::string(disectDataType(command).second) + " is an invalid data type " + "\n\n");
+                    throw std::invalid_argument("\n\nError - " + std::string(this -> saveDataType) + " is an invalid data type " + "\n\n");
 
             }
             
@@ -1834,7 +1834,7 @@ private:
                 for(int i = index; i < command.size(); i++)
                     tempString += std::tolower(command[i]);
                 
-                this -> argument = tempString;
+                this -> argument = tempString;;
                 
                 return true;
             }

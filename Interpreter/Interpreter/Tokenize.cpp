@@ -437,9 +437,16 @@ void Tokenize :: Configure_Procedure(char character)
                 throw std::invalid_argument("\n\nError - " + tempString + " is invalid syntax\n\n");
             }
         }
-        else if(isProcedure(strdup("is datatype")))
+        
+        else if(isProcedure(strdup("is detecting variable")))
         {
+            // Perform input validation
+            if(!isalpha(character) && this -> syntax.size() == 0)
+                throw std::invalid_argument("\n\nError - first character of variable must be an alphabetic character\n");
             
+            else if(ispunct(character) && this -> syntax.size() > 0)
+                throw std::invalid_argument("\n\nError - character must not be puncuation\n");
+                
             if(read.peek() == ')')
             {
                 std::string variable = "variable " + this->syntax + character;
@@ -447,20 +454,39 @@ void Tokenize :: Configure_Procedure(char character)
                 isProcedure(variable);
                 
                 assignVector();
+                
+                isProcedure("right parenthesis detected");
+                
             }
+           
+            else if(read.peek() == ',')
+                isProcedure(",");
+            
             else if(read.peek() == ' ')
                 isProcedure("searching for right parenthesis");
 
         }
         
-        else if(isProcedure(strdup("is variable")))
+        else if(isProcedure(strdup("right parenthesis detected")))
                 isProcedure(")");
         
         else if(isProcedure(strdup("searching for right parenthesis")))
         {
             
-            if(character == ')')
-                isProcedure(")");
+            if(read.peek() == ')')
+            {
+                std::string variable = "variable "
+                + this->syntax + character;
+
+                isProcedure(variable);
+                
+                assignVector();
+                
+                isProcedure("right parenthesis detected");
+            }
+            
+            else if(read.peek() == ',')
+                isProcedure(",");
             
             else
                 throw std::invalid_argument("\n\nError - " + std::string(0,character) + " is an valid character, ) must be used\n");
