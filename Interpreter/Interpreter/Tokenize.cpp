@@ -58,13 +58,21 @@ void Tokenize :: Execute()
 void Tokenize :: Clear()
 {
     this -> TestFiles.clear();
+    
     this -> integerCollector.clear();
+    
     this -> stringCollector.clear();
+    
     this -> charCollector.clear();
+    
     this -> integerArgCollector.clear();
+    
     this -> stringArgCollector.clear();
+    
     this -> charArgCollector.clear();
+    
     this -> procedureCollector.clear();
+    
     this -> TokenVector.clear();
 }
 
@@ -94,6 +102,7 @@ std::vector<std::pair<tokenType,token>> Tokenize :: ReadFile()
                 if(isToken(isTokenHelper()))
                 {
                     Tokens.push_back(Token_Handler(Read_Token()));
+                    
                     this->syntax = "";
                 }
             }
@@ -340,7 +349,7 @@ void Tokenize :: Configure_Procedure(char character)
     // Determines procedure type (ex - main or regular procedure)
     if(isProcedure(strdup("is procedure")))
     {
-        if (this->syntax.size() == 0 && !isalpha(character))
+        if(this->syntax.size() == 0 && !isalpha(character))
             throw std::invalid_argument("\n\nError - incorrect character " + std::string(1,character) + " used on procedure name\n\n");
         
         else if((!isalpha(character) && !isnumber(character)) && this->syntax.size() > 0)
@@ -401,13 +410,11 @@ void Tokenize :: Configure_Procedure(char character)
         
         else if(isProcedure(strdup("searching for left parenthesis")))
         {
-            
             if(character == '(')
                 isProcedure("(");
         
             else
                 throw std::invalid_argument("\n\nError - character must be ( not " + std::string(1,character) + "\n\n");
-    
         }
         
         else if(isProcedure(strdup("(")))
@@ -492,6 +499,24 @@ void Tokenize :: Configure_Procedure(char character)
                 throw std::invalid_argument("\n\nError - " + std::string(0,character) + " is an valid character, ) must be used\n");
                 
         }
+        
+        else if(isProcedure(strdup(",")))
+        {
+            if(character == ',')
+            {
+                if(isProcedure.saveDataType == "int")
+                    isProcedure("datatype int");
+                
+                else if(isProcedure.saveDataType == "char")
+                    isProcedure("datatype char");
+                
+                else if(isProcedure.saveDataType == "string")
+                    isProcedure("datatype string");
+            }
+            else
+                throw std::invalid_argument("\n\nError - character must be comma, " + std::string(1,character) + " is not a valid character.\n");
+        }
+        
         
         else if(isProcedure(strdup(")")))
         {
@@ -1046,68 +1071,96 @@ TOKEN_TYPE Tokenize :: isTokenHelper()
         
         return TOKEN_TYPE :: IDENTIFIER;
     }
+    
     else if(isPrintF(strdup("end scanning")))
         return TOKEN_TYPE :: STRING;
+    
     else if(syntax == "(")
         return TOKEN_TYPE :: LEFT_PARENTHESIS;
+    
     else if(syntax == ")")
         return TOKEN_TYPE :: RIGHT_PARENTHESIS;
+    
     else if(syntax == "[")
         return TOKEN_TYPE :: LEFT_BRACKET;
+    
     else if(syntax == "]")
         return TOKEN_TYPE :: RIGHT_BRACKET;
+    
     else if(syntax == "{")
         return TOKEN_TYPE :: LEFT_BRACE;
+    
     else if(syntax == "}")
         return TOKEN_TYPE :: RIGHT_BRACE;
+    
     else if(syntax == "\"")
         return TOKEN_TYPE :: DOUBLE_QUOTE;
+    
     else if(syntax == "'")
         return TOKEN_TYPE :: SINGLE_QUOTE;
+    
     else if(syntax == ";")
         return TOKEN_TYPE :: SEMICOLON;
+    
     else if(syntax == ",")
         return TOKEN_TYPE :: COMMA;
+    
     else if(syntax == "=")
         return TOKEN_TYPE :: ASSIGNMENT_OPERATOR;
+    
     else if(syntax == "+")
         return TOKEN_TYPE :: PLUS;
+    
     else if(syntax == "-")
         if(!isValue(strdup("integer")))
             return TOKEN_TYPE :: MINUS;
         else
             return TOKEN_TYPE :: BNF_IN_PROCESS;
     
-        else if(syntax == "*")
-            return TOKEN_TYPE :: ASTERISK;
-        else if(syntax == "/")
-            return TOKEN_TYPE :: DIVIDE;
-        else if(syntax == "%")
-            return TOKEN_TYPE :: MODULO;
-        else if(syntax == "^")
-            return TOKEN_TYPE :: CARET;
-        else if(syntax == "<")
-            return TOKEN_TYPE :: LESS_THAN;
-        else if(syntax == "<=")
-            return TOKEN_TYPE :: LESS_THAN_OR_EQUAL;
-        else if(syntax == ">")
-            return TOKEN_TYPE :: GREATER_THAN;
-        else if(syntax == ">=")
-            return TOKEN_TYPE :: GREATER_THAN_OR_EQUAL;
-        else if(syntax == "&&")
-            return TOKEN_TYPE :: BOOLEAN_AND;
-        else if(syntax == "||")
-            return TOKEN_TYPE :: BOOLEAN_OR;
-        else if(syntax == "!")
-            return TOKEN_TYPE :: BOOLEAN_NOT;
-        else if(syntax == "==")
-            return TOKEN_TYPE :: BOOLEAN_EQUAL;
-        else if(syntax == "!=")
-            return TOKEN_TYPE :: BOOLEAN_NOT_EQUAL;
-        else if(isValue(strdup(";")))
-            return TOKEN_TYPE :: INTEGER;
-        else if(isPrintF(strdup("end scanning")))
-            return TOKEN_TYPE :: STRING;
+    else if(syntax == "*")
+        return TOKEN_TYPE :: ASTERISK;
+    
+    else if(syntax == "/")
+        return TOKEN_TYPE :: DIVIDE;
+    
+    else if(syntax == "%")
+        return TOKEN_TYPE :: MODULO;
+    
+    else if(syntax == "^")
+        return TOKEN_TYPE :: CARET;
+    
+    else if(syntax == "<")
+        return TOKEN_TYPE :: LESS_THAN;
+    
+    else if(syntax == "<=")
+        return TOKEN_TYPE :: LESS_THAN_OR_EQUAL;
+    
+    else if(syntax == ">")
+        return TOKEN_TYPE :: GREATER_THAN;
+    
+    else if(syntax == ">=")
+        return TOKEN_TYPE :: GREATER_THAN_OR_EQUAL;
+    
+    else if(syntax == "&&")
+        return TOKEN_TYPE :: BOOLEAN_AND;
+    
+    else if(syntax == "||")
+        return TOKEN_TYPE :: BOOLEAN_OR;
+    
+    else if(syntax == "!")
+        return TOKEN_TYPE :: BOOLEAN_NOT;
+    
+    else if(syntax == "==")
+        return TOKEN_TYPE :: BOOLEAN_EQUAL;
+    
+    else if(syntax == "!=")
+        return TOKEN_TYPE :: BOOLEAN_NOT_EQUAL;
+    
+    else if(isValue(strdup(";")))
+        return TOKEN_TYPE :: INTEGER;
+    
+    else if(isPrintF(strdup("end scanning")))
+        return TOKEN_TYPE :: STRING;
     
     return TOKEN_TYPE :: NON_BNF;
     
