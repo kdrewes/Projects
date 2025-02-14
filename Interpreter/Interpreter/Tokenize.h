@@ -88,7 +88,7 @@ private:
     procedureCollector;
     
     // Vector used to collect tokens from each file
-    std::vector<std::vector<std::pair<tokenType,token>>>TokenVector;
+    std::vector<std::vector<std::pair<std::string,std::string>>>TokenVector;
     
     // Contains index of integer variable found
     position integer_index;
@@ -2025,8 +2025,11 @@ public:
     // Consists of all necessary handlers
     std::pair<std::string, std::string> Token_Handler(TOKEN_TYPE token);
     
+    // Return value of TokenVector
+    std::vector<std::vector<std::pair<std::string,std::string>>>& GetTokenVector();
+    
     // Output Tokenize object
-    friend std::ostream & operator << (std::ostream &, Tokenize &);
+    friend std::ostream & operator << (std::ostream &o, Tokenize &t);
     
     // Allow PROCEDURE_HANDLER the authority to access class membersfrom Tokenize
     friend struct PROCEDURE_HANDLER;

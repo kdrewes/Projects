@@ -54,8 +54,6 @@ void Tokenize :: Execute()
         }
     }
     
-    Clear();
-    
 }
 // ------------------------------------------------------------------
 // Clear memory from ADT'S
@@ -130,16 +128,7 @@ std::vector<std::pair<tokenType,token>> Tokenize :: ReadFile()
                 this->syntax = "";
         }
     }
-    
-    // Display results
-    for(const auto & [tokenType, token] : Tokens)
-    {
-        std::cout << "Token Type: " << tokenType << std::endl;
-        std::cout << "Token: " << token << std::endl << std::endl;
-    }
-    
-    std::cout << "\nPROCUDURE COUNTER = " << procedureCounter << std::endl << std::endl;
-    
+
     read.close();
     
     return Tokens;
@@ -925,7 +914,12 @@ TOKEN_TYPE Tokenize :: Read_Token()
     {
         if(this->syntax == "int" && !isProcedure())
         {
+            /*****************************************/
+            
+            // UNCOMMENT WHEN DONE
            // isInteger("datatype");
+            
+            /*****************************************/
             return TOKEN_TYPE :: IDENTIFIER;
         }
     
@@ -1438,5 +1432,27 @@ std::pair<std::string, std::string> Tokenize :: Token_Handler(TOKEN_TYPE token)
     }
     
     return {"UNDEFINED","UNDEFINED"};
+}
+// ------------------------------------------------------------------
+// Return value of TokenVector
+std::vector<std::vector<std::pair<std::string,std::string>>> & Tokenize :: GetTokenVector()
+{
+    return TokenVector;
+}
+// ------------------------------------------------------------------
+// Output Tokenize object
+std::ostream & operator << (std::ostream &o, Tokenize &t)
+{
+    // Display results
+    for(const auto &tokenVector : t.GetTokenVector())
+    {
+        for(const auto & [tokenType,token] : tokenVector)
+        {
+            o << "Token Type: " << tokenType << std::endl;
+            o << "Token: " << token << std::endl << std::endl;
+        }
+    }
+    
+    return o;
 }
 // ------------------------------------------------------------------
