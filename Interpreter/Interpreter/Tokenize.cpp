@@ -93,12 +93,14 @@ std::vector<std::pair<tokenType,token>> Tokenize :: ReadFile()
     {
         for(char character = '\0'; !this->read.eof();  this->read >> std::noskipws >> character )
         {
-            
+            /*
+            // Test output
             if(character != '\n')
                 std::cout << character;
             else
                 std::cout << std::endl;
-
+            */
+            
             if(character != ' ' && character != '\n' && character != '\0')
             {
                 this->syntax += Configure_Token(character);
@@ -535,6 +537,8 @@ void Tokenize :: Configure_Procedure(char character)
     
     else if(isProcedure(strdup("is main")))
     {
+        std::cout << std::endl << character << ' ';
+        
         if (isProcedure(strdup("left parenthesis detected")))
         {
             if(character == '(')
@@ -548,6 +552,37 @@ void Tokenize :: Configure_Procedure(char character)
 
             else
                 throw std::invalid_argument("\n\nError - character must be ( not " + std::string(1,character) + "\n\n");
+        }
+        else if(strdup("("))
+        {
+            
+            if(this -> syntax + character == "void")
+                std::cout << "\nINITIATE TEST:\n\n";
+            // --------------- Input Validation ---------------
+            
+            if(character != 'v' && this -> syntax.size() == 0)
+                throw std::invalid_argument("\n\nError - " + std::string(1,character) + " is an invalid character\n\nparameter must be voidsd\n");
+            
+            else if(!isalpha(character) && this -> syntax.size() != 0)
+                throw std::invalid_argument("\n\nError - " + std::string(1,character) + " is an invalid character\n\nparameter must be void\n");
+            
+            else if(this -> syntax.size() > 4)
+                throw std::invalid_argument("\n\nError - " + std::string(1,character) + " is an invalid character\n\nparameter must be void\n");
+            
+            // ------------------- logic -------------------
+            
+            std::string tempString = this -> syntax + character;
+            
+            if(tempString == "void")
+            {
+                std::cout << "\n\nVOID IS ACTIVATED\n\n";
+                isProcedure("void");
+            }
+            
+        }
+        else if(strdup("is void"))
+        {
+            std::cout << "\n\nIN VOID\n\n";
         }
     }
 }
