@@ -35,10 +35,11 @@ Tokenize :: Tokenize(std::vector<std::string> TestFiles)
 // Initiates process of collecting content of each file
 void Tokenize :: Execute()
 {
+    // Loop operation
     for(std::vector<std::string>::size_type i = 0; i < 1; i++)
     {
         
-        // Input validation
+    /* --------- Input validation --------- */
         try
         {
             // Read each file
@@ -554,7 +555,6 @@ void Tokenize :: Configure_Procedure(char character)
 void Tokenize :: assignVector()
 {
     // Declare variables for organization purposes
-    
     std::string datatype = isProcedure.saveDataType;
     
     switch(dataType(datatype))
@@ -1441,18 +1441,28 @@ std::vector<std::vector<std::pair<std::string,std::string>>> & Tokenize :: GetTo
 }
 // ------------------------------------------------------------------
 // Output Tokenize object
-std::ostream & operator << (std::ostream &o, Tokenize &t)
+std::ostream & operator << (std::ostream &output, Tokenize &token)
+{
+    // Execute operation
+    token.Execute();
+    
+    // Display output and finalize operation
+    return Print(output,token);
+    
+}
+// ------------------------------------------------------------------
+// std::ostream & operator helper function
+std::ostream & Print(std::ostream &output, Tokenize &token)
 {
     // Display results
-    for(const auto &tokenVector : t.GetTokenVector())
+    for(const auto &tokenVector : token.GetTokenVector())
     {
         for(const auto & [tokenType,token] : tokenVector)
         {
-            o << "Token Type: " << tokenType << std::endl;
-            o << "Token: " << token << std::endl << std::endl;
+            output << "Token Type: " << tokenType << std::endl;
+            output << "Token: " << token << std::endl << std::endl;
         }
     }
     
-    return o;
+    return output;
 }
-// ------------------------------------------------------------------

@@ -1770,7 +1770,7 @@ private:
             this -> is_right_parenthesis_main = false;
             this -> is_void = false;
             
-            // boolean members
+            // boolean members used for tenetive scenarios
             this -> searching_for_left_parenthesis = false;
             this -> searching_for_right_parenthesis = false;
             this -> left_parenthesis_detected = false;
@@ -2030,6 +2030,9 @@ public:
     
     // Output Tokenize object
     friend std::ostream & operator << (std::ostream &o, Tokenize &t);
+    
+    // std::ostream & operator helper function
+    friend std::ostream & Print(std::ostream &output, Tokenize &token);
     
     // Allow PROCEDURE_HANDLER the authority to access class membersfrom Tokenize
     friend struct PROCEDURE_HANDLER;
