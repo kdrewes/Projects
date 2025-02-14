@@ -24,6 +24,10 @@ Tokenize :: Tokenize(std::vector<std::string> TestFiles)
     
     this -> count_characters = 0;
     
+    this -> procedureTester = false;
+    
+    this -> procedureCounter = 0;
+    
     this -> syntax = "";
 }
 
@@ -99,6 +103,18 @@ std::vector<std::pair<tokenType,token>> Tokenize :: ReadFile()
             {
                 this->syntax += Configure_Token(character);
                 
+                if(this -> syntax == "procedure")
+                {
+                    procedureCounter += 1;
+                    
+                    if(procedureCounter == 2)
+                    {
+                        std::cout << "\n\nTEST PROCEDURE\n\n";
+                    }
+                }
+                    
+                
+                
                 if(isToken(isTokenHelper()))
                 {
                     Tokens.push_back(Token_Handler(Read_Token()));
@@ -112,7 +128,6 @@ std::vector<std::pair<tokenType,token>> Tokenize :: ReadFile()
             
             else
                 this->syntax = "";
-            
         }
     }
     
@@ -122,6 +137,8 @@ std::vector<std::pair<tokenType,token>> Tokenize :: ReadFile()
         std::cout << "Token Type: " << tokenType << std::endl;
         std::cout << "Token: " << token << std::endl << std::endl;
     }
+    
+    std::cout << "\nPROCUDURE COUNTER = " << procedureCounter << std::endl << std::endl;
     
     read.close();
     
@@ -352,7 +369,9 @@ void Tokenize :: Configure_Procedure(char character)
         if(this->syntax.size() == 0 && !isalpha(character))
             throw std::invalid_argument("\n\nError - incorrect character " + std::string(1,character) + " used on procedure name\n\n");
         
-        else if((!isalpha(character) && !isnumber(character)) && this->syntax.size() > 0)
+        else if((!isalpha(character) &&
+                 !isnumber(character)) &&
+                 this->syntax.size() > 0)
             throw std::invalid_argument("\n\nError - incorrect character " + std::string(1,character) + " used on procedure name\n\n");
         
         else if (this -> read.peek() == '(')
@@ -361,6 +380,7 @@ void Tokenize :: Configure_Procedure(char character)
             
             if(tempToken == "main")
             {
+                
                 isProcedure("is main");
                 
                 isProcedure("left parenthesis detected");
@@ -368,6 +388,7 @@ void Tokenize :: Configure_Procedure(char character)
             
             else
             {
+                
                 isProcedure("regular function");
                 
                 isProcedure("left parenthesis detected");
@@ -515,7 +536,7 @@ void Tokenize :: Configure_Procedure(char character)
         {
             if(character == '{')
                 isProcedure("reset");
-            
+        
             else
                 throw std::invalid_argument("\n\nError - " + std::string(0,character) + " is an valid character, { must be used\n");
         }
@@ -774,7 +795,8 @@ bool Tokenize :: tokenIdentifier()
 // Determines if BNF token was detected
 bool Tokenize :: isToken(TOKEN_TYPE token)
 {
-    if(token == TOKEN_TYPE :: NON_BNF || token == TOKEN_TYPE :: BNF_IN_PROCESS)
+    if(token == TOKEN_TYPE :: NON_BNF ||
+       token == TOKEN_TYPE :: BNF_IN_PROCESS)
         return false; return true;
 }
 // ------------------------------------------------------------------
@@ -783,11 +805,13 @@ bool Tokenize :: findInteger()
 {
         if(!integerCollector.empty())
             for(std::vector <std::string> :: size_type i = 0; i < integerCollector.size(); i++)
+            {
                 if(this->syntax == integerCollector[i])
                 {
                     this -> integer_index = i;
                     return true;
                 }
+            }
     
     return false;
 }
@@ -797,11 +821,13 @@ bool Tokenize :: findString()
 {
     if(!stringCollector.empty())
         for(std::vector <std::string> :: size_type i = 0; i < stringCollector.size(); i++)
+        {
             if(this->syntax == stringCollector[i])
             {
                 this -> string_index = i;
                 return true;
             }
+        }
 
     return false;
 }
@@ -811,11 +837,13 @@ bool Tokenize :: findChar()
 {
     if(!charCollector.empty())
         for(std::vector <std::string> :: size_type i = 0; i < charCollector.size(); i++)
+        {
             if(this->syntax == charCollector[i])
             {
                 this -> char_index = i;
                 return true;
             }
+        }
 
     return false;
 }
@@ -825,11 +853,13 @@ bool Tokenize :: findIntegerArg()
 {
         if(!integerArgCollector.empty())
             for(std::vector <std::string> :: size_type i = 0; i < integerArgCollector.size(); i++)
+            {
                 if(this->syntax == integerArgCollector[i])
                 {
                     this -> integer_arg_index = i;
                     return true;
                 }
+            }
         
     return false;
 }
@@ -839,11 +869,13 @@ bool Tokenize :: findIntegerArg()
     {
         if(!stringArgCollector.empty())
             for(std::vector <std::string> :: size_type i = 0; i < stringArgCollector.size(); i++)
+            {
                 if(this->syntax == stringArgCollector[i])
                 {
                     this -> string_arg_index = i;
                     return true;
                 }
+            }
             
         return false;
     }
@@ -853,11 +885,13 @@ bool Tokenize :: findIntegerArg()
     {
         if(!charArgCollector.empty())
             for(std::vector <std::string> :: size_type i = 0; i < charArgCollector.size(); i++)
+            {
                 if(this->syntax == charArgCollector[i])
                 {
                     this -> char_arg_index = i;
                     return true;
                 }
+            }
                 
         return false;
     }
@@ -869,11 +903,13 @@ bool Tokenize :: findProcedure()
     {
         if(!procedureCollector.empty())
             for(std::vector <std::string> :: size_type i = 0; i < procedureCollector.size(); i++)
+            {
                 if(this->syntax == procedureCollector[i])
                 {
                     this -> procedure_index = i;
                     return true;
                 }
+            }
     }
     
     return false;
@@ -889,7 +925,7 @@ TOKEN_TYPE Tokenize :: Read_Token()
     {
         if(this->syntax == "int" && !isProcedure())
         {
-            isInteger("datatype");
+           // isInteger("datatype");
             return TOKEN_TYPE :: IDENTIFIER;
         }
     
@@ -935,6 +971,14 @@ TOKEN_TYPE Tokenize :: Read_Token()
         else if(this -> syntax == "procedure" && !isProcedure())
         {
             isProcedure("procedure");
+            
+            if(procedureTester)
+            {
+                std::cout << "\n\nBEGINNING PROCEDURE TEST PHASE";
+                std::cout << "\nPROCEDURE COUNTER = " << procedureCounter << std::endl;
+            }
+            
+            this -> procedureTester = true;
             
             return TOKEN_TYPE :: IDENTIFIER;
         }
@@ -1045,6 +1089,23 @@ TOKEN_TYPE Tokenize :: Read_Token()
     
     return TOKEN_TYPE :: NON_BNF;
     
+}
+// ------------------------------------------------------------------
+bool Tokenize :: FilterProcedure(std::string text)
+{
+    std::string tempSyntax = "";
+    
+    for(int i = 0; i < text.size(); i++)
+    {
+        if(text[i] == ' ' || text[i] == '\0')
+            continue;
+        else
+            tempSyntax += text[i];
+
+    }
+    
+    if(tempSyntax == "procedure")
+        return true; return false;
 }
 // ------------------------------------------------------------------
 // Determines if a token is currently being read

@@ -120,6 +120,11 @@ private:
     // Read variable used to read content from each file
     readDataType read;
     
+    // For test purposes
+    bool procedureTester;
+    
+    int procedureCounter;
+    
     // -----------------------------------------------------------------------
     
     // Indicates an integer variable was detected
@@ -995,7 +1000,7 @@ private:
         PROCEDURE_ENUM Enum_Handler(std::string command)
         {
             // Prevents 'command' from being case sensetive
-            //LowerCase(command);
+            // LowerCase(command);
             
             if(command == "is procedure" ||
                command == "procedure" ||
@@ -1995,6 +2000,9 @@ public:
     
     // Assigns vector from PROCEDURE_HANDLER to private vectors located in Tokenize class
     void assignVector();
+    
+    // Filters out any syntax that contains the word 'procedure', used soely for test purposes
+    bool FilterProcedure(std::string syntax);
     
     // Verifies that each character is legally allowed to use
     char Configure_Token(char character);
