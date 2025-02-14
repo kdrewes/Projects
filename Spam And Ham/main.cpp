@@ -175,7 +175,6 @@ std::vector<std::vector<std::string>> Email(std::vector<char> Class, std::ifstre
         }
             count++;
         }
-        
     }
     
     count = 0;
@@ -194,8 +193,7 @@ std::vector<std::vector<std::string>> Document(std::vector<std::vector<std::stri
         std::string output;
         std::vector<std::string>Temp;
         std::vector<std::vector<std::string>>SpamDocument;
-       
-        
+
         for(std::vector<std::string>::size_type i = 0; i < Spam[0][0].size(); i++)
         {
             for(std::vector<std::string>::size_type j = 0; j < Spam.size(); j++)
@@ -271,7 +269,7 @@ std::vector<std::string>Words(std::vector<std::vector<std::string>> HamDocument,
         }
         return SpamWords;
     }
-    
+
     else
     {
         int count = 0;
