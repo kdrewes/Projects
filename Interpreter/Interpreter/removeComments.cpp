@@ -125,18 +125,30 @@ DFA removeComments :: Read_Character_Helper(std::map<BOOLEAN,bool> BooleanMap){
     return DFA::CHARACTER;
 }
 // --------------------------------------------------------------------------------------------
-std::ostream & operator << (std::ostream &output, removeComments &r)
+std::ostream & operator << (std::ostream &output, removeComments &remove)
+{
+    // Execute operation
+    remove.Execute();
+    
+    // Display output and finalize operation
+    return Print(output,remove);
+
+}
+// ------------------------------------------------------------------
+// std::ostream & operator helper function
+std::ostream & Print(std::ostream &output, removeComments &remove)
 {
     
-    // Display information of Output Vector
-    for(std::vector<std::string>::size_type i = 0; i < r.Files.size(); i++){
+    // Loop output
+    for(std::vector<std::string>::size_type i = 0; i < remove.Files.size(); i++)
+    {
+        // Display output on console
         output << "------------------ " << "File " << i + 1 << " ------------------\n";
-        output <<  r.Files[i] << std::endl << std::endl;
+        output <<  remove.Files[i] << std::endl << std::endl;
         
         // Write file
-        r.WriteFile(i+1,r.Files[i]);
+        remove.WriteFile(i+1,remove.Files[i]);
     }
     
     return output;
 }
-// ------------------------------------------------------------------

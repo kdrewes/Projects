@@ -39,7 +39,7 @@ void Tokenize :: Execute()
     for(std::vector<std::string>::size_type i = 0; i < 1; i++)
     {
         
-    /* --------- Input validation --------- */
+        /* --------- Input validation --------- */
         try
         {
             // Read each file
@@ -48,9 +48,10 @@ void Tokenize :: Execute()
             // Collect tokens from current file being read
             this -> TokenVector.push_back(ReadFile());
         }
+        
+        // Display error message
         catch(std::invalid_argument e)
         {
-            // Display error message
             std::cerr << e.what() << std::endl;
         }
     }
@@ -814,6 +815,7 @@ bool Tokenize :: findString()
             if(this->syntax == stringCollector[i])
             {
                 this -> string_index = i;
+                
                 return true;
             }
         }
@@ -830,6 +832,7 @@ bool Tokenize :: findChar()
             if(this->syntax == charCollector[i])
             {
                 this -> char_index = i;
+                
                 return true;
             }
         }
@@ -846,10 +849,11 @@ bool Tokenize :: findIntegerArg()
                 if(this->syntax == integerArgCollector[i])
                 {
                     this -> integer_arg_index = i;
+                    
                     return true;
                 }
             }
-        
+    
     return false;
 }
 //------------------------------------------------------------------
@@ -862,10 +866,11 @@ bool Tokenize :: findIntegerArg()
                 if(this->syntax == stringArgCollector[i])
                 {
                     this -> string_arg_index = i;
+                    
                     return true;
                 }
             }
-            
+        
         return false;
     }
 //------------------------------------------------------------------
@@ -878,6 +883,7 @@ bool Tokenize :: findIntegerArg()
                 if(this->syntax == charArgCollector[i])
                 {
                     this -> char_arg_index = i;
+                    
                     return true;
                 }
             }
@@ -896,6 +902,7 @@ bool Tokenize :: findProcedure()
                 if(this->syntax == procedureCollector[i])
                 {
                     this -> procedure_index = i;
+                    
                     return true;
                 }
             }
@@ -966,14 +973,6 @@ TOKEN_TYPE Tokenize :: Read_Token()
         {
             isProcedure("procedure");
             
-            if(procedureTester)
-            {
-                std::cout << "\n\nBEGINNING PROCEDURE TEST PHASE";
-                std::cout << "\nPROCEDURE COUNTER = " << procedureCounter << std::endl;
-            }
-            
-            this -> procedureTester = true;
-            
             return TOKEN_TYPE :: IDENTIFIER;
         }
 
@@ -983,9 +982,11 @@ TOKEN_TYPE Tokenize :: Read_Token()
                 isValue("=");
         }
         
-        /*
+        /******************************
+         
          Add all the other FIND VARAIBLES as well
-         */
+        
+         **************************************************/
         
         else if(findProcedure())
             return TOKEN_TYPE :: IDENTIFIER;
@@ -1243,7 +1244,6 @@ TOKEN_TYPE Tokenize :: isTokenHelper()
     
 }
 // ------------------------------------------------------------------
-
 // Determine datatype being used for the purpose of selecting which collector vector to utilize
 TOKEN_TYPE Tokenize :: dataType(std::string command)
 {
@@ -1385,6 +1385,8 @@ std::pair<std::string, std::string> Tokenize :: Token_Handler(TOKEN_TYPE token)
         case MINUS:
             if(!isValue())
                 return {"MINUS", "-"};
+            
+            break;
             
         case ASTERISK:
             return {"ASTERISK", "*"};

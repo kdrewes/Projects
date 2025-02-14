@@ -3,17 +3,7 @@
 #include <fstream>
 #include "removeComments.h"
 #include "Tokenize.h"
-// ---------------------------------------- Prototypes ----------------------------------------
 
-// Returns the contents of each file
-std::string ReadFile(std::string fileName);
-
-// Returns the character read from each file
-char Read_Character(DFA dfa, std::ifstream &read, char character, std::map<BOOLEAN,bool> &BooleanMap);
-
-// Returns the appropiate enum
-DFA Read_Character_Helper(std::map<BOOLEAN,bool> BooleanMap);
-// --------------------------------------------------------------------------------------------
 int main(int argc, const char * argv[]) {
     
     removeComments remove({
@@ -25,9 +15,7 @@ int main(int argc, const char * argv[]) {
         "testFile6.c"
     });
     
-    remove.Execute();
-    
-    //std::cout << remove << std::endl;
+   // std::cout << remove << std::endl;
     
     Tokenize token({
         "textFile1.txt",
@@ -38,7 +26,8 @@ int main(int argc, const char * argv[]) {
         "textFile6.txt"
     });
     
-    token.Execute();
+    // Execute Operation
+    std::cout << token << std::endl;
     
     return 0;
 }
