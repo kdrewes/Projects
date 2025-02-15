@@ -1893,9 +1893,8 @@ private:
         procedure_bool ContainsTrueFlag()
         {
             // Declare array which holds all flags
-            procedure_bool procedure_array [] =
+            bool procedure_array [] =
             {
-                
                 is_procedure,
                 is_regular_procedure,
                 is_left_parenthesis,
@@ -2051,6 +2050,73 @@ private:
                 throw std::invalid_argument("\n\nError - " + std::string(tempString) + " is not a datatype\n\n");
             
             return pairString;
+        }
+        
+ //------------------------------------------------------------
+        void booleanTester()
+        {
+            std::vector<std::string>variableVector;
+            
+            // Declare array which holds all flags
+            bool procedureArray [] =
+            {
+                is_procedure,
+                is_regular_procedure,
+                is_data_type,
+                is_variable,
+                is_comma,
+                is_main,
+                is_void,
+                is_left_parenthesis,
+                is_right_parenthesis,
+                is_left_parenthesis_main,
+                is_right_parenthesis_main,
+                searching_for_left_parenthesis,
+                searching_for_right_parenthesis,
+                left_parenthesis_detected,
+                right_parenthesis_detected,
+                searching_for_left_parenthesis_main,
+                searching_for_right_parenthesis_main,
+                left_parenthesis_detected_main,
+                right_parenthesis_detected_main
+            };
+            
+            std::string variableArray [] =
+            {
+                "is_procedure",
+                "is_regular_procedure",
+                "is_data_type",
+                "is_variable",
+                "is_comma",
+                "is_main",
+                "is_void",
+                "is_left_parenthesis",
+                "is_right_parenthesis",
+                "is_left_parenthesis_main",
+                "is_right_parenthesis_main",
+                "searching_for_left_parenthesis",
+                "searching_for_right_parenthesis",
+                "left_parenthesis_detected",
+                "right_parenthesis_detected",
+                "searching_for_left_parenthesis_main",
+                "searching_for_right_parenthesis_main",
+                "left_parenthesis_detected_main",
+                "right_parenthesis_detected_main"
+            };
+            
+            for(int i = 0; i < sizeof(procedureArray)/sizeof(procedureArray[0]); i++)
+                if(procedureArray[i] == true)
+                    variableVector.push_back(variableArray[i]);
+            
+            // Display True Variables
+            for(std::vector<std::string> :: size_type i = 0; i < variableVector.size(); i++)
+            {
+                if(i == 0)
+                    std::cout << "\n\nBoolean Tester: ";
+                std::cout << variableVector[i] << ' ';
+            }
+            
+            std::cout << std::endl;
         }
         
         // Deconstructor

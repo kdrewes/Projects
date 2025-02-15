@@ -105,18 +105,6 @@ std::vector<std::pair<tokenType,token>> Tokenize :: ReadFile()
             {
                 this->syntax += Configure_Token(character);
                 
-                if(this -> syntax == "procedure")
-                {
-                    procedureCounter += 1;
-                    
-                    if(procedureCounter == 2)
-                    {
-                        std::cout << "\n\nTEST PROCEDURE\n\n";
-                    }
-                }
-                    
-                
-                
                 if(isToken(isTokenHelper()))
                 {
                     Tokens.push_back(Token_Handler(Read_Token()));
@@ -381,7 +369,6 @@ void Tokenize :: Configure_Procedure(char character)
             
             else
             {
-                
                 isProcedure("regular function");
                 
                 isProcedure("left parenthesis detected");
@@ -537,12 +524,15 @@ void Tokenize :: Configure_Procedure(char character)
     
     else if(isProcedure(strdup("is main")))
     {
-        std::cout << std::endl << character << ' ';
+        //std::cout << std::endl << character << ' ';
         
         if (isProcedure(strdup("left parenthesis detected")))
         {
             if(character == '(')
                 isProcedure("(");
+            
+            else
+                throw std::invalid_argument("\n\nError - character must be ( not " + std::string(1,character) + "\n\n");
         }
         
         else if(isProcedure(strdup("searching for left parenthesis")))
@@ -553,15 +543,12 @@ void Tokenize :: Configure_Procedure(char character)
             else
                 throw std::invalid_argument("\n\nError - character must be ( not " + std::string(1,character) + "\n\n");
         }
-        else if(strdup("("))
+        else if(isProcedure(strdup("(")))
         {
-            
-            if(this -> syntax + character == "void")
-                std::cout << "\nINITIATE TEST:\n\n";
             // --------------- Input Validation ---------------
             
             if(character != 'v' && this -> syntax.size() == 0)
-                throw std::invalid_argument("\n\nError - " + std::string(1,character) + " is an invalid character\n\nparameter must be voidsd\n");
+                throw std::invalid_argument("\n\nError - " + std::string(1,character) + " is an invalid character\n\nparameter must be void\n");
             
             else if(!isalpha(character) && this -> syntax.size() != 0)
                 throw std::invalid_argument("\n\nError - " + std::string(1,character) + " is an invalid character\n\nparameter must be void\n");
@@ -570,19 +557,30 @@ void Tokenize :: Configure_Procedure(char character)
                 throw std::invalid_argument("\n\nError - " + std::string(1,character) + " is an invalid character\n\nparameter must be void\n");
             
             // ------------------- logic -------------------
-            
-            std::string tempString = this -> syntax + character;
-            
-            if(tempString == "void")
-            {
-                std::cout << "\n\nVOID IS ACTIVATED\n\n";
+
+            if(this -> syntax + character == "void")
                 isProcedure("void");
-            }
             
+            else if(this -> syntax + character != "void" && this -> syntax.size() == 3 )
+                throw std::invalid_argument("\n\nError - " + std::string(this -> syntax + character) + " is an invalid parameter\n\nparameter must be void\n");
         }
-        else if(strdup("is void"))
+        
+        else if(isProcedure(strdup("is void")))
         {
-            std::cout << "\n\nIN VOID\n\n";
+            if(character == ')')
+                isProcedure(")");
+        
+            else
+                throw std::invalid_argument("\n\nError - " + std::string(1,character) + " is an invalid character\n");
+        }
+        
+        else if(isProcedure(strdup(")")))
+        {
+            if(character == '{')
+                isProcedure("reset");
+
+            else
+                throw std::invalid_argument("\n\nError - " + std::string(1,character) + " is an invalid character\n\ncharacter must be {\n");
         }
     }
 }
@@ -929,9 +927,9 @@ bool Tokenize :: findIntegerArg()
 // Determines if a procedure is present within an operation/equation
 bool Tokenize :: findProcedure()
 {
-    if(isProcedure())
-    {
+   
         if(!procedureCollector.empty())
+        {
             for(std::vector <std::string> :: size_type i = 0; i < procedureCollector.size(); i++)
             {
                 if(this->syntax == procedureCollector[i])
@@ -941,7 +939,7 @@ bool Tokenize :: findProcedure()
                     return true;
                 }
             }
-    }
+        }
     
     return false;
 }
@@ -1497,6 +1495,7 @@ std::ostream & Print(std::ostream &output, Tokenize &token)
         for(const auto & [tokenType,token] : tokenVector)
         {
             output << "Token Type: " << tokenType << std::endl;
+            
             output << "Token: " << token << std::endl << std::endl;
         }
     }
