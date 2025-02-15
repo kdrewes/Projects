@@ -420,6 +420,12 @@ void Tokenize :: Configure_Procedure(char character)
         
         else if(isProcedure(strdup("(")))
         {
+            // --------------- Input Validation ---------------
+            
+            
+            
+            // -------------------- Logic ---------------------
+            
             if((this -> syntax + character == "int" ||
                this -> syntax + character == "char" ||
                this -> syntax + character == "string") &&
@@ -438,7 +444,7 @@ void Tokenize :: Configure_Procedure(char character)
             else if(character == ')' && this -> syntax.size() == 0)
                 isProcedure(")");
             
-            else if(this -> syntax.size() > 0 && (read.peek() == ')'))
+            else if((this -> syntax.size() > 0) && (read.peek() == ')'))
             {
                 std::string tempString = this -> syntax + character;
                 
@@ -511,7 +517,6 @@ void Tokenize :: Configure_Procedure(char character)
                 throw std::invalid_argument("\n\nError - character must be comma, " + std::string(1,character) + " is not a valid character.\n");
         }
         
-        
         else if(isProcedure(strdup(")")))
         {
             if(character == '{')
@@ -524,8 +529,6 @@ void Tokenize :: Configure_Procedure(char character)
     
     else if(isProcedure(strdup("is main")))
     {
-        //std::cout << std::endl << character << ' ';
-        
         if (isProcedure(strdup("left parenthesis detected")))
         {
             if(character == '(')
@@ -589,7 +592,7 @@ void Tokenize :: Configure_Procedure(char character)
 void Tokenize :: assignVector()
 {
     // Declare variables for organization purposes
-    std::string datatype = isProcedure.saveDataType;
+    std::string datatype = isProcedure.storeDataType;
     
     switch(dataType(datatype))
     {
@@ -597,10 +600,11 @@ void Tokenize :: assignVector()
             
             if(!isProcedure.integerCollector.empty())
             {
-                std::vector<std::string> intVector = isProcedure.integerCollector;
+                std::vector <std::string> intVector = isProcedure.integerCollector;
                 
                 integerArgCollector.assign(intVector.begin(),intVector.end());
             }
+            
             else
                 throw std::invalid_argument("\n\nError - Attempting to access data from empty vector - integerCollector\n");
                     
@@ -610,10 +614,11 @@ void Tokenize :: assignVector()
             
             if(!isProcedure.stringCollector.empty())
             {
-                std::vector<std::string> stringVector = isProcedure.stringCollector;
+                std::vector <std::string> stringVector = isProcedure.stringCollector;
                 
                 stringArgCollector.assign(stringVector.begin(),stringVector.end());
             }
+            
             else
                 throw std::invalid_argument("\n\nError - Attempting to access data from empty vector - stringCollector\n");
             
@@ -623,17 +628,18 @@ void Tokenize :: assignVector()
             
             if(!isProcedure.charCollector.empty())
             {
-                std::vector<std::string> charVector = isProcedure.charCollector;
+                std::vector <std::string> charVector = isProcedure.charCollector;
                 
                 charArgCollector.assign(charVector.begin(), charVector.end());
             }
+            
             else
                 throw std::invalid_argument("\n\nError - Attempting to access data from empty vector - charCollector\n");
             
             break;
 
         case ERROR:
-            throw std::invalid_argument("\n\nError - " + std::string(isProcedure.saveDataType) + " is an invalid data type " + "\n\n");
+            throw std::invalid_argument("\n\nError - " + std::string(isProcedure.storeDataType) + " is an invalid data type " + "\n\n");
     }
 }
 

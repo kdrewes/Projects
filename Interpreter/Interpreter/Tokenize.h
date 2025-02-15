@@ -954,7 +954,7 @@ private:
         
         
         // Record the last datatype used when PROCEDURE_ENUM :: DATA_TYPE is detected
-        std::string saveDataType;
+        std::string storeDataType;
         
         // Record name of argument when PROCEDURE_ENUM :: VARIABLE is detected
         std::string argument;
@@ -990,7 +990,8 @@ private:
         right_parenthesis_detected_main(false),
         
         // Initialize tenetive variables
-        saveDataType(""),
+        storeDataType(""),
+        
         argument("")
         
         {}
@@ -1295,7 +1296,7 @@ private:
                         {
                             Reset();
                             
-                            this -> saveDataType = disectDataType(command).second;
+                            this -> storeDataType = disectDataType(command).second;
                             
                             is_data_type = true;
                             
@@ -1607,7 +1608,7 @@ private:
         // Collects argument of applicable datatype
         void storeArgument()
         {
-            switch(dataType(this -> saveDataType))
+            switch(dataType(this -> storeDataType))
             {
                 case INTEGER:
 
@@ -1628,7 +1629,7 @@ private:
                     break;
 
                 case ERROR:
-                    throw std::invalid_argument("\n\nError - " + std::string(this -> saveDataType) + " is an invalid data type " + "\n\n");
+                    throw std::invalid_argument("\n\nError - " + std::string(this -> storeDataType) + " is an invalid data type " + "\n\n");
 
             }
             
