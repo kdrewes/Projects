@@ -960,12 +960,8 @@ TOKEN_TYPE Tokenize :: Read_Token()
     {
         if(this->syntax == "int" && !isProcedure())
         {
-            /*****************************************/
-            
-            // UNCOMMENT WHEN DONE
-           // isInteger("datatype");
-            
-            /*****************************************/
+            isInteger("datatype");
+
             return TOKEN_TYPE :: IDENTIFIER;
         }
     

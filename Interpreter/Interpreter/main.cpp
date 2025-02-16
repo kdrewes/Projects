@@ -6,7 +6,8 @@
 
 int main(int argc, const char * argv[]) {
     
-    removeComments remove({
+    removeComments remove
+    ({
         "testFile1.c",
         "testFile2.c",
         "testFile3.c",
@@ -15,9 +16,11 @@ int main(int argc, const char * argv[]) {
         "testFile6.c"
     });
     
+   // Execute removal of comments
    // std::cout << remove << std::endl;
     
-    Tokenize token({
+    Tokenize token
+    ({
         "textFile1.txt",
         "textFile2.txt",
         "textFile3.txt",
@@ -26,7 +29,7 @@ int main(int argc, const char * argv[]) {
         "textFile6.txt"
     });
     
-    // Execute Operation
+    // Execute tokenization
     std::cout << token << std::endl;
     
     return 0;
