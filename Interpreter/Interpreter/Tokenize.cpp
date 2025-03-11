@@ -177,6 +177,7 @@ void Tokenize :: Configure_Value(char character)
     {
         if(isValue(strdup("=")))
         {
+            
             if(character == '=')
             {
                 if(read.peek() == ' ' || isnumber(this->read.peek()))
@@ -207,6 +208,13 @@ void Tokenize :: Configure_Value(char character)
                 
                 throw std::invalid_argument("\n\nError - invalid character " + std::string(1,character) + " detected.  Must be integer.\n\n");
             
+            else if(isnumber(character) && this -> syntax.size() == 0)
+            {
+                if(this->read.peek() == ' ' || this->read.peek() == ';')
+                    isValue(";");
+                
+            }
+            
             else if(character != '-' && this -> syntax.size() != 0)
             {
                 if(isnumber(character))
@@ -219,6 +227,7 @@ void Tokenize :: Configure_Value(char character)
                             std::invalid_argument("\n\nError - Invalid character " + std::string(1,character) + " detected\n\n");
                         
                     }
+                    
                 }
             }
         }
@@ -1012,7 +1021,9 @@ TOKEN_TYPE Tokenize :: Read_Token()
         else if(findInteger())
         {
             if(!isPrintF())
+            {
                 isValue("=");
+            }
         }
         
         /******************************
