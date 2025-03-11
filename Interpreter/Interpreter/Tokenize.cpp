@@ -93,13 +93,12 @@ std::vector<std::pair<tokenType,token>> Tokenize :: ReadFile()
     {
         for(char character = '\0'; !this->read.eof();  this->read >> std::noskipws >> character )
         {
-            /*
+            
             // Test output
             if(character != '\n')
                 std::cout << character;
             else
                 std::cout << std::endl;
-            */
             
             if(character != ' ' && character != '\n' && character != '\0')
             {
@@ -136,13 +135,13 @@ char Tokenize :: Configure_Token(char character)
 char Tokenize :: Configure_Token_Helper(char character)
 {
     // Input validation for integer handler
-    //Configure_Integer(character);
+    Configure_Integer(character);
     
     // Input validation for isValue handler
-    //Configure_Value(character);
+    Configure_Value(character);
     
     // Input validation for isString handler
-    //Configure_PrintF(character);
+    Configure_PrintF(character);
     
     // Input validation for procedure handler
     Configure_Procedure(character);
@@ -151,7 +150,7 @@ char Tokenize :: Configure_Token_Helper(char character)
 }
 // ------------------------------------------------------------------
 // Checks if isInteger boolean variable is currently set as 'true'
-/*
+
 void Tokenize :: Configure_Integer(char character)
 {
     if(!isProcedure())
@@ -339,7 +338,6 @@ void Tokenize :: Configure_PrintF(char character)
             isPrintF("reset");
     }
 }
- */
 //------------------------------------------------------------------
 // Check if isProecedure boolean varaible is currently set as 'true'
 void Tokenize :: Configure_Procedure(char character)

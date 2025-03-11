@@ -2168,13 +2168,13 @@ public:
     bool findProcedure();
     
     // Checks if isInteger boolean variable is currently set as 'true'
-    //void Configure_Integer(char character);
+    void Configure_Integer(char character);
     
     // Checks if isValue boolean variable is currently set as 'true'
-    //void Configure_Value(char character);
+    void Configure_Value(char character);
     
     // Check if isPrintf boolean variable is currently set as 'true'
-    //void Configure_PrintF(char character);
+    void Configure_PrintF(char character);
     
     // Check if isProecedure boolean varaible is currently set as 'true'
     void Configure_Procedure(char character);
