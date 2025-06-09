@@ -335,9 +335,9 @@ private:
         
         // -----------------------------------------------------------------------
         // Declare boolean variable for VALUE_HANDLER
-        value_bool is_equal,
-        is_integer,
-        is_semicolon;
+        bool is_equal,
+             is_integer,
+             is_semicolon;
         
         // -----------------------------------------------------------------------
         // Declare paramatarized constructor
@@ -355,14 +355,14 @@ private:
         
         // -----------------------------------------------------------------------
         // Determine if boolean property is exists in VALUE_HANDLER
-        value_bool operator()(char * command)
+        bool operator()(char * command)
         {
             return Verify_Flag(Enum_Handler(command), command);
         }
         
         // -----------------------------------------------------------------------
         // Determine if there is a true boolean member contained in VALUE_HANDLER
-        value_bool operator()()
+        bool operator()()
         {
             return ContainsTrueFlag();
         }

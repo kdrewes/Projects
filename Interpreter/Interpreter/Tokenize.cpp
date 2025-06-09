@@ -206,7 +206,7 @@ void Tokenize :: Configure_Value(char character)
                (character != '=' && character != '-' && character != '+') &&
                this -> syntax.size() == 0)
                 
-                throw std::invalid_argument("\n\nError - invalid character " + std::string(1,character) + " detected.  Must be integer.\n\n");
+                throw std::invalid_argument("\n\nError - invalid character " + std::string(1,character) + " detected.  \n\t\tMust be integer.\n\n");
             
             else if(isnumber(character) && this -> syntax.size() == 0)
             {

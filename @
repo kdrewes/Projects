@@ -1,0 +1,53 @@
+Made the following modifications to void ConfigureProcedureFunction(PROCEDURE_ENUM enumObject, std::string command):
+
+  case DATA_TYPE:
+                        
+                 if(!is_data_type)
+                        {
+                            Reset();
+                            
+                            switch(dataType(disectDataType(command).second))
+                            {
+                                case INTEGER:
+
+                                    break;
+                                    
+                                case CHAR:
+                                    break;
+                                    
+                                case STRING:
+                                    break;
+                                    
+                                case ERROR:
+                                    throw std::invalid_argument("\n\nError - " + std::string(disectDataType(command).second) + " is an invalid data type " + "\n\n");
+
+                            }
+
+                            is_data_type = true;
+                            
+                            is_regular_procedure = true;
+                        }
+                        else
+                            throw std::invalid_argument("\nError - is_data_type is already set to true\n");
+                        
+                        break;
+                        
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch Tokenization
+# Your branch is up to date with 'origin/Tokenization'.
+#
+# Changes to be committed:
+#	modified:   Interpreter/Tokenize.h
+#
+# Changes not staged for commit:
+#	modified:   ../.DS_Store
+#	modified:   Interpreter.xcodeproj/project.xcworkspace/xcuserdata/kyledrewes.xcuserdatad/UserInterfaceState.xcuserstate
+#	modified:   Interpreter.xcodeproj/xcuserdata/kyledrewes.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
+#
+# Untracked files:
+#	../1
+#	Files/
+#	Solutions/
+#
