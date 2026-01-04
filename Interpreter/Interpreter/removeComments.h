@@ -45,6 +45,9 @@ public:
     // Output remove comments object
     friend std::ostream & operator << (std::ostream &, removeComments &);
     
+    // std::ostream & operator helper function
+    friend std::ostream & Print(std::ostream &output, removeComments &remove);
+    
 };
 
 #endif

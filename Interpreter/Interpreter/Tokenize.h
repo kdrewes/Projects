@@ -11,7 +11,7 @@
 #include "removeComments.h"
 
 // Rename string data types for organizational purposes
-typedef std::string fileName, tokenType, token, dataType;
+typedef std::string fileName, tokenType, token;
 
 // Rename integer data types for organization purposes
 typedef int iterator, position;
@@ -51,10 +51,12 @@ enum TOKEN_TYPE {
     BOOLEAN_NOT,
     BOOLEAN_EQUAL,
     BOOLEAN_NOT_EQUAL,
-    STRING,
     INTEGER,
+    STRING,
+    CHAR,
     BNF_IN_PROCESS,
-    NON_BNF
+    NON_BNF,
+    ERROR
 };
 
 class Tokenize
@@ -64,20 +66,47 @@ private:
     // Test file vector
     std::vector<fileName> TestFiles;
     
-    // Collects string datatype
-    std::vector<dataType> stringCollector,
-    
     // Collects int datatype
-    integerCollector,
+    std::vector <std::string> integerCollector,
+    
+    // Collects string datatype
+    stringCollector,
+    
+    // Collects char datatype
+    charCollector,
+    
+    // Collects int arguments from procedure
+    integerArgCollector,
+    
+    // Collects string arguments from procedure
+    stringArgCollector,
+    
+    // Collects char arguments from procedure
+    charArgCollector,
     
     // Collects procedures/functions
     procedureCollector;
     
     // Vector used to collect tokens from each file
-    std::vector<std::vector<std::pair<tokenType,token>>>TokenVector;
+    std::vector<std::vector<std::pair<std::string,std::string>>>TokenVector;
     
     // Contains index of integer variable found
     position integer_index;
+    
+    // Contains index of string variable found
+    position string_index;
+    
+    // Contains index of char variable found
+    position char_index;
+    
+    // Contains index of integer argument found
+    position integer_arg_index;
+    
+    // Contains index of string argument found
+    position string_arg_index;
+    
+    // Contains index of char argument found
+    position char_arg_index;
     
     // Contains index of procedure found
     position procedure_index;
@@ -90,6 +119,11 @@ private:
     
     // Read variable used to read content from each file
     readDataType read;
+    
+    // For test purposes
+    bool procedureTester;
+    
+    int procedureCounter;
     
     // -----------------------------------------------------------------------
     
@@ -106,9 +140,9 @@ private:
             ERROR
         };
         
-        integer_bool is_data_type,
-                     is_value,
-                     is_assignment_operator;
+        bool is_data_type,
+             is_value,
+             is_assignment_operator;
         
         INTEGER_HANDLER() :
         is_data_type(false),
@@ -165,7 +199,7 @@ private:
             switch(enumObject)
             {
                 case DATA_TYPE:
-                
+                    
                     if(!this -> is_data_type)
                     {
                         Reset();
@@ -175,10 +209,10 @@ private:
                         throw std::invalid_argument("\nError - is_data_type is already set to true\n");
                     
                     break;
-                
+                    
                     
                 case VALUE:
-                
+                    
                     if(!this -> is_value)
                     {
                         Reset();
@@ -189,10 +223,10 @@ private:
                         throw std::invalid_argument("\nError - is_value is already set to true\n");
                     
                     break;
-                
+                    
                     
                 case ASSIGNMENT_OPERATOR:
-                
+                    
                     if(!this -> is_assignment_operator)
                     {
                         Reset();
@@ -202,7 +236,7 @@ private:
                         throw std::invalid_argument("\nError - is_assignment_operator is already set to true\n");
                     
                     break;
-                
+                    
                 case RESET:
                     
                     Reset();
@@ -221,17 +255,17 @@ private:
             switch(enum_propery)
             {
                 case DATA_TYPE:
-                
+                    
                     if(is_data_type)
                         return true; return false;
-                
+                    
                 case VALUE:
-                
+                    
                     if(is_value)
                         return true; return false;
-                 
+                    
                 case ASSIGNMENT_OPERATOR:
-                
+                    
                     if(is_assignment_operator)
                         return true; return false;
                     
@@ -278,7 +312,7 @@ private:
             
             return false;
         }
-
+        
         // Deconstructor
         ~ INTEGER_HANDLER() = default;
         
@@ -301,9 +335,9 @@ private:
         
         // -----------------------------------------------------------------------
         // Declare boolean variable for VALUE_HANDLER
-        value_bool is_equal,
-                   is_integer,
-                   is_semicolon;
+        bool is_equal,
+             is_integer,
+             is_semicolon;
         
         // -----------------------------------------------------------------------
         // Declare paramatarized constructor
@@ -321,14 +355,14 @@ private:
         
         // -----------------------------------------------------------------------
         // Determine if boolean property is exists in VALUE_HANDLER
-        value_bool operator()(char * command)
+        bool operator()(char * command)
         {
             return Verify_Flag(Enum_Handler(command), command);
         }
         
         // -----------------------------------------------------------------------
         // Determine if there is a true boolean member contained in VALUE_HANDLER
-        value_bool operator()()
+        bool operator()()
         {
             return ContainsTrueFlag();
         }
@@ -363,7 +397,7 @@ private:
             switch(enumObject)
             {
                 case ASSIGNMENT_OPERATOR:
-                
+                    
                     if(!this -> is_equal)
                     {
                         Reset();
@@ -374,10 +408,10 @@ private:
                         throw std::invalid_argument("\nError - is_equal is already set to true\n");
                     
                     break;
-                
+                    
                     
                 case INTEGER:
-                
+                    
                     if(!this -> is_integer)
                     {
                         Reset();
@@ -388,10 +422,10 @@ private:
                         throw std::invalid_argument("\nError - is_integer is already set to true\n");
                     
                     break;
-                
+                    
                     
                 case SEMICOLON:
-                
+                    
                     if(!this -> is_semicolon)
                     {
                         Reset();
@@ -401,7 +435,7 @@ private:
                         throw std::invalid_argument("\nError - is_semicolon is already set to true\n");
                     
                     break;
-                
+                    
                 case RESET:
                     
                     Reset();
@@ -423,22 +457,22 @@ private:
             {
                     
                 case ASSIGNMENT_OPERATOR:
-                
+                    
                     if(is_equal)
                         return true; return false;
-                
+                    
                     
                 case INTEGER:
-                
+                    
                     if(is_integer)
                         return true; return false;
-                
+                    
                     
                 case SEMICOLON:
-                
+                    
                     if(is_semicolon)
                         return true; return false;
-                
+                    
                     
                 case RESET:
                     
@@ -495,8 +529,8 @@ private:
     
     // -----------------------------------------------------------------------
     /*  Facilitates the boolean mechanics anytime a procedure is detected
-        Indicates aa printf command was detected.
-        Content in quotation marks will return a string.
+     Indicates aa printf command was detected.
+     Content in quotation marks will return a string.
      */
     struct PRINTF_HANDLER
     {
@@ -518,7 +552,7 @@ private:
         };
         
         // -----------------------------------------------------------------------
-
+        
         // Declare all flags used in the Printf Handler operation
         printf_bool is_print_f,
         is_left_paranthesis,
@@ -531,7 +565,7 @@ private:
         is_semicolon;
         
         // -----------------------------------------------------------------------
-
+        
         // Execute default constructor
         PRINTF_HANDLER() :
         is_print_f(false),
@@ -570,7 +604,7 @@ private:
         PRINTF_ENUM Enum_Handler(std::string command)
         {
             // Used to prevent command from being case sensetive
-           // LowerCase(command);
+            // LowerCase(command);
             
             // Determine correct enum to use
             if(command == "printf")
@@ -871,40 +905,63 @@ private:
             LEFT_PARENTHESIS_MAIN,
             RIGHT_PARENTHESIS_MAIN,
             DATA_TYPE,
+            INTEGER,
+            CHAR,
+            STRING,
             VARIABLE,
             COMMA,
             RESET,
             IN_PROCESS,
-            SCANNING_FOR_LEFT_PARENTHESIS,
+            SEARCHING_FOR_LEFT_PARENTHESIS,
+            SEARCHING_FOR_RIGHT_PARENTHESIS,
             LEFT_PARENTHESIS_DETECTED,
+            RIGHT_PARENTHESIS_DETECTED,
+            SEARCHING_FOR_LEFT_PARENTHESIS_MAIN,
+            SEARCHING_FOR_RIGHT_PARENTHESIS_MAIN,
+            LEFT_PARENTHESIS_DETECTED_MAIN,
+            RIGHT_PARENTHESIS_DETECTED_MAIN,
             ERROR
         };
         
         // Declare boolean varialble when procedure is found
-        procedure_bool is_procedure;
+        bool is_procedure;
         
         // Declare boolean variables used for regular procedure and main procedure
-        procedure_bool is_regular_procedure,
-                       is_left_parenthesis,
-                       is_data_type,
-                       is_variable,
-                       is_comma,
-                       is_right_parenthesis;
+        bool is_regular_procedure,
+             is_left_parenthesis,
+             is_data_type,
+             is_variable,
+             is_comma,
+             is_right_parenthesis;
         
         // Declare boolean variables used for main procedure
-        procedure_bool is_main,
-                       is_void,
-                       is_left_parenthesis_main,
-                       is_right_parenthesis_main;
-       
-        // Declare boolean variable used to determine tenetive outcomes
-        procedure_bool scanning_for_left_parenthesis,
-                       left_parenthesis_detected;
+        bool is_main,
+             is_void,
+             is_left_parenthesis_main,
+             is_right_parenthesis_main;
         
+        // Declare boolean variable used to determine tenetive outcomes for regular procedure
+        bool searching_for_left_parenthesis,
+             searching_for_right_parenthesis,
+             left_parenthesis_detected,
+             right_parenthesis_detected;
+        
+        // Declare boolean variable used to determine tenetive outcomes for main procedure
+        bool searching_for_left_parenthesis_main,
+             searching_for_right_parenthesis_main,
+             left_parenthesis_detected_main,
+             right_parenthesis_detected_main;
+        
+        
+        // Record the last datatype used when PROCEDURE_ENUM :: DATA_TYPE is detected
+        std::string storeDataType;
+        
+        // Record name of argument when PROCEDURE_ENUM :: VARIABLE is detected
+        std::string argument;
         
         // Default Constructor
         PROCEDURE_HANDLER() :
-
+        
         // Determines if a main or regular procedure has been detected
         is_procedure(false),
         is_main(false),
@@ -920,16 +977,39 @@ private:
         is_comma(false),
         is_void(false),
         
-        // Declare boolean variables used for tenetive scenarios
-        scanning_for_left_parenthesis(false),
-        left_parenthesis_detected(false)
+        // Declare boolean variables used for tenetive scenarios in regular function
+        searching_for_left_parenthesis(false),
+        searching_for_right_parenthesis(false),
+        left_parenthesis_detected(false),
+        right_parenthesis_detected(false),
+        
+        // Declare boolean variables used for tenetive scenarios in main function
+        searching_for_left_parenthesis_main(false),
+        searching_for_right_parenthesis_main(false),
+        left_parenthesis_detected_main(false),
+        right_parenthesis_detected_main(false),
+        
+        // Initialize tenetive variables
+        storeDataType(""),
+        
+        argument("")
         
         {}
-
-        // -----------------------------------------------------------------------
+        
+        // Collects int datatype
+        std::vector <std::string> integerCollector,
+        
+        // Collects string datatype
+        stringCollector,
+        
+        // Collects char datatype
+        charCollector;
+        
+        //-----------------------------------------------------------------------
         // Modifies boolean values which belong to PROCEDURE_HANDLER
         void operator()(std::string command)
         {
+
             return Configure(Enum_Handler(command), command);
         }
         
@@ -938,55 +1018,126 @@ private:
         PROCEDURE_ENUM Enum_Handler(std::string command)
         {
             // Prevents 'command' from being case sensetive
-            //LowerCase(command);
+            // LowerCase(command);
             
-            if(command == "is procedure" || command == "procedure" || command == "function")
+            if(command == "is procedure" ||
+               command == "procedure" ||
+               command == "function")
                 return PROCEDURE_ENUM :: PROCEDURE;
             
-            else if(command == "procedure name" || command == "name" || command == "is void function" || command == "is regular function" || command == "void function" || command == "regular function" || command == "is regular procedure")
+            else if(command == "procedure name" ||
+                    command == "name" ||
+                    command == "is regular function" ||
+                    command == "regular function" ||
+                    command == "is regular procedure")
                 return PROCEDURE_ENUM :: REGULAR_PROCEDURE;
             
-            else if(command == "is main" || command == "main")
+            else if(command == "is main" ||
+                    command == "main")
                 return PROCEDURE_ENUM :: MAIN;
             
-            else if((command == "is void" || command == "void") && is_main)
+            else if((command == "is void" ||
+                     command == "void") &&
+                     is_main)
                 return PROCEDURE_ENUM :: VOID;
             
-            else if((command == "(" || command == "left parenthesis") && is_regular_procedure)
+            else if((command == "(" ||
+                     command == "left parenthesis" ||
+                     command == "comma detected") &&
+                     is_regular_procedure)
                 return PROCEDURE_ENUM :: LEFT_PARENTHESIS;
             
-            else if((command == "(" || command == "left parenthesis") && is_main)
+            else if((command == "(" ||
+                     command == "left parenthesis") &&
+                     is_main)
                 return PROCEDURE_ENUM :: LEFT_PARENTHESIS_MAIN;
             
-            else if((command == ")" || command == "right parenthesis")  && is_regular_procedure)
+            else if((command == ")" ||
+                     command == "right parenthesis")  &&
+                     is_regular_procedure)
                 return PROCEDURE_ENUM :: RIGHT_PARENTHESIS;
             
-            else if((command == ")" || command == "right parenthesis")  && is_main)
+            else if((command == ")" ||
+                     command == "right parenthesis") &&
+                     is_main)
                 return PROCEDURE_ENUM :: RIGHT_PARENTHESIS_MAIN;
             
-            else if((command == "datatype" || command == "data type") &&  is_regular_procedure)
+            else if(((command == "is data type" ||
+                      command == "is datatype" ||
+                      command == "is detecting variable" ||
+                      command == "detecting variable") ||
+                      searchForDataType(command)) &&
+                      is_regular_procedure)
                 return PROCEDURE_ENUM :: DATA_TYPE;
             
-            else if((command == "is variable" || command == "variable") && is_regular_procedure)
+            else if(((command == "is variable" ||
+                      command == "variable") ||
+                      searchForVariable(command)) &&
+                      is_regular_procedure)
                 return PROCEDURE_ENUM :: VARIABLE;
             
-            else if((command == "," || command == "comma") && is_regular_procedure)
+            else if((command == "," ||
+                     command == "comma") &&
+                     is_regular_procedure)
                 return PROCEDURE_ENUM :: COMMA;
             
-            else if(command == "scanning for left parenthesis" ||
+            else if((command == "scanning for left parenthesis" ||
                     command == "searching for left parenthesis" ||
                     command == "scanning for (" ||
-                    command == "searching for (")
-                return PROCEDURE_ENUM :: SCANNING_FOR_LEFT_PARENTHESIS;
+                    command == "searching for (") &&
+                    is_regular_procedure)
+                return PROCEDURE_ENUM :: SEARCHING_FOR_LEFT_PARENTHESIS;
             
-            else if(command == "found left parenthesis" ||
-                    command == "found (" ||
-                    command == "left parenthesis detected")
+            
+            else if((command == "scanning for right parenthesis" ||
+                    command == "searching for right parenthesis" ||
+                    command == "scanning for )" ||
+                    command == "searching for )") &&
+                    is_regular_procedure)
+                return PROCEDURE_ENUM :: SEARCHING_FOR_RIGHT_PARENTHESIS;
+            
+            else if((command == "found left parenthesis" ||
+                    command == "left parenthesis detected" ||
+                    command == "found (") &&
+                    is_regular_procedure)
                 return PROCEDURE_ENUM :: LEFT_PARENTHESIS_DETECTED;
+            
+            else if((command == "found right parenthesis" ||
+                    command == "right parenthesis detected" ||
+                    command == "found )") &&
+                    is_regular_procedure)
+                return PROCEDURE_ENUM :: RIGHT_PARENTHESIS_DETECTED;
+            
+            else if((command == "scanning for left parenthesis" ||
+                    command == "searching for left parenthesis" ||
+                    command == "scanning for (" ||
+                    command == "searching for (") &&
+                    is_main)
+                return PROCEDURE_ENUM :: SEARCHING_FOR_LEFT_PARENTHESIS_MAIN;
+            
+            else if((command == "scanning for right parenthesis" ||
+                    command == "searching for right parenthesis" ||
+                    command == "scanning for )" ||
+                    command == "searching for )") &&
+                    is_main)
+                return PROCEDURE_ENUM :: SEARCHING_FOR_RIGHT_PARENTHESIS_MAIN;
+            
+            else if((command == "found left parenthesis" ||
+                    command == "left parenthesis detected" ||
+                    command == "found (") &&
+                    is_main)
+                return PROCEDURE_ENUM :: LEFT_PARENTHESIS_DETECTED_MAIN;
+            
+            else if((command == "found right parenthesis" ||
+                    command == "right parenthesis detected" ||
+                    command == "found )") &&
+                    is_main)
+                return PROCEDURE_ENUM :: RIGHT_PARENTHESIS_DETECTED_MAIN;
+            
             
             else if(command == "reset")
                 return PROCEDURE_ENUM :: RESET;
-
+            
             return PROCEDURE_ENUM :: ERROR;
         }
         
@@ -1004,14 +1155,31 @@ private:
                 return PROCEDURE_ENUM :: REGULAR_PROCEDURE;
             
             return PROCEDURE_ENUM :: IN_PROCESS;
-
+            
         }
+        
+        // -----------------------------------------------------------------------
+        // Determine the correct data type utlized
+        PROCEDURE_ENUM dataType(std::string command)
+        {
+            if(command == "int")
+                return PROCEDURE_ENUM :: INTEGER;
+            
+            if(command == "char")
+                return PROCEDURE_ENUM :: CHAR;
+            
+            if(command == "string")
+                return PROCEDURE_ENUM :: STRING;
+            
+            return PROCEDURE_ENUM :: ERROR;
+        }
+        
         // -----------------------------------------------------------------------
         // Determine if boolean property is exists in PROCEDURE_HANDLER
-          procedure_bool operator()(char * command)
-          {
-              return Verify_Flag(Enum_Handler(command), ProcedureType() ,command);
-          }
+        procedure_bool operator()(char * command)
+        {
+            return Verify_Flag(Enum_Handler(command), ProcedureType() ,command);
+        }
         
         // -----------------------------------------------------------------------
         // Determine if there is a true boolean member contained in PROCEDURE_HANDLER
@@ -1019,7 +1187,7 @@ private:
         {
             return ContainsTrueFlag();
         }
-      
+        
         // -----------------------------------------------------------------------
         // Used to modify boolean flags
         void Configure(PROCEDURE_ENUM enumObject, std::string command)
@@ -1046,7 +1214,7 @@ private:
                         
                         if(!is_procedure)
                             is_procedure = true;
-
+                        
                         else
                             throw std::invalid_argument("\nError - is_procedure is already true\n");
                         
@@ -1109,7 +1277,9 @@ private:
                         if(!is_left_parenthesis)
                         {
                             Reset();
+                            
                             is_left_parenthesis = true;
+                            
                             is_regular_procedure = true;
                         }
                         
@@ -1125,7 +1295,11 @@ private:
                         if(!is_data_type)
                         {
                             Reset();
+                            
+                            this -> storeDataType = disectDataType(command).second;
+                            
                             is_data_type = true;
+                            
                             is_regular_procedure = true;
                         }
                         else
@@ -1140,8 +1314,12 @@ private:
                         if(!is_variable)
                         {
                             Reset();
+                            
                             is_variable = true;
+                            
                             is_regular_procedure = true;
+                            
+                            storeArgument();
                         }
                         
                         else
@@ -1156,7 +1334,9 @@ private:
                         if(!is_comma)
                         {
                             Reset();
+                            
                             is_comma = true;
+                            
                             is_regular_procedure = true;
                         }
                         
@@ -1165,14 +1345,16 @@ private:
                         
                         break;
                         
-                    // -------------------------------------------------
+                        // -------------------------------------------------
                         
                     case RIGHT_PARENTHESIS:
                         
                         if(!is_right_parenthesis)
                         {
                             Reset();
+                            
                             is_right_parenthesis = true;
+                            
                             is_regular_procedure = true;
                         }
                         
@@ -1181,40 +1363,91 @@ private:
                         
                         break;
                         
-                    // -------------------------------------------------
+                        // -------------------------------------------------
                         
-                    case SCANNING_FOR_LEFT_PARENTHESIS:
+                    case SEARCHING_FOR_LEFT_PARENTHESIS:
                         
-                        if(!scanning_for_left_parenthesis)
-                            scanning_for_left_parenthesis = true;
+                        if(!searching_for_left_parenthesis)
+                        {
+                            Reset();
+                            
+                            searching_for_left_parenthesis = true;
+                            
+                            is_regular_procedure = true;
+                        }
                         
                         else
-                            throw std::invalid_argument("\nError - scanning_for_left_parenthesis is already true\n");
-                                           
+                            throw std::invalid_argument("\nError - searching_for_left_parenthesis is already true\n");
+                        
                         break;
-                    // -------------------------------------------------
+                        
+                        // -------------------------------------------------
+                        
+                    case SEARCHING_FOR_RIGHT_PARENTHESIS:
+                        
+                        if(!searching_for_right_parenthesis)
+                        {
+                            Reset();
+                            
+                            searching_for_right_parenthesis = true;
+                            
+                            is_regular_procedure = true;
+                        }
+                        
+                        else
+                            throw std::invalid_argument("\nError - searching_for_right_parenthesis is already true\n");
+                        
+                        break;
+                        
+                        // -------------------------------------------------
                         
                     case LEFT_PARENTHESIS_DETECTED:
                         
                         if(!left_parenthesis_detected)
+                        {
+                            Reset();
+                            
                             left_parenthesis_detected = true;
+                            
+                            is_regular_procedure = true;
+                        }
                         
                         else
                             throw std::invalid_argument("\nError - left_parenthesis_detected is already true\n");
-                                           
+                        
                         break;
                         
-                    // -------------------------------------------------
+                        // -------------------------------------------------
+                        
+                    case RIGHT_PARENTHESIS_DETECTED:
+                        
+                        if(!right_parenthesis_detected)
+                        {
+                            Reset();
                             
+                            right_parenthesis_detected = true;
+                            
+                            is_regular_procedure = true;
+                        }
+                        
+                        else
+                            throw std::invalid_argument("\nError - right_parenthesis_detected is already true\n");
+                        
+                        break;
+                        
+                        // -------------------------------------------------
+                        
                     case RESET:
-
+                        
                         Reset();
                         
                         break;
                         
+                        // -------------------------------------------------
+                        
                     case ERROR:
                         
-                        throw std::invalid_argument("\nError - " + command + " is not a valid command\n");
+                        throw std::invalid_argument("\n\nError - " + command + " is not a valid command\n");
                         
                 }
             }
@@ -1233,7 +1466,9 @@ private:
                         if(!is_left_parenthesis_main)
                         {
                             Reset();
+                            
                             is_left_parenthesis_main = true;
+                            
                             is_main = true;
                             
                         }
@@ -1250,7 +1485,9 @@ private:
                         if(!is_void)
                         {
                             Reset();
+                            
                             is_void = true;
+                            
                             is_main = true;
                         }
                         
@@ -1259,14 +1496,16 @@ private:
                         
                         break;
                         
-                     // -------------------------------------------------
+                        // -------------------------------------------------
                         
                     case RIGHT_PARENTHESIS_MAIN:
                         
                         if(!is_right_parenthesis_main)
                         {
                             Reset();
+                            
                             is_right_parenthesis_main = true;
+                            
                             is_main = true;
                         }
                         
@@ -1275,71 +1514,149 @@ private:
                         
                         break;
                         
-                    // -------------------------------------------------
+                        // -------------------------------------------------
+                        
+                    case SEARCHING_FOR_LEFT_PARENTHESIS_MAIN:
+                        
+                        if(!searching_for_left_parenthesis_main)
+                        {
+                            Reset();
                             
-                    case SCANNING_FOR_LEFT_PARENTHESIS:
+                            searching_for_left_parenthesis_main = true;
                             
-                        if(!scanning_for_left_parenthesis)
-                            scanning_for_left_parenthesis = true;
-                            
+                            is_main = true;
+                        }
+                        
                         else
-                            throw std::invalid_argument("\nError - scanning_for_left_parenthesis is already true\n");
-                                               
+                            throw std::invalid_argument("\nError - searching_for_left_parenthesis_main is already true\n");
+                        
                         break;
                         
-                    // -------------------------------------------------
+                        // -------------------------------------------------
+                        
+                    case SEARCHING_FOR_RIGHT_PARENTHESIS_MAIN:
+                        
+                        if(!searching_for_right_parenthesis_main)
+                        {
+                            Reset();
                             
-                    case LEFT_PARENTHESIS_DETECTED:
+                            searching_for_right_parenthesis_main = true;
                             
-                        if(!left_parenthesis_detected)
-                                left_parenthesis_detected = true;
-                            
+                            is_main = true;
+                        }
+                        
                         else
-                            throw std::invalid_argument("\nError - left_parenthesis_detected is already true\n");
-                                               
+                            throw std::invalid_argument("\nError - searching_for_right_parenthesis_main is already true\n");
+                        
                         break;
+                        // -------------------------------------------------
+                        
+                    case LEFT_PARENTHESIS_DETECTED_MAIN:
+                        
+                        if(!left_parenthesis_detected_main)
+                        {
+                            Reset();
                             
-                    // -------------------------------------------------
+                            left_parenthesis_detected_main = true;
                             
+                            is_main = true;
+                        }
+                        
+                        else
+                            throw std::invalid_argument("\nError - left_parenthesis_detected_main is already true\n");
+                        
+                        break;
+                        
+                        // -------------------------------------------------
+                        
+                    case RIGHT_PARENTHESIS_DETECTED_MAIN:
+                        
+                        if(!right_parenthesis_detected_main)
+                        {
+                            Reset();
+                            
+                            right_parenthesis_detected_main = true;
+                            
+                            is_main = true;
+                        }
+                        
+                        else
+                            throw std::invalid_argument("\nError - right_parenthesis_right_parenthesis_detected_main detected is already true\n");
+                        
+                        break;
+                        
+                        // -------------------------------------------------
+                        
                     case RESET:
-   
+                        
                         Reset();
                         
                         break;
-                    
-                    // -------------------------------------------------
+                        
+                        // -------------------------------------------------
                         
                     case ERROR:
                         
                         throw std::invalid_argument("\nError - " + command + " is not a valid command\n");
                         
-                    // -------------------------------------------------
+                        // -------------------------------------------------
                 }
             }
         }
+        
+        // -----------------------------------------------------------------------
+        // Collects argument of applicable datatype
+        void storeArgument()
+        {
+            switch(dataType(this -> storeDataType))
+            {
+                case INTEGER:
 
+                    integerCollector.push_back(argument);
+                    
+                    break;
+                    
+                case STRING:
+                    
+                    stringCollector.push_back(argument);
+                    
+                    break;
+                    
+                case CHAR:
+                    
+                    charCollector.push_back(argument);
+                    
+                    break;
+
+                case ERROR:
+                    throw std::invalid_argument("\n\nError - " + std::string(this -> storeDataType) + " is an invalid data type " + "\n\n");
+
+            }
+            
+            argument = "";
+        }
         // -----------------------------------------------------------------------
         // Used to verify the boolean status of each flag.
-        procedure_bool Verify_Flag(PROCEDURE_ENUM enumObject, PROCEDURE_ENUM procedureType, std::string command)
+        bool Verify_Flag(PROCEDURE_ENUM enumObject, PROCEDURE_ENUM procedureType, std::string command)
         {
             switch(procedureType)
             {
                 case PROCEDURE:
                     
                     if(VerifyProcedure(enumObject, command))
-                       return true; return false;
+                        return true; return false;
                     
                 case REGULAR_PROCEDURE:
                     
                     if(VerifyRegularFunction(enumObject, command))
-                       return true; return false;
-                        
+                        return true; return false;
+                    
                 case MAIN:
-                           
+                    
                     if(VerifyMain(enumObject, command))
                         return true; return false;
             }
-
+            
             return false;
         }
         
@@ -1379,7 +1696,7 @@ private:
                         if(is_regular_procedure)
                             return true; return false;
                         
-                    // -------------------------------------------------
+                        // -------------------------------------------------
                         
                     case LEFT_PARENTHESIS:
                         
@@ -1406,35 +1723,49 @@ private:
                         
                         if(is_comma)
                             return true; return false;
-     
-                    // -------------------------------------------------
+                        
+                        // -------------------------------------------------
                         
                     case RIGHT_PARENTHESIS:
                         
                         if(is_right_parenthesis)
                             return true; return false;
                         
-                    // -------------------------------------------------
-                            
-                    case SCANNING_FOR_LEFT_PARENTHESIS:
+                        // -------------------------------------------------
                         
-                        if(scanning_for_left_parenthesis)
+                    case SEARCHING_FOR_LEFT_PARENTHESIS:
+                        
+                        if(searching_for_left_parenthesis)
                             return true; return false;
-                            
-                    // -------------------------------------------------
-                            
+                        
+                        // -------------------------------------------------
+                        
+                    case SEARCHING_FOR_RIGHT_PARENTHESIS:
+                        
+                        if(searching_for_right_parenthesis)
+                            return true; return false;
+                        
+                        // -------------------------------------------------
+                        
                     case LEFT_PARENTHESIS_DETECTED:
-              
+                        
                         if(left_parenthesis_detected)
                             return true; return false;
-                            
-                    // -------------------------------------------------
+                        
+                        // -------------------------------------------------
+                        
+                    case RIGHT_PARENTHESIS_DETECTED:
+                        
+                        if(right_parenthesis_detected)
+                            return true; return false;
+                        
+                        // -------------------------------------------------
                         
                     case ERROR:
                         
                         throw std::invalid_argument("\nError - " + command + " is not a valid boolean command\n");
                         
-                    // -------------------------------------------------
+                        // -------------------------------------------------
                 }
             }
             
@@ -1476,19 +1807,33 @@ private:
                         
                         // -------------------------------------------------
                         
-                    case SCANNING_FOR_LEFT_PARENTHESIS:
+                    case SEARCHING_FOR_LEFT_PARENTHESIS_MAIN:
                         
-                        if(scanning_for_left_parenthesis)
+                        if(searching_for_left_parenthesis_main)
                             return true; return false;
-                            
-                    // -------------------------------------------------
-                            
-                    case LEFT_PARENTHESIS_DETECTED:
-              
-                        if(left_parenthesis_detected)
+                        
+                        // -------------------------------------------------
+                        
+                    case SEARCHING_FOR_RIGHT_PARENTHESIS_MAIN:
+                        
+                        if(searching_for_right_parenthesis_main)
                             return true; return false;
-                            
-                    // -------------------------------------------------
+                        
+                        // -------------------------------------------------
+                        
+                    case LEFT_PARENTHESIS_DETECTED_MAIN:
+                        
+                        if(left_parenthesis_detected_main)
+                            return true; return false;
+                        
+                        // -------------------------------------------------
+                        
+                    case RIGHT_PARENTHESIS_DETECTED_MAIN:
+                        
+                        if(right_parenthesis_detected_main)
+                            return true; return false;
+                        
+                        // -------------------------------------------------
                         
                     case ERROR:
                         
@@ -1530,9 +1875,17 @@ private:
             this -> is_right_parenthesis_main = false;
             this -> is_void = false;
             
-            // boolean member
-            this -> scanning_for_left_parenthesis = false;
+            // boolean members used for tenetive scenarios in regular function
+            this -> searching_for_left_parenthesis = false;
+            this -> searching_for_right_parenthesis = false;
             this -> left_parenthesis_detected = false;
+            this -> right_parenthesis_detected = false;
+            
+            // boolean members used for tenetive scenarios in main function
+            this -> searching_for_left_parenthesis_main = false;
+            this -> searching_for_right_parenthesis_main = false;
+            this -> left_parenthesis_detected_main = false;
+            this -> right_parenthesis_detected_main = false;
             
         }
         
@@ -1541,9 +1894,8 @@ private:
         procedure_bool ContainsTrueFlag()
         {
             // Declare array which holds all flags
-            procedure_bool procedure_array [] =
+            bool procedure_array [] =
             {
-                
                 is_procedure,
                 is_regular_procedure,
                 is_left_parenthesis,
@@ -1555,9 +1907,14 @@ private:
                 is_left_parenthesis_main,
                 is_void,
                 is_right_parenthesis_main,
-                scanning_for_left_parenthesis,
-                left_parenthesis_detected
-                
+                searching_for_left_parenthesis,
+                searching_for_right_parenthesis,
+                left_parenthesis_detected,
+                right_parenthesis_detected,
+                searching_for_left_parenthesis_main,
+                searching_for_right_parenthesis_main,
+                left_parenthesis_detected_main,
+                right_parenthesis_detected_main
             };
             
             for(int i = 0; i < sizeof(procedure_array)/sizeof(procedure_array[0]); i++)
@@ -1568,13 +1925,206 @@ private:
         }
         
         // -----------------------------------------------------------------------
+        // Determine if a datatype is present or not
+        bool searchForDataType(std::string command)
+        {
+            std::string tempString = "";
+            
+            for(int i = 0; i < command.size(); i++)
+            {
+                if(command[i] == ' ')
+                {
+                    if(tempString == "datatype" || tempString == "data type")
+                        return true;
+                    
+                    else
+                        break;
+                }
+                
+                tempString += std::tolower(command[i]);
+            }
+            
+            return false;
+        }
+        
+        // -----------------------------------------------------------------------
+        // Determine if variable is present or not
+        // If variable is found then modify its value
+        bool searchForVariable(std::string command)
+        {
+            std::string tempString = "";
+            
+            int index = 0;
+            
+            bool isVariable = false;
+            
+            for(int i = 0; i < command.size(); i++)
+            {
+                if(command[i] == ' ')
+                {
+                    if(tempString == "variable")
+                    {
+                        tempString = "";
+                        index = i + 1;
+                        isVariable = true;
+                        break;
+                    }
+                    
+                    else
+                        break;
+                }
+                
+                tempString += std::tolower(command[i]);
+            }
+            
+            // If variable is found then modify its value
+            if(isVariable)
+            {
+                for(int i = index; i < command.size(); i++)
+                    tempString += std::tolower(command[i]);
+                
+                this -> argument = tempString;;
+                
+                return true;
+            }
+            
+            return false;
+        }
+        
+        //-----------------------------------------------------------------------
+        // Determins if string is data type
+        std::pair<std::string, std::string> disectDataType(std::string command)
+        {
+            std::string tempString = "";
+            
+            std::pair<std::string, std::string> pairString;
+            
+            // Determines if the searchingForDataType condition should be executed
+            bool searchingForDataType = true;
+            
+            // Determines if there is a space after datatype is detected
+            bool isSpace = false;
+            
+            // Determines if actual datatype is being read
+            bool isDataType = false;
+            
+            for(int i = 0; i < command.size(); i++)
+            {
+                if(command[i] != ' ')
+                    tempString += command[i];
+                
+                if((tempString == "datatype" || tempString == "data type") && searchingForDataType)
+                {
+                    pairString.first = tempString;
+                    tempString = "";
+                    isSpace = true;
+                    searchingForDataType = false;
+                }
+                
+                else if(isSpace)
+                {
+                    if(command[i] == ' ')
+                    {
+                        isSpace = false;
+                        continue;
+                    }
+                    else
+                    {
+                        throw std::invalid_argument("\n\nError - Space is not detected\n\n");
+                    }
+                    
+                }
+                
+            }
+            
+            // Generate lowercase letters
+            for(int i = 0; i < tempString.size(); i++)
+                tempString[i] = std::tolower(tempString[i]);
+            
+            if(tempString == "int" || tempString == "char" || tempString == "string")
+                isDataType = true;
+            
+            if(isDataType)
+                pairString.second = tempString;
+            
+            else
+                throw std::invalid_argument("\n\nError - " + std::string(tempString) + " is not a datatype\n\n");
+            
+            return pairString;
+        }
+        
+ //------------------------------------------------------------
+        void booleanTester()
+        {
+            std::vector<std::string>variableVector;
+            
+            // Declare array which holds all flags
+            bool procedureArray [] =
+            {
+                is_procedure,
+                is_regular_procedure,
+                is_data_type,
+                is_variable,
+                is_comma,
+                is_main,
+                is_void,
+                is_left_parenthesis,
+                is_right_parenthesis,
+                is_left_parenthesis_main,
+                is_right_parenthesis_main,
+                searching_for_left_parenthesis,
+                searching_for_right_parenthesis,
+                left_parenthesis_detected,
+                right_parenthesis_detected,
+                searching_for_left_parenthesis_main,
+                searching_for_right_parenthesis_main,
+                left_parenthesis_detected_main,
+                right_parenthesis_detected_main
+            };
+            
+            std::string variableArray [] =
+            {
+                "is_procedure",
+                "is_regular_procedure",
+                "is_data_type",
+                "is_variable",
+                "is_comma",
+                "is_main",
+                "is_void",
+                "is_left_parenthesis",
+                "is_right_parenthesis",
+                "is_left_parenthesis_main",
+                "is_right_parenthesis_main",
+                "searching_for_left_parenthesis",
+                "searching_for_right_parenthesis",
+                "left_parenthesis_detected",
+                "right_parenthesis_detected",
+                "searching_for_left_parenthesis_main",
+                "searching_for_right_parenthesis_main",
+                "left_parenthesis_detected_main",
+                "right_parenthesis_detected_main"
+            };
+            
+            for(int i = 0; i < sizeof(procedureArray)/sizeof(procedureArray[0]); i++)
+                if(procedureArray[i] == true)
+                    variableVector.push_back(variableArray[i]);
+            
+            // Display True Variables
+            for(std::vector<std::string> :: size_type i = 0; i < variableVector.size(); i++)
+            {
+                if(i == 0)
+                    std::cout << "\n\nBoolean Tester: ";
+                std::cout << variableVector[i] << ' ';
+            }
+            
+            std::cout << std::endl;
+        }
         
         // Deconstructor
         ~ PROCEDURE_HANDLER() = default;
         
     }isProcedure;
-    
-        // -----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
     
 public:
     
@@ -1596,32 +2146,50 @@ public:
     // Determines if a BNF token was read
     bool isToken(TOKEN_TYPE token);
     
-    // Used to find if a integer or string variable is present within an operation/equation
-    bool findVariable(TOKEN_TYPE token);
+    // Determines if an integer variable is present within an operation/equation
+    bool findInteger();
     
-    // Used to find a function name that is present within an operation/equation
-    bool findFunction(TOKEN_TYPE token);
+    // Determines if an string variable is present within an operation/equation
+    bool findString();
+    
+    // Determines if an char variable is present within an operation/equation
+    bool findChar();
+    
+    // Determines if an integer argument variable is present within a procedure
+    bool findIntegerArg();
+    
+    // Determines if a string argument variable is present within a procedure
+    bool findStringArg();
+    
+    // Determines if a char argument variable is present within a procedure
+    bool findCharArg();
+    
+    // Determines if a procedure is present within an operation/equation
+    bool findProcedure();
     
     // Checks if isInteger boolean variable is currently set as 'true'
-    void checkInteger(char character);
-    
-    // Checks if isEqual boolean variable is currently set as 'true'
-    void checkIsEqual(char character);
+    void Configure_Integer(char character);
     
     // Checks if isValue boolean variable is currently set as 'true'
-    void checkValue(char character);
+    void Configure_Value(char character);
     
     // Check if isPrintf boolean variable is currently set as 'true'
-    void checkPrintF(char character);
+    void Configure_PrintF(char character);
     
     // Check if isProecedure boolean varaible is currently set as 'true'
-    void checkProcedure(char character);
+    void Configure_Procedure(char character);
+    
+    // Assigns vector from PROCEDURE_HANDLER to private vectors located in Tokenize class
+    void assignVector();
+    
+    // Filters out any syntax that contains the word 'procedure', used soely for test purposes
+    bool FilterProcedure(std::string syntax);
     
     // Verifies that each character is legally allowed to use
-    char Verify_Token(char character);
+    char Configure_Token(char character);
     
     // Handles input validation with Read_Character function
-    char Verify_Token_Helper(char character);
+    char Configure_Token_Helper(char character);
     
     // Reads characters to determine if a token is detected
     std::vector<std::pair<tokenType,token>> ReadFile();
@@ -1632,11 +2200,23 @@ public:
     // Determines if a token is being read, used specifically for bool isToken
     TOKEN_TYPE isTokenHelper();
     
+    // Determine datatype being used for the purpose of selecting which collector vector to utilize
+    TOKEN_TYPE dataType(std::string command);
+    
     // Consists of all necessary handlers
     std::pair<std::string, std::string> Token_Handler(TOKEN_TYPE token);
     
+    // Return value of TokenVector
+    std::vector<std::vector<std::pair<std::string,std::string>>>& GetTokenVector();
+    
     // Output Tokenize object
-    friend std::ostream & operator << (std::ostream &, Tokenize &);
+    friend std::ostream & operator << (std::ostream &o, Tokenize &t);
+    
+    // std::ostream & operator helper function
+    friend std::ostream & Print(std::ostream &output, Tokenize &token);
+    
+    // Allow PROCEDURE_HANDLER the authority to access class membersfrom Tokenize
+    friend struct PROCEDURE_HANDLER;
     
 };
 
