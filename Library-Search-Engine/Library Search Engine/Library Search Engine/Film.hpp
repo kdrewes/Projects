@@ -23,7 +23,7 @@
   • Film
   • Video
   
-  and retreive the user's desired results.  For further questions
+  and retrieve the user's desired results.  For further questions
   please view instructions.  Thank you.
   
   *********************************************************************
