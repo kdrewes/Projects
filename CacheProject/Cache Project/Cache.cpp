@@ -24,8 +24,8 @@ typedef std::ofstream file;
 // binaryHexMap = Represents a map inside a map
 typedef std::map<binary, std::map<binary,hex>> multiMap;
 
-// Key = binary word, hexidecimal instruction
-typedef std::map<hex,std::queue<binary>> wayMap;
+// Key = tag in binary (must match Cache.h), value = addresses in queue
+typedef std::map<binary,std::queue<binary>> wayMap;
 
 // Condenses string into a single variable
 typedef std::ostringstream condensedString;
@@ -98,6 +98,8 @@ void Cache :: FullyAssociative()
             {
                 std::cout << Fully_Associated_Input[this -> global_iterator];
                 
+                unit data = 0;
+                
                 verifyFullyAssociativeInput(data);
                 
                 std::cout << data << "\n\n";
@@ -106,7 +108,6 @@ void Cache :: FullyAssociative()
             }
             
             break;
-            
     }
 }
 
@@ -162,6 +163,8 @@ void Cache :: SetAssociative()
             while(this -> global_iterator < Set_Associated_Input.size())
             {
                 std::cout << Set_Associated_Input[this -> global_iterator];
+                
+                unit data = 0;
                 
                 verifySetAssociativeInput(data);
                 
@@ -229,7 +232,11 @@ void Cache :: DirectMapped()
             {
                 std::cout << Direct_Mapped_Input[this -> global_iterator];
 
+                unit data = 0;
+                
                 verifyDirectMappedInput(data);
+                
+                std::cout << data << "\n\n";
                 
                 this -> global_iterator += 1;
             }
@@ -536,7 +543,7 @@ void Cache :: verifySetAssociativeInput(unit & data)
                     // Assign offset size
                     this -> offsetSize = std::floor(log2(blockSize));
                     
-                    // Assign index size
+                    // 2-way set associative: index bits = log2(#sets) = log2(blockQuantity / 2)
                     this -> indexSize = (int)std::floor(std::log2(blockQuantity / 2));
                     
                     break;
@@ -687,8 +694,8 @@ void Cache :: verifyDirectMappedInput(unit & data)
                     // Assign offset size
                     this -> offsetSize = std::floor(log2(blockSize));
                     
-                    // Assign index size
-                    this -> indexSize = (int)std::floor(std::log2(blockQuantity / 2));
+                    // Direct-mapped: index bits = log2(# of cache blocks)
+                    this -> indexSize = (int)std::floor(std::log2(blockQuantity));
                     
                     break;
                     
@@ -706,8 +713,8 @@ void Cache :: verifyDirectMappedInput(unit & data)
                     // Assign offset size
                     this -> offsetSize = std::floor(log2(blockSize));
                     
-                    // Assign index size
-                    this -> indexSize = (int)std::floor(std::log2(blockQuantity / 2));
+                    // Direct-mapped: index bits = log2(# of cache blocks)
+                    this -> indexSize = (int)std::floor(std::log2(blockQuantity));
                     
                     break;
             }

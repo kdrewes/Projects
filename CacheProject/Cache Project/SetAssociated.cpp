@@ -30,6 +30,12 @@ void SetAssociated :: Router()
 // Execute binary data
 void SetAssociated :: Controller()
 {
+    // Execute document skeleton of html
+    HTML();
+    
+    // Execute css syntax
+    CSS();
+    
     // Display title
     Title();
     
@@ -41,6 +47,9 @@ void SetAssociated :: Controller()
     
     // Produce and display table
     Table();
+    
+    // End HTML logic
+    EndHTML();
 }
 
 // -------------------------------------------------------------------------------------------
@@ -179,10 +188,189 @@ SetAssociated :: index SetAssociated :: GetHashIndex(hashValue hashCode)
 }
 
 // -------------------------------------------------------------------------------------------
+// Execute document skeleton of html
+void SetAssociated :: HTML()
+{
+    html << "<!DOCTYPE html>";
+    html << R"(<html lang="en">)";
+    html << "<head>";
+    html << R"(<meta charset="UTF-8">)";
+    html << R"(<meta name="viewport" content="width=device-width, initial-scale=1.0">)";
+    html << "<title>Cache Project</title>";
+    html << R"(<link rel="stylesheet" href="stylesheet.css">)";
+    html << "</head>";
+    html << "<body>";
+    html << R"(<div class="background">)";
+    html << R"(<div class="foundation">)";
+}
+
+// -------------------------------------------------------------------------------------------
+// Include CSS logic
+void SetAssociated :: CSS()
+{
+    css << "@import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=Yanone+Kaffeesatz:wght@200..700&display=swap');";
+    css << "@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap');";
+    css << "@import url('https://fonts.googleapis.com/css2?family=Anaheim:wght@400..800&display=swap');";
+
+    // ------------------------------------------------------
+    css << "body";
+    css << "{";
+    css << "  background: rgb(230, 230, 230);";
+    css << "  margin: 0;";
+    css << "  padding: 0;";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << ".background ";
+    css << "{";
+    css << "  background: linear-gradient(to top,rgba(0, 0, 0, 0.7),rgba(255, 255, 255, 0.5)),";
+    css << "  url(\"blue.jpg\");";
+    css << "  background-size: cover;";
+    css << "  background-position:center;";
+    css << "  background-repeat: no-repeat;";
+    css << "  min-height: 1000px;";
+    css << "  animation: opacityEffect 2s ease-out forwards;";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << ".foundation {";
+    css << "  width: fit-content;";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << ".header";
+    css << "{";
+    css << "  height: 35px;";
+    css << "  background: rgba(0, 0, 0, 1);";
+    css << "  transform: translate(350px,200px);";
+    css << "  border-radius: 5px;";
+    css << "  text-align: center;";
+    css << "  font-size: 20px;";
+    css << "  color: white;";
+    css << "  opacity: 0;";
+    css << "  font-family: \"Anonymous Pro\";";
+    css << "  display: flex;";
+    css << "  justify-content: center;";
+    css << "  align-items: center;";
+    css << "  animation: opacityEffect 1.7s ease-out 1.2s forwards;";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << ".data";
+    css << "{";
+    css << "  margin-top: 3px;";
+    css << "  margin-bottom: 25px;";
+    css << "  text-align: center;";
+    css << "}";
+
+    css << ".data td";
+    css << "{";
+    css << "  background-color: transparent;";
+    css << "  border: none;";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << ".data table ";
+    css << "{";
+    css << "  width: 100%;";
+    css << "}";
+
+    css << ".cache";
+    css << "{";
+    css << " height: auto;";
+    css << " padding-top: 200px;";
+    css << " animation: opacityEffect 1.5s ease-out forwards,";
+    css << "            slideFromTop 1.2s ease-out forwards;";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << "table ";
+    css << "{";
+    css << "  border-spacing: 0;";
+    css << "  border-radius: 5px;";
+    css << "  overflow: hidden;";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << "th ";
+    css << "{";
+    css << "  font-size: 13px;";
+    css << "  font-family: \"Anonymous Pro\";";
+    css << "  padding: 8px 8px;";
+    css << "  text-align: left;";
+    css << "  background-color: rgba(0, 0, 0);";
+    css << "  color: white;";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << "td";
+    css << "{";
+    css << "  border-bottom: solid rgba(255, 255, 255, 0.5) 1px;";
+    css << "  padding: 6px 13px 6px 13px;";
+    css << "  font-size: 12px;";
+    css << "  font-family: \"Anonymous Pro\";";
+    css << "  background-color:rgba(255, 255, 255, .2);";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << "p ";
+    css << "{";
+    css << "  font-family: \"Anonymous Pro\";";
+    css << "  text-align: center;";
+    css << "}";
+
+    // ------------------------------------------------------
+    // Animations
+    css << "@keyframes opacityEffect{";
+    css << "    0%{";
+    css << "        opacity: 0;";
+    css << "    }";
+    css << "    100%{";
+    css << "        opacity: 1;";
+    css << "    }";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << "@keyframes slideFromTop{";
+    css << "    0%{";
+    css << "       transform: translate(350px,-460px);";
+    css << "    }";
+    css << "    100%{";
+    css << "        transform: translate(350px,10px);";
+    css << "    }";
+    css << "}";
+}
+
+// -------------------------------------------------------------------------------------------
 // Create Title
 void SetAssociated :: Title()
 {
-    // Display Title
+    
+    // ------------------------ Create title for html ------------------------
+    
+    if(placementPolicy == CACHING_ALGORITHM :: LRU)
+    {
+        html << R"(<div class="header">)";
+        html <<  "Set Associative Placement Policy - LRU";
+        html << "</div>";
+    }
+    
+    else if(placementPolicy == CACHING_ALGORITHM :: LFU)
+    {
+        html << R"(<div class="header">)";
+        html <<  "Set Associative Placement Policy - LFU";
+        html << "</div>";
+    }
+    
+    else if(placementPolicy == CACHING_ALGORITHM :: FIFO)
+    {
+        html << R"(<div class="header">)";
+        html <<  "Set Associative Placement Policy - FIFO";
+        html << "</div>";
+    }
+    
+    // ------------------------ Create title for console ------------------------
+    
     console << "\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t------------------------------------------------------------------------------\n";
 
     if(placementPolicy == CACHING_ALGORITHM :: LRU)
@@ -194,10 +382,9 @@ void SetAssociated :: Title()
     else if(placementPolicy == CACHING_ALGORITHM :: FIFO)
         console <<"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tSet Associative Placement Policy - FIFO\n";
 
-
-
     console <<"\t\t\t\t\t\t\t\t\t\t------------------------------------------------------------------------------\n";
-
+    
+    // ------------------------ Create title for spreadsheet ------------------------
 
     if(placementPolicy == CACHING_ALGORITHM :: LRU)
         spreadsheet <<"---------------------------------------------------- Set Associative Placement Policy - LRU ----------------------------------------------------\n";
@@ -208,6 +395,7 @@ void SetAssociated :: Title()
     else if(placementPolicy == CACHING_ALGORITHM :: FIFO)
         spreadsheet <<"---------------------------------------------------- Set Associative Placement Policy - FIFO ----------------------------------------------------\n";
 
+    // ------------------------ Create title for console to file ------------------------
 
     consoleToFile << "\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t------------------------------------------------------------------------------\n";
 
@@ -227,6 +415,33 @@ void SetAssociated :: Title()
 // Produce and display metrics
 void SetAssociated :: Data()
 {
+    // ------------------------ Create data for html ------------------------
+    
+    html << R"(<div class="cache">)";
+    html << R"(<div class="data">)";
+    html << "<table>";
+    html << "<tr>";
+    html << "<td>Cache Size = " << this -> cacheSize << " Bytes" << "</td>";
+    html << "<td>Block Size = " << this -> blockSize << " Bytes" << "</td>";
+    html << "<td># of Blocks = " <<  this -> blockQuantity << " Bytes" << "</td>";
+    html << "</tr>";
+    html << "<tr>";
+    html << "<td># of Ways = " << this -> ways << " Bytes" << "</td>";
+    html << "<td>Offset Size = " << this -> offsetSize  << " Bits" << "</td>";
+    html << "<td>Ram Size = " <<  this -> mainMemorySize << " Bytes" << "</td>";
+    html << "</tr>";
+    html << "<tr>";
+    html << "<td>Word Size = " << this -> wordSize << " Bytes" << "</td>";
+    html << "<td>Word Quantity = " << this -> wordQuantity  << " Bytes" << "</td>";
+    html << "<td>Tag Size = " <<  this -> addressSize - this -> indexSize - std::floor(log2(blockSize)) << " Bytes" << "</td>";
+    html << "</tr>";
+    html << "<tr>";
+    html << "<td>Index Size = " << this -> addressSize - this -> indexSize - std::floor(log2(blockSize)) << " Bytes" << "</td>";
+    html << "</tr>";
+    html << "</table>";
+    html << "</div>";
+    
+    // ------------------------ Create data for console ------------------------
     
     console << "\n\t\t\t\t\t\t\t\t\t\tCache Size = "          << this -> cacheSize                    << " Bytes\t\tBlock Size = "  << this -> blockSize    << " Bytes"
     
@@ -242,7 +457,7 @@ void SetAssociated :: Data()
     
     << "\t\t\t\t\t\t\t\t\t\tIndex Size = "  << this -> indexSize << "\n\n";
     
-    
+    // ------------------------ data title for spreadsheet ------------------------
     
     spreadsheet << "\nCache Size," << "Block Size," << "# of Blocks," << "# of Ways," << "Offset Size,"  << "Ram Size," << "Word Size," << "# of Words," << "Tag Size\n";
     
@@ -252,7 +467,8 @@ void SetAssociated :: Data()
     
     << ',' << this -> addressSize - this -> indexSize - std::floor(log2(blockSize)) << " Bytes" << "\n\n";
     
-    
+    // ------------------------ data title for console file ------------------------
+
     consoleToFile << "\n\t\t\t\t\t\t\t\t\t\tCache Size = "          << this -> cacheSize                    << " Bytes\t\tBlock Size = "  << this -> blockSize    << " Bytes"
     
     << "\t\t# of Blocks = "                         << this -> blockQuantity                << " Bytes"
@@ -275,6 +491,10 @@ void SetAssociated :: Header()
 {
     // Predefine header
     std::string header[] = { "Address", "Index", "Way", "Tag", "Offset", "Hit_Miss", "Word", "instruction", "Evictions" };
+    
+    // Include html logic
+    html << "<table>";
+    html << "<tr>";
     
     // Display Header banner
     console << "\n\t\t------------------------------------------------------------ Set Associative Cache Table ------------------------------------------------------------\n\n";
@@ -301,6 +521,8 @@ void SetAssociated :: CreateHeader(COLUMNS c)
             if(this -> mainMemorySize == 8)
             {
                 
+                html << "<th>Address</th>";
+                
                 console << "\t\tAddress";
                 
                 spreadsheet << "Address,";
@@ -310,6 +532,9 @@ void SetAssociated :: CreateHeader(COLUMNS c)
             
             else if(this -> mainMemorySize == 16)
             {
+                
+                html << "<th>Address</th>";
+
                 console << "\t\t\tAddress\t";
                 
                 spreadsheet << "Address,";
@@ -327,6 +552,7 @@ void SetAssociated :: CreateHeader(COLUMNS c)
             // Display each address
             if(this -> mainMemorySize == 8)
             {
+                html << "<th>Set</th>";
                 
                 console << "\t\tSet #";
                 
@@ -337,6 +563,8 @@ void SetAssociated :: CreateHeader(COLUMNS c)
             
             else if(this -> mainMemorySize == 16)
             {
+                html << "<th>Set</th>";
+                
                 console << "\t\t\tSet #\t";
                 
                 spreadsheet << "Set #,";
@@ -355,6 +583,8 @@ void SetAssociated :: CreateHeader(COLUMNS c)
             {
                 for(int i = 0; i < this -> ways; i++)
                 {
+                    html << "<th>" << "Data[" << i << "] " << "</th>";
+                    
                     console << "\t\tData[" << i << "]  ";
                     
                     spreadsheet << "Data[" << i << "],";
@@ -367,6 +597,8 @@ void SetAssociated :: CreateHeader(COLUMNS c)
             {
                 for(int i = 0; i < this -> ways; i++)
                 {
+                    html << "<th>" << "Data[" << i << "] " << "</th>";
+                    
                     console << "\t\t\tData[" << i << "] ";
                     
                     spreadsheet << "Data[" << i << "],";
@@ -385,6 +617,8 @@ void SetAssociated :: CreateHeader(COLUMNS c)
             // Display each tag
             if(this -> mainMemorySize == 8)
             {
+                html << "<th>Tag</th>";
+                
                 console << "\t\t Tag";
                 
                 spreadsheet << "Tag,";
@@ -394,6 +628,8 @@ void SetAssociated :: CreateHeader(COLUMNS c)
             
             else if(this -> mainMemorySize == 16)
             {
+                html << "<th>Tag</th>";
+                
                 console << "\t\t\tTag";
                 
                 spreadsheet << "Tag,";
@@ -412,6 +648,8 @@ void SetAssociated :: CreateHeader(COLUMNS c)
             // Display each offset
             if(this -> mainMemorySize == 8)
             {
+                html << "<th>Offset</th>";
+                
                 console << "\t\tOffset";
                 
                 spreadsheet << "Offset,";
@@ -421,6 +659,8 @@ void SetAssociated :: CreateHeader(COLUMNS c)
             
             else if(this -> mainMemorySize == 16)
             {
+                html << "<th>Offset</th>";
+                
                 console << "\t\t\t\tOffset";
                 
                 spreadsheet << "Offset,";
@@ -438,6 +678,8 @@ void SetAssociated :: CreateHeader(COLUMNS c)
             // Display whether each address has a hit or miss
             if(this -> mainMemorySize == 8)
             {
+                html << "<th>H/M</th>";
+                
                 console << "\t\tH/M\t";
                 
                 spreadsheet << "H/M,";
@@ -447,6 +689,8 @@ void SetAssociated :: CreateHeader(COLUMNS c)
             
             else if(this -> mainMemorySize == 16)
             {
+                html << "<th>H/M</th>";
+                
                 console << "\t\tH/M";
                 
                 spreadsheet << "H/M,";
@@ -471,6 +715,8 @@ void SetAssociated :: CreateHeader(COLUMNS c)
                         // Display each individual word in binary format
                         for(binaryVector :: size_type i = 0; i < wordVector.size(); i++)
                         {
+                            html << "<th>" << wordVector[i] << "</th>";
+                            
                             console << "\t\t" << wordVector[i];
                             
                             spreadsheet << "=\""  << wordVector[i] << "\",";
@@ -485,6 +731,8 @@ void SetAssociated :: CreateHeader(COLUMNS c)
                         {
                             if(i == 0)
                             {
+                                html << "<th>" << wordVector[i] << "</th>";
+                                
                                 console << "\t" << wordVector[i] << "\t\t\t\t";
                                 
                                 spreadsheet << "=\""  << wordVector[i] << "\",";
@@ -493,6 +741,8 @@ void SetAssociated :: CreateHeader(COLUMNS c)
                             }
                             else
                             {
+                                html << "<th>" << wordVector[i] << "</th>";
+                                
                                 console << wordVector[i] << "\t\t ";
                                 
                                 spreadsheet << "=\""  << wordVector[i] << "\",";
@@ -514,6 +764,8 @@ void SetAssociated :: CreateHeader(COLUMNS c)
                         
                         for(binaryVector :: size_type i = 0; i < wordVector.size(); i++)
                         {
+                            html << "<th>" << wordVector[i] << "</th>";
+                            
                             console << "\t\t  " << wordVector[i];
                             
                             spreadsheet << "=\""  << wordVector[i] << "\",";
@@ -528,6 +780,8 @@ void SetAssociated :: CreateHeader(COLUMNS c)
                         {
                             if(i == 0)
                             {
+                                html << "<th>" << wordVector[i] << "</th>";
+                                
                                 console << "\t\t\t\t" << wordVector[i] << "\t";
                                 
                                 spreadsheet << "=\""  << wordVector[i] << "\",";
@@ -536,6 +790,8 @@ void SetAssociated :: CreateHeader(COLUMNS c)
                             }
                             else
                             {
+                                html << "<th>" << wordVector[i] << "</th>";
+                                
                                 console << wordVector[i] << "\t\t";
                                 
                                 spreadsheet << "=\""  << wordVector[i] << "\",";
@@ -560,6 +816,8 @@ void SetAssociated :: CreateHeader(COLUMNS c)
             {
                 if(this -> wordQuantity == 1 || this -> wordQuantity == 2)
                 {
+                    html << "<th>Instruction</th>";
+                    
                     console << "\t\tInstruction";
                     
                     spreadsheet << "Instruction,";
@@ -568,6 +826,8 @@ void SetAssociated :: CreateHeader(COLUMNS c)
                 }
                 else
                 {
+                    html << "<th>Instruction</th>";
+                    
                     console << "\tInstruction";
                     
                     spreadsheet << "Instruction,";
@@ -580,6 +840,8 @@ void SetAssociated :: CreateHeader(COLUMNS c)
             {
                 if(this -> wordQuantity == 1 || this -> wordQuantity == 2)
                 {
+                    html << "<th>Instruction</th>";
+                    
                     console << "\t\t\tInstruction";
                     
                     spreadsheet << "Instruction,";
@@ -588,6 +850,8 @@ void SetAssociated :: CreateHeader(COLUMNS c)
                 }
                 else
                 {
+                    html << "<th>Instruction</th>";
+                    
                     console << "\t\t\tInstruction";
                     
                     spreadsheet << "Instruction,";
@@ -606,6 +870,8 @@ void SetAssociated :: CreateHeader(COLUMNS c)
             // Display if there were any evictions
             if(this -> mainMemorySize == 8)
             {
+                html << "<th>Address(es) Evicted</th>";
+                
                 console << "\t\t\tAddress(es) Evicted\n\n";
                 
                 spreadsheet << "Address(es) Evicted\n";
@@ -615,6 +881,8 @@ void SetAssociated :: CreateHeader(COLUMNS c)
             
             else if(this -> mainMemorySize == 16)
             {
+                html << "<th>Address(es) Evicted</th>";
+                
                 console << "\t\t\tAddress(es) Evicted\n\n";
                 
                 spreadsheet << "Address(es) Evicted\n";
@@ -624,6 +892,9 @@ void SetAssociated :: CreateHeader(COLUMNS c)
             
             else
                 throw std::invalid_argument("\nError - Invalid memory size\n\n");
+            
+            // End html header logic
+            html << "</tr>";
             
             break;
             
@@ -683,10 +954,25 @@ void SetAssociated :: Table()
     // Predefine table
     std::string table[] = { "Address", "Index", "Way", "Tag", "Offset", "Hit_Miss", "Word", "instruction", "Evictions" };
     
+    // Include html logic
+    html << "<tr>";
+    
     // Traverse through each category for each individual subscript of Fully_Associative_Vector
     for(this -> global_iterator = 0; this -> global_iterator < Set_Associative_Vector.size(); this -> global_iterator++)
         for(int j = 0; j < sizeof(table) / sizeof(table[0]); j++)
             CreateTable(FindColumn(table[j]));
+}
+
+// -------------------------------------------------------------------------------------------
+// End html logic
+void SetAssociated :: EndHTML()
+{
+    html << "</table>";
+    html << "</div>";
+    html << "</div>";
+    html << "</div>";
+    html << "</body>";
+    html << "</html>";
 }
 
 // -------------------------------------------------------------------------------------------
@@ -704,6 +990,8 @@ void SetAssociated :: CreateTable(COLUMNS columns)
             AssignHashIndex();
             
             // Insert address data to each ostringstream variable
+            html << "<td>" << Set_Associative_Vector[global_iterator].address << "</td>";
+
             console << "\t\t" << Set_Associative_Vector[global_iterator].address << " | ";
             
             spreadsheet << "=\""  << Set_Associative_Vector[global_iterator].address << "\",";
@@ -715,6 +1003,8 @@ void SetAssociated :: CreateTable(COLUMNS columns)
             
         case INDEX :
         {
+            html << "<td>" << Set_Associative_Vector[global_iterator].setIndex << "</td>";
+
             console << "\t" << this -> Set_Associative_Vector[global_iterator].setIndex << "\t|";
             
             spreadsheet << "=\""   << this -> Set_Associative_Vector[global_iterator].setIndex << "\",";
@@ -742,6 +1032,8 @@ void SetAssociated :: CreateTable(COLUMNS columns)
                 {
                     if(!indexTable[hashIndex].second.empty())
                     {
+                        html << "<td>" << indexTable[hashIndex].second.front() << "</td>";
+                        
                         console << "\t" << indexTable[hashIndex].second.front() << "\t|";
                         
                         spreadsheet << "=\""  << indexTable[hashIndex].second.front() << "\",";
@@ -753,6 +1045,8 @@ void SetAssociated :: CreateTable(COLUMNS columns)
                     
                     else
                     {
+                        html << "<td>" << '-' << "</td>";
+                        
                         console << "\t\t" << '-' << "\t\t|";
                         
                         spreadsheet << "=\""  << '-' << "\",";
@@ -765,16 +1059,24 @@ void SetAssociated :: CreateTable(COLUMNS columns)
                 {
                     if (!indexTable[hashIndex].second.empty())
                     {
+                        html << "<td>" << indexTable[hashIndex].second.front() << "</td>";
+                        
                         console << "  " << indexTable[hashIndex].second.front() << " |";
+                        
                         spreadsheet << "=\"" << indexTable[hashIndex].second.front() << "\",";
+                        
                         consoleToFile <<  "  " << indexTable[hashIndex].second.front() << " |";
                         
                         indexTable[hashIndex].second.pop();
                     }
                     else
                     {
+                        html << "<td>" << '-' << "</td>";
+                        
                         console << std::setw(10) << '-' << std::setw(10) << "|";
+                        
                         spreadsheet << "=\"" << '-' << "\",";
+                        
                         consoleToFile << std::setw(10) << '-' << std::setw(10) << "|";
                     }
                 }
@@ -786,6 +1088,8 @@ void SetAssociated :: CreateTable(COLUMNS columns)
             
         case TAG :
         {
+            html << "<td>" << this -> Set_Associative_Vector[global_iterator].tag << "</td>";
+        
             console << "\t" << this -> Set_Associative_Vector[global_iterator].tag << "\t|";
             
             spreadsheet << "=\""   << this -> Set_Associative_Vector[global_iterator].tag << "\",";
@@ -797,6 +1101,7 @@ void SetAssociated :: CreateTable(COLUMNS columns)
             
         case OFFSET :
         {
+            html << "<td>" << this -> Set_Associative_Vector[global_iterator].offset << "</td>";
             
             console << "\t  " << this -> Set_Associative_Vector[global_iterator].offset << " \t| ";
             
@@ -811,6 +1116,8 @@ void SetAssociated :: CreateTable(COLUMNS columns)
         {
             if(hitOrMiss)
             {
+                html << "<td>" << "Hit" << "</td>";
+                
                 console << "\tHit \t| ";
                 
                 spreadsheet << "=\""  << "Hit" << "\",";
@@ -822,6 +1129,8 @@ void SetAssociated :: CreateTable(COLUMNS columns)
             
             else
             {
+                html << "<td>" << "Miss" << "</td>";
+                
                 console << "\tMiss\t| ";
                 
                 spreadsheet << "=\""  << "Miss" << "\",";
@@ -840,6 +1149,8 @@ void SetAssociated :: CreateTable(COLUMNS columns)
                 // Display each individual instruction in hexadecimal format
                 for(binaryVector :: size_type i = 0; i < wordVector.size(); i++)
                 {
+                    html << "<td>" << Set_Associative_Vector[global_iterator].instructionMap[wordVector[i]] << "</td>";
+                    
                     console << Set_Associative_Vector[global_iterator].instructionMap[wordVector[i]] << " | ";
                     
                     spreadsheet << "=\"" << Set_Associative_Vector[global_iterator].instructionMap[wordVector[i]] << "\",";
@@ -853,6 +1164,8 @@ void SetAssociated :: CreateTable(COLUMNS columns)
             
         case INSTRUCTION_RETREIVED :
         {
+            html << "<td>" << this -> Set_Associative_Vector[global_iterator].instruction << "</td>";
+            
             console << "      " << this -> Set_Associative_Vector[global_iterator].instruction << "\t\t|";
             
             spreadsheet << "=\""  << this -> Set_Associative_Vector[global_iterator].instruction << "\",";
@@ -866,6 +1179,8 @@ void SetAssociated :: CreateTable(COLUMNS columns)
             
             if(!this -> Set_Associative_Vector[global_iterator].addressEvicted.empty())
             {
+                html << "<td>" << this -> Set_Associative_Vector[global_iterator].addressEvicted << "</td>";
+                
                 console  << "\t\t\t" << this -> Set_Associative_Vector[global_iterator].addressEvicted << '\n';
                 
                 spreadsheet << this -> Set_Associative_Vector[global_iterator].addressEvicted << '\n';
@@ -876,6 +1191,8 @@ void SetAssociated :: CreateTable(COLUMNS columns)
             
             else
             {
+                html << "<td>" << '-' << "</td>";
+                
                 console << '\t' << '\t' << '\t' << '\t' << '-' << '\n';
                 
                 spreadsheet << '-' << '\n';
@@ -883,6 +1200,8 @@ void SetAssociated :: CreateTable(COLUMNS columns)
                 consoleToFile << '\t' << '\t' << '\t' << '\t' << '-' << '\n';
             }
             
+            // End html row
+            html << "</tr>";
             
             break;
             
@@ -940,20 +1259,45 @@ HASH_TABLE SetAssociated :: FindTable (std::string table)
     return HASH_TABLE :: HASH_TABLE_ERROR;
 }
 
-void SetAssociated::PrintFile()
-{
-    
-
-}
-
 void SetAssociated :: Print()
 {
+    // Produce microsoft word file
+    file write("testFile.doc");
+    
+    // Write to file
+    write << console.str();
+
+    // Write to console
     std::cout << console.str();
     
-    file write("testFile.csv");
+    // Close file
+    write.close();
     
+    // Produce excel spreadsheet file
+    write.open("testFile.csv");
+    
+    // Write to spreadsheet
     write << spreadsheet.str();
     
+    // Close file
+    write.close();
+    
+    // Produce html file
+    write.open("index.html");
+    
+    // Write to html.index
+    write << html.str();
+    
+    // Close file
+    write.close();
+    
+    // Produce css file
+    write.open("stylesheet.css");
+    
+    // Write to html.index
+    write << css.str();
+    
+    // Close file
     write.close();
 }
 

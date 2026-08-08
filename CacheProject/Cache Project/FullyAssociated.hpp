@@ -246,6 +246,12 @@ public:
      void PrintConsole();               // Output results in console
     
     // --------------------------- Misc Functions  -----------------------------
+    
+     void HTML();                        // Execute document skeleton of html
+    
+     void CSS();                         // Include CSS logic
+    
+     void EndHTML();                     // End html logic
 
      void Title();                       // Display Title
    

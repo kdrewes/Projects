@@ -157,7 +157,7 @@ private:
         
         instruction,      // Instruction of address
         
-        addressEvicted;   // Address evicted from way
+        addressEvicted;   // Address evicted
         
         hashValue
         indexHashCode,    // hash code of each index
@@ -200,13 +200,16 @@ private:
     // Stores all properties located in CacheData structure
     std::vector <Direct_Mapping_Structure> Direct_Mapping_Vector;
     
-    // Hash table used to store addresses (Detects hit or miss)
-    // Key = Tag, Value = address
+    // Hash table used to store generated addresses
+    // Key = index, Value = address
     hashAddress addressTable;
     
     // Hash table used to store multiple ways
     // Key = index, value = tag
     indexTag indexTable;
+    
+    // Key = index, value = address currently stored at that direct-mapped index
+    std::map<binary, binary> cachedAddressByIndex;
     
     // Key = tag, Value = std::vector<std::pair<address, frequenty of address detected in tagTable.second>>
     addressDetectorMap addressDetector;
@@ -258,6 +261,12 @@ public:
     
     // --------------------------- Misc Functions  -----------------------------
 
+     void HTML();                        // Execute document skeleton of html
+   
+     void CSS();                         // Include CSS logic
+   
+     void EndHTML();                     // End html logic
+    
      void Title();                       // Display Title
    
      void Data();                        // Display data

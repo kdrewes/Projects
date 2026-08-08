@@ -39,6 +39,12 @@ void FullyAssociated :: Router()
 // Execute binary data
 void FullyAssociated :: Controller()
 {
+    // Execute document skeleton of html
+    HTML();
+    
+    // Execute css syntax
+    CSS();
+    
     // Display title
     Title();
     
@@ -51,78 +57,8 @@ void FullyAssociated :: Controller()
     // Produce and display table
     Table();
     
-    /*
-     
-     // Unit Test for Address List
-     for(int i = 0; i < addressList.size(); i++)
-     std::cout << "\nAddressList[" << i << "]: " << addressList[i] << std::endl;
-     
-     // Unit Test for hash code
-     for(int i = 0; i < Fully_Associative_Vector.size(); i++)
-     std::cout << "\nAddress[" << i << "]: " << Fully_Associative_Vector[i].address << ' ' << "Hash Code: " << Fully_Associative_Vector[i].hashCode << '\n';
-     
-     // Unit Test for Address List
-     for(int i = 0; i < addressList.size(); i++)
-     std::cout << "\nAddressList[" << i << "]: " << addressList[i] << std::endl;
-     
-     // Unit Test for hash code
-     for(int i = 0; i < Fully_Associative_Vector.size(); i++)
-     std::cout << "\nAddress[" << i << "]: " << Fully_Associative_Vector[i].address << ' ' << "Hash Code: " << Fully_Associative_Vector[i].addressHashCode << '\n';
-     
-     
-     // Unit Test for Address List
-     for(int i = 0; i < addressList.size(); i++)
-     std::cout << "\nAddressList[" << i << "]: " << addressList[i] << std::endl;
-     
-     std::cout << std::endl;
-     
-     // Unit Test for hash code
-     for(int i = 0; i < Fully_Associative_Vector.size(); i++)
-     std::cout << "\nAddress[" << i << "]: " << Fully_Associative_Vector[i].address << ' ' << "Hash Code: " << Fully_Associative_Vector[i].hashCode << '\n';
-     
-     // std::cout << console.str() << std::endl;
-     
-     
-     // UNIT TEST FOR ADRESS LIST
-     //for(int i = 0; i < addressList.size(); i++)
-     //std::cout << "\naddressList[" << i << "] = " << addressList[i];
-     
-     std:::cout << std::endl;
-     
-     int occupiedSubscripts = 0;
-     
-     for(hashAddress :: size_type i = 0; i < addressTable.size(); i++)
-     if(!addressTable[i].first.empty() && !addressTable[i].second.empty())
-     occupiedSubscripts += 1;
-     
-     std::cout << "\noccupiedSubscripts = " << occupiedSubscripts << std::endl;
-     
-     // UNIT TEST FOR ADRESS TABLE
-     for(hashAddress :: size_type i = 0; i < addressTable.size(); i++)
-     if(!addressTable[i].first.empty() && !addressTable[i].second.empty())
-     {
-     std::cout << "\nINDEX = " << i << ' ' << "TAG = " << addressTable[i].first << ' ' << "ADDRESS = " << addressTable[i].second << std::endl;
-     }
-     */
-    
-    
-    
-    
-    /*
-     
-     
-     
-     UNIT TEST
-     
-     std::cout << console.str();
-     
-     file write("testFile.csv");
-     
-     write << spreadsheet.str();
-     
-     write.close();
-     
-     */
+    // End HTML logic
+    EndHTML();
     
 }
 
@@ -257,52 +193,210 @@ FullyAssociated :: index FullyAssociated :: GetHashIndex(hashValue hashCode)
             throw std::invalid_argument("\n\nError - Invalid table, please re-enter option.\n");
         }
             
-            
     }
     
     return hashCode;
 }
 
 // -------------------------------------------------------------------------------------------
-void FullyAssociated :: Print()
+// Execute document skeleton of html
+void FullyAssociated :: HTML()
 {
-    std::cout << console.str();
-    
-    file write("testFile.csv");
-    
-    write << spreadsheet.str();
-    
-    write.close();
+    html << "<!DOCTYPE html>";
+    html << R"(<html lang="en">)";
+    html << "<head>";
+    html << R"(<meta charset="UTF-8">)";
+    html << R"(<meta name="viewport" content="width=device-width, initial-scale=1.0">)";
+    html << "<title>Cache Project</title>";
+    html << R"(<link rel="stylesheet" href="stylesheet.css">)";
+    html << "</head>";
+    html << "<body>";
+    html << R"(<div class="background">)";
+    html << R"(<div class="foundation">)";
 }
 
 // -------------------------------------------------------------------------------------------
-
-void FullyAssociated::PrintFile()
+// Include CSS logic
+void FullyAssociated :: CSS()
 {
-    
-}
+    css << "@import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro:ital,wght@0,400;0,700;1,400;1,700&family=Yanone+Kaffeesatz:wght@200..700&display=swap');";
+    css << "@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap');";
+    css << "@import url('https://fonts.googleapis.com/css2?family=Anaheim:wght@400..800&display=swap');";
 
+    // ------------------------------------------------------
+    css << "body";
+    css << "{";
+    css << "  background: rgb(230, 230, 230);";
+    css << "  margin: 0;";
+    css << "  padding: 0;";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << ".background ";
+    css << "{";
+    css << "  background: linear-gradient(to top,rgba(0, 0, 0, 0.7),rgba(255, 255, 255, 0.5)),";
+    css << "  url(\"blue.jpg\");";
+    css << "  background-size: cover;";
+    css << "  background-position:center;";
+    css << "  background-repeat: no-repeat;";
+    css << "  min-height: 1000px;";
+    css << "  animation: opacityEffect 2s ease-out forwards;";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << ".foundation {";
+    css << "  width: fit-content;";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << ".header";
+    css << "{";
+    css << "  height: 35px;";
+    css << "  background: rgba(0, 0, 0, 1);";
+    css << "  transform: translate(350px,200px);";
+    css << "  border-radius: 5px;";
+    css << "  text-align: center;";
+    css << "  font-size: 20px;";
+    css << "  color: white;";
+    css << "  opacity: 0;";
+    css << "  font-family: \"Anonymous Pro\";";
+    css << "  display: flex;";
+    css << "  justify-content: center;";
+    css << "  align-items: center;";
+    css << "  animation: opacityEffect 1.7s ease-out 1.2s forwards;";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << ".data";
+    css << "{";
+    css << "  margin-top: 3px;";
+    css << "  margin-bottom: 25px;";
+    css << "  text-align: center;";
+    css << "}";
+
+    css << ".data td";
+    css << "{";
+    css << "  background-color: transparent;";
+    css << "  border: none;";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << ".data table ";
+    css << "{";
+    css << "  width: 100%;";
+    css << "}";
+
+    css << ".cache";
+    css << "{";
+    css << " height: auto;";
+    css << " padding-top: 200px;";
+    css << " animation: opacityEffect 1.5s ease-out forwards,";
+    css << "            slideFromTop 1.2s ease-out forwards;";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << "table ";
+    css << "{";
+    css << "  border-spacing: 0;";
+    css << "  border-radius: 5px;";
+    css << "  overflow: hidden;";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << "th ";
+    css << "{";
+    css << "  font-size: 13px;";
+    css << "  font-family: \"Anonymous Pro\";";
+    css << "  padding: 8px 8px;";
+    css << "  text-align: left;";
+    css << "  background-color: rgba(0, 0, 0);";
+    css << "  color: white;";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << "td";
+    css << "{";
+    css << "  border-bottom: solid rgba(255, 255, 255, 0.5) 1px;";
+    css << "  padding: 6px 13px 6px 13px;";
+    css << "  font-size: 12px;";
+    css << "  font-family: \"Anonymous Pro\";";
+    css << "  background-color:rgba(255, 255, 255, .2);";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << "p ";
+    css << "{";
+    css << "  font-family: \"Anonymous Pro\";";
+    css << "  text-align: center;";
+    css << "}";
+
+    // ------------------------------------------------------
+    // Animations
+    css << "@keyframes opacityEffect{";
+    css << "    0%{";
+    css << "        opacity: 0;";
+    css << "    }";
+    css << "    100%{";
+    css << "        opacity: 1;";
+    css << "    }";
+    css << "}";
+
+    // ------------------------------------------------------
+    css << "@keyframes slideFromTop{";
+    css << "    0%{";
+    css << "       transform: translate(350px,-460px);";
+    css << "    }";
+    css << "    100%{";
+    css << "        transform: translate(350px,10px);";
+    css << "    }";
+    css << "}";
+}
 
 // -------------------------------------------------------------------------------------------
 // Create Title
 void FullyAssociated :: Title()
 {
-    // Display Title
-    console << "\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t------------------------------------------------------------------------------\n";
+    
+    // ------------------------ Create title for html ------------------------
     
     if(placementPolicy == CACHING_ALGORITHM :: LRU)
-        console <<"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tFully Associative Placement Policy - LRU\n";
+    {
+        html << R"(<div class="header">)";
+        html <<  "Fully Associative Placement Policy - LRU";
+        html << "</div>";
+    }
     
     else if(placementPolicy == CACHING_ALGORITHM :: LFU)
-        console <<"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tFully Associative Placement Policy - LFU\n";
+    {
+        html << R"(<div class="header">)";
+        html <<  "Fully Associative Placement Policy - LFU";
+        html << "</div>";
+    }
     
     else if(placementPolicy == CACHING_ALGORITHM :: FIFO)
-        console <<"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tFully Associative Placement Policy - FIFO\n";
+    {
+        html << R"(<div class="header">)";
+        html <<  "Fully Associative Placement Policy - FIFO";
+        html << "</div>";
+    }
     
+    // ------------------------ Create title for console ------------------------
+
+    console << "\n\n\n\n\n\n\n\n" << std::setw(75) << "------------------------------------------------------------------------------\n";
     
+    if(placementPolicy == CACHING_ALGORITHM :: LRU)
+        console << std::setw(75) << "Fully Associative Placement Policy - LRU\n";
+        
+    else if(placementPolicy == CACHING_ALGORITHM :: LFU)
+        console << std::setw(75) <<"Fully Associative Placement Policy - LFU\n";
+
     
-    console <<"\t\t\t\t\t\t\t\t\t\t------------------------------------------------------------------------------\n";
+    else if(placementPolicy == CACHING_ALGORITHM :: FIFO)
+        console << std::setw(75) << "Fully Associative Placement Policy - FIFO\n";
     
+    console << std::setw(50) << "------------------------------------------------------------------------------\n";
+    
+    // ------------------------ Create title for spreadsheet ------------------------
     
     if(placementPolicy == CACHING_ALGORITHM :: LRU)
         spreadsheet <<"---------------------------------------------------- Fully Associative Placement Policy - LRU ----------------------------------------------------\n";
@@ -313,25 +407,50 @@ void FullyAssociated :: Title()
     else if(placementPolicy == CACHING_ALGORITHM :: FIFO)
         spreadsheet <<"---------------------------------------------------- Fully Associative Placement Policy - FIFO ----------------------------------------------------\n";
     
+    // ------------------------ Create title for console to file ------------------------
     
-    consoleToFile << "\n\n\n\n\n\n\n\n\t\t\t\t\t\t\t\t\t\t------------------------------------------------------------------------------\n";
+    consoleToFile << "\n\n\n\n\n\n\n\n" << std::setw(50) << "------------------------------------------------------------------------------\n";
     
     if(placementPolicy == CACHING_ALGORITHM :: LRU)
-        consoleToFile <<"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tFully Associative Placement Policy - LRU\n";
+        consoleToFile << std::setw(75) << "Fully Associative Placement Policy - LRU\n";
     
     else if(placementPolicy == CACHING_ALGORITHM :: LFU)
-        consoleToFile <<"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tFully Associative Placement Policy - LFU\n";
+        consoleToFile << std::setw(75) << "Fully Associative Placement Policy - LFU\n";
     
     else if(placementPolicy == CACHING_ALGORITHM :: FIFO)
-        consoleToFile <<"\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tFully Associative Placement Policy - FIFO\n";
+        consoleToFile << std::setw(75) << "Fully Associative Placement Policy - FIFO\n";
     
-    consoleToFile <<"\t\t\t\t\t\t\t\t\t\t------------------------------------------------------------------------------\n";
+    consoleToFile << std::setw(75) << "------------------------------------------------------------------------------\n";
     
 }
 // -------------------------------------------------------------------------------------------
 // Produce and display metrics
 void FullyAssociated :: Data()
 {
+    // ------------------------ Create data for html ------------------------
+    
+    html << R"(<div class="cache">)";
+    html << R"(<div class="data">)";
+    html << "<table>";
+    html << "<tr>";
+    html << "<td>Cache Size = " << this -> cacheSize << " Bytes" << "</td>";
+    html << "<td>Block Size = " << this -> blockSize << " Bytes" << "</td>";
+    html << "<td># of Blocks = " <<  this -> blockQuantity << " Bytes" << "</td>";
+    html << "</tr>";
+    html << "<tr>";
+    html << "<td># of Ways = " << this -> ways << " Bytes" << "</td>";
+    html << "<td>Offset Size = " << this -> offsetSize  << " Bits" << "</td>";
+    html << "<td>Ram Size = " <<  this -> mainMemorySize << " Bytes" << "</td>";
+    html << "</tr>";
+    html << "<tr>";
+    html << "<td>Word Size = " << this -> wordSize << " Bytes" << "</td>";
+    html << "<td>Word Quantity = " << this -> wordQuantity  << " Bytes" << "</td>";
+    html << "<td>Tag Size= " <<  this -> addressSize - std::floor(log2(this -> blockSize)) << " Bytes" << "</td>";
+    html << "</tr>";
+    html << "</table>";
+    html << "</div>";
+    
+    // ------------------------ Create data for console ------------------------
     
     console << "\n\t\t\t\t\t\t\t\t\t\tCache Size = "          << this -> cacheSize                    << " Bytes\t\tBlock Size = "  << this -> blockSize    << " Bytes"
     
@@ -345,7 +464,7 @@ void FullyAssociated :: Data()
     
     << " Bytes"                               << "\t\tTag Size = "                    << this -> addressSize - std::floor(log2(blockSize)) << " Bytes\n\n";
     
-    
+    // ------------------------ data title for spreadsheet ------------------------
     
     spreadsheet << "\nCache Size," << "Block Size," << "# of Blocks," << "# of Ways," << "Offset Size,"  << "Ram Size," << "Word Size," << "# of Words," << "Tag Size\n";
     
@@ -356,17 +475,19 @@ void FullyAssociated :: Data()
     << ',' << this -> addressSize - std::floor(log2(blockSize)) << " Bytes" << "\n\n";
     
     
-    consoleToFile << "\n\t\t\t\t\t\t\t\t\t\tCache Size = "          << this -> cacheSize                    << " Bytes\t\tBlock Size = "  << this -> blockSize    << " Bytes"
+    // ------------------------ data title for console file ------------------------
     
-    << "\t\t# of Blocks = "                         << this -> blockQuantity                << " Bytes"
+    consoleToFile << "\n" << std::setw(75) << "Cache Size = "          << this -> cacheSize                    << " Bytes\t\tBlock Size = "  << this -> blockSize    << " Bytes"
     
-    << "\n\n\t\t\t\t\t\t\t\t\t\t# of Ways = "               << this -> ways                         << " Bytes\t\t\tOffset Size = " << this -> offsetSize  << " Bits"
+    << std::setw(10) << "# of Blocks = "                         << this -> blockQuantity                << " Bytes"
     
-    << "\t\tRam Size = "                            << this -> mainMemorySize               << " Bytes" << "\n\n\t\t\t\t\t\t\t\t\t\tWord Size  = "
+    << "\n\n" << std::setw(50) << "# of Ways = "               << this -> ways                         << " Bytes\t\t\tOffset Size = " << this -> offsetSize  << " Bits"
     
-    << this -> wordSize                             << " Bytes\t\t# of Words = "            << this -> wordQuantity
+    << std::setw(10) << "Ram Size = "                            << this -> mainMemorySize               << " Bytes" << "\n\n" << std::setw(10) << "Word Size  = "
     
-    << " Bytes"                                     << "\t\tTag Size = "                    << this -> addressSize - std::floor(log2(blockSize)) << " Bytes\n\n";
+    << this -> wordSize                             << " Bytes" << std::setw(10) << "# of Words = "            << this -> wordQuantity
+    
+    << " Bytes"                                     << std::setw(10) << "Tag Size = "                    << this -> addressSize - std::floor(log2(blockSize)) << " Bytes\n\n";
     
 }
 // -------------------------------------------------------------------------------------------
@@ -375,6 +496,10 @@ void FullyAssociated :: Header()
 {
     // Predefine header
     std::string header[] = { "Address", "Tag", "Way", "Offset", "Hit_Miss", "Word", "instruction", "Evictions" };
+    
+    // Include html logic
+    html << "<table>";
+    html << "<tr>";
     
     // Display Header banner
     console << "\n\t\t------------------------------------------------------------ Fully Associative Cache Table ------------------------------------------------------------\n\n";
@@ -386,7 +511,6 @@ void FullyAssociated :: Header()
     // Display header
     for(int i = 0; i < sizeof(header) / sizeof(header[0]); i++)
         CreateHeader(FindHeader(header[i]));
-    
 }
 // -------------------------------------------------------------------------------------------
 // Produce column header
@@ -399,6 +523,7 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             // Display each address
             if(this -> mainMemorySize == 8)
             {
+                html << "<th>Address</th>";
                 
                 console << "\t\tAddress";
                 
@@ -409,6 +534,8 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             else if(this -> mainMemorySize == 16)
             {
+                html << "<th>Address</th>";
+                
                 console << "\t\t\tAddress\t";
                 
                 spreadsheet << "Address,";
@@ -417,7 +544,6 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             }
             else
                 throw std::invalid_argument("\nError - Invalid memory size\n\n");
-            
             
             break;
             
@@ -428,6 +554,8 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             {
                 for(int i = 0; i < this -> ways; i++)
                 {
+                    html << "<th>" << "Data[" << i << "] " << "</th>";
+                    
                     console << "\t\tData[" << i << "]  ";
                     
                     spreadsheet << "Data[" << i << "],";
@@ -440,6 +568,8 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             {
                 for(int i = 0; i < this -> ways; i++)
                 {
+                    html << "<th>" << "Data[" << i << "] " << "</th>";
+                    
                     console << "\t\t\tData[" << i << "] ";
                     
                     spreadsheet << "Data[" << i << "],";
@@ -458,6 +588,8 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             // Display each tag
             if(this -> mainMemorySize == 8)
             {
+                html << "<th>Tag</th>";
+                
                 console << "\t\t Tag";
                 
                 spreadsheet << "Tag,";
@@ -467,6 +599,8 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             else if(this -> mainMemorySize == 16)
             {
+                html << "<th>Tag</th>";
+                
                 console << "\t\t\tTag";
                 
                 spreadsheet << "Tag,";
@@ -485,6 +619,8 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             // Display each offset
             if(this -> mainMemorySize == 8)
             {
+                html << "<th>Offset</th>";
+                
                 console << "\t\tOffset";
                 
                 spreadsheet << "Offset,";
@@ -494,6 +630,8 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             else if(this -> mainMemorySize == 16)
             {
+                html << "<th>Offset</th>";
+                
                 console << "\t\t\t\tOffset";
                 
                 spreadsheet << "Offset,";
@@ -511,6 +649,8 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             // Display whether each address has a hit or miss
             if(this -> mainMemorySize == 8)
             {
+                html << "<th>H/M</th>";
+                
                 console << "\t\tH/M\t";
                 
                 spreadsheet << "H/M,";
@@ -520,6 +660,8 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             else if(this -> mainMemorySize == 16)
             {
+                html << "<th>H/M</th>";
+                
                 console << "\t\tH/M";
                 
                 spreadsheet << "H/M,";
@@ -545,6 +687,8 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
                         // Display each individual word in binary format
                         for(binaryVector :: size_type i = 0; i < wordVector.size(); i++)
                         {
+                            html << "<th>" << wordVector[i] << "</th>";
+                            
                             console << "\t\t" << wordVector[i];
                             
                             spreadsheet << "=\""  << wordVector[i] << "\",";
@@ -559,6 +703,8 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
                         {
                             if(i == 0)
                             {
+                                html << "<th>" << wordVector[i] << "</th>";
+                                
                                 console << "\t" << wordVector[i] << "\t\t\t\t";
                                 
                                 spreadsheet << "=\""  << wordVector[i] << "\",";
@@ -567,6 +713,8 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
                             }
                             else
                             {
+                                html << "<th>" << wordVector[i] << "</th>";
+                                
                                 console << wordVector[i] << "\t\t ";
                                 
                                 spreadsheet << "=\""  << wordVector[i] << "\",";
@@ -588,6 +736,8 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
                         
                         for(binaryVector :: size_type i = 0; i < wordVector.size(); i++)
                         {
+                            html << "<th>" << wordVector[i] << "</th>";
+                            
                             console << "\t\t  " << wordVector[i];
                             
                             spreadsheet << "=\""  << wordVector[i] << "\",";
@@ -602,6 +752,8 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
                         {
                             if(i == 0)
                             {
+                                html << "<th>" << wordVector[i] << "</th>";
+                                
                                 console << "\t\t\t\t" << wordVector[i] << "\t";
                                 
                                 spreadsheet << "=\""  << wordVector[i] << "\",";
@@ -610,6 +762,8 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
                             }
                             else
                             {
+                                html << "<th>" << wordVector[i] << "</th>";
+                                
                                 console << wordVector[i] << "\t\t";
                                 
                                 spreadsheet << "=\""  << wordVector[i] << "\",";
@@ -634,6 +788,8 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             {
                 if(this -> wordQuantity == 1 || this -> wordQuantity == 2)
                 {
+                    html << "<th>Instruction</th>";
+                    
                     console << "\t\tInstruction";
                     
                     spreadsheet << "Instruction,";
@@ -642,6 +798,8 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
                 }
                 else
                 {
+                    html << "<th>Instruction</th>";
+                    
                     console << "\tInstruction";
                     
                     spreadsheet << "Instruction,";
@@ -654,6 +812,9 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             {
                 if(this -> wordQuantity == 1 || this -> wordQuantity == 2)
                 {
+                    
+                    html << "<th>Instruction</th>";
+                    
                     console << "\t\t\tInstruction";
                     
                     spreadsheet << "Instruction,";
@@ -662,6 +823,8 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
                 }
                 else
                 {
+                    html << "<th>Instruction</th>";
+                    
                     console << "\t\t\tInstruction";
                     
                     spreadsheet << "Instruction,";
@@ -680,6 +843,8 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             // Display if there were any evictions
             if(this -> mainMemorySize == 8)
             {
+                html << "<th>Address(es) Evicted</th>";
+                
                 console << "\t\t\tAddress(es) Evicted\n\n";
                 
                 spreadsheet << "Address(es) Evicted\n";
@@ -689,6 +854,8 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             else if(this -> mainMemorySize == 16)
             {
+                html << "<th>Address(es) Evicted</th>";
+                
                 console << "\t\t\tAddress(es) Evicted\n\n";
                 
                 spreadsheet << "Address(es) Evicted\n";
@@ -698,6 +865,9 @@ void FullyAssociated :: CreateHeader(COLUMNS c)
             
             else
                 throw std::invalid_argument("\nError - Invalid memory size\n\n");
+            
+            // End html header logic
+            html << "</tr>";
             
             break;
             
@@ -712,6 +882,9 @@ void FullyAssociated :: Table()
 {
     // Predefine table
     std::string table[] = { "Address", "Tag", "Way", "Offset", "Hit_Miss", "Word", "instruction", "Evictions" };
+    
+    // Include html logic
+    html << "<tr>";
     
     // Traverse through each category for each individual subscript of Fully_Associative_Vector
     for(this -> global_iterator = 0; this -> global_iterator < Fully_Associative_Vector.size(); this -> global_iterator++)
@@ -734,6 +907,8 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
             AssignHashIndex();
             
             // Insert address data to each ostringstream variable
+            html << "<td>" << Fully_Associative_Vector[global_iterator].address << "</td>";
+            
             console << "\t\t" << Fully_Associative_Vector[global_iterator].address << " | ";
             
             spreadsheet << "=\""  << Fully_Associative_Vector[global_iterator].address << "\",";
@@ -762,6 +937,8 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                 {
                     if(!tagTable[hashIndex].second.empty())
                     {
+                        html << "<td>" << tagTable[hashIndex].second.front() << "</td>";
+                        
                         console << "\t" << tagTable[hashIndex].second.front() << "\t|";
                         
                         spreadsheet << "=\""  << tagTable[hashIndex].second.front() << "\",";
@@ -773,6 +950,8 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                     
                     else
                     {
+                        html << "<td>" << '-' << "</td>";
+                        
                         console << "\t\t" << '-' << "\t\t|";
                         
                         spreadsheet << "=\""  << '-' << "\",";
@@ -785,14 +964,19 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                 {
                     if (!tagTable[hashIndex].second.empty())
                     {
+                        html << "<td>" << tagTable[hashIndex].second.front() << "</td>";
+                        
                         console << "  " << tagTable[hashIndex].second.front() << " |";
+                        
                         spreadsheet << "=\"" << tagTable[hashIndex].second.front() << "\",";
+                        
                         consoleToFile <<  "  " << tagTable[hashIndex].second.front() << " |";
                         
                         tagTable[hashIndex].second.pop();
                     }
                     else
                     {
+                        html << "<td>" << '-' << "</td>";
                         console << std::setw(10) << '-' << std::setw(10) << "|";
                         spreadsheet << "=\"" << '-' << "\",";
                         consoleToFile << std::setw(10) << '-' << std::setw(10) << "|";
@@ -806,6 +990,8 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
             
         case TAG :
         {
+            html << "<td>" << this -> Fully_Associative_Vector[global_iterator].tag << "</td>";
+            
             console << "\t" << this -> Fully_Associative_Vector[global_iterator].tag << "\t|";
             
             spreadsheet << "=\""   << this -> Fully_Associative_Vector[global_iterator].tag << "\",";
@@ -817,6 +1003,7 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
             
         case OFFSET :
         {
+            html << "<td>" << this -> Fully_Associative_Vector[global_iterator].offset << "</td>";
             
             console << "\t  " << this -> Fully_Associative_Vector[global_iterator].offset << " \t| ";
             
@@ -831,6 +1018,8 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
         {
             if(hitOrMiss)
             {
+                html << "<td>" << "Hit" << "</td>";
+                
                 console << "\tHit \t| ";
                 
                 spreadsheet << "=\""  << "Hit" << "\",";
@@ -842,6 +1031,8 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
             
             else
             {
+                html << "<td>" << "Miss" << "</td>";
+                
                 console << "\tMiss\t| ";
                 
                 spreadsheet << "=\""  << "Miss" << "\",";
@@ -860,6 +1051,8 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                 // Display each individual instruction in hexadecimal format
                 for(binaryVector :: size_type i = 0; i < wordVector.size(); i++)
                 {
+                    html << "<td>" << Fully_Associative_Vector[global_iterator].instructionMap[wordVector[i]] << "</td>";
+                    
                     console << Fully_Associative_Vector[global_iterator].instructionMap[wordVector[i]] << " | ";
                     
                     spreadsheet << "=\"" << Fully_Associative_Vector[global_iterator].instructionMap[wordVector[i]] << "\",";
@@ -873,6 +1066,8 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
             
         case INSTRUCTION_RETREIVED :
         {
+            html << "<td>" << this -> Fully_Associative_Vector[global_iterator].instruction << "</td>";
+            
             console << "      " << this -> Fully_Associative_Vector[global_iterator].instruction << "\t\t|";
             
             spreadsheet << "=\""  << this -> Fully_Associative_Vector[global_iterator].instruction << "\",";
@@ -886,6 +1081,8 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
             
             if(!this -> Fully_Associative_Vector[global_iterator].addressEvicted.empty())
             {
+                html << "<td>" << this -> Fully_Associative_Vector[global_iterator].addressEvicted << "</td>";
+                
                 console  << "\t\t\t" << this -> Fully_Associative_Vector[global_iterator].addressEvicted << '\n';
                 
                 spreadsheet << this -> Fully_Associative_Vector[global_iterator].addressEvicted << '\n';
@@ -896,6 +1093,8 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
             
             else
             {
+                html << "<td>" << '-' << "</td>";
+                
                 console << '\t' << '\t' << '\t' << '\t' << '-' << '\n';
                 
                 spreadsheet << '-' << '\n';
@@ -903,6 +1102,8 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
                 consoleToFile << '\t' << '\t' << '\t' << '\t' << '-' << '\n';
             }
             
+            // End html row
+            html << "</tr>";
             
             break;
             
@@ -912,6 +1113,19 @@ void FullyAssociated :: CreateTable(COLUMNS columns)
             throw std::invalid_argument("\n\nError - incorrect column header\n\nPlease correct command\n\n");
     }
 }
+
+// -------------------------------------------------------------------------------------------
+// End html logic
+void FullyAssociated :: EndHTML()
+{
+    html << "</table>";
+    html << "</div>";
+    html << "</div>";
+    html << "</div>";
+    html << "</body>";
+    html << "</html>";
+}
+
 // -------------------------------------------------------------------------------------------
 // Contains each placement policy algoirthm
 void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
@@ -1069,7 +1283,7 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
                 std::vector<std::pair<binary, int>> addressDetectorVec = addressDetector[tagTable[hashIndex].first];
 
                 // Determine whether address is found
-                bool addressFound = false;
+                boolean addressFound = false;
 
                 // If cache is not full
                 if (binaryQueue.size() < this->ways)
@@ -1360,3 +1574,45 @@ void FullyAssociated :: PlacementPolicy(enum HASH_TABLE table)
     }
     
 // -------------------------------------------------------------------------------------------
+// Print report
+void FullyAssociated :: Print()
+{
+    // Produce microsoft word file
+    file write("testFile.doc");
+    
+    // Write to file
+    write << console.str();
+
+    // Write to console
+    std::cout << console.str();
+    
+    // Close file
+    write.close();
+    
+    // Produce excel spreadsheet file
+    write.open("testFile.csv");
+    
+    // Write to spreadsheet
+    write << spreadsheet.str();
+    
+    // Close file
+    write.close();
+    
+    // Produce html file
+    write.open("index.html");
+    
+    // Write to html.index
+    write << html.str();
+    
+    // Close file
+    write.close();
+    
+    // Produce css file
+    write.open("stylesheet.css");
+    
+    // Write to html.index
+    write << css.str();
+    
+    // Close file
+    write.close();
+}
