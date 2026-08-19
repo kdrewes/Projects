@@ -1,0 +1,105 @@
+body 
+{
+padding: 40px;
+background: linear-gradient(
+  rgb(230, 230, 230), rgb(255, 234, 217))
+}
+
+table 
+{
+margin: auto;
+border: 1px solid black;
+}
+
+td 
+{
+background: tan;
+width: 60px;
+height: 60px;
+border: 1px solid black;
+font-size: 60px;
+text-align: center;
+}
+
+th 
+{
+background: tan;
+width: 60px;
+height: 60px;
+border: 1px solid black;
+text-align: center;
+font-weight: bold;
+font-size: 20px;
+}
+
+/* Alternating square colors: odd cells in odd rows, even cells in even rows = chocolate */
+tr:nth-child(odd)>td:nth-child(odd) {
+background: chocolate;
+}
+
+tr:nth-child(even)>td:nth-child(even) {
+background: chocolate;
+}
+
+.title
+{
+  text-align: center;
+  font-family: "Fuzzy Bubbles", sans-serif;
+  font-size: 30px;
+}
+
+.chess-history,
+.chess-pieces,
+.about-author
+{
+  margin-top: 30px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.control-settings 
+{
+margin-top: 30px;
+text-align: center;
+}
+
+.control-settings input {
+margin: 0 10px;
+
+}
+
+.control-settings button 
+{
+  margin: 0 10px;
+  background-color: rgb(255, 202, 149);
+  border: 0px;
+  border-radius: 5px;
+  width: 90px;
+  font-family: "Fuzzy Bubbles", sans-serif;
+  font-size: 14px;
+}
+
+button:hover 
+{
+  color: white;
+}
+
+.control-settings .coordinates 
+{
+display: inline-block;
+width: 100px;
+vertical-align: middle;
+}
+
+.textStyle
+{
+  color: rgb(7, 96, 152);
+  font-weight: 500;
+}
+
+.caption
+{
+  color: rgb(0, 63, 102);
+  font-weight: 1500;
+}
